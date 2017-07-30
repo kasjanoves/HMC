@@ -36,8 +36,7 @@ public class ServletCtxListener implements ServletContextListener {
     	JDBCUtilities util = new JDBCUtilities("root","root");
     	try {
 			Connection conn = util.getConnection();
-			DBTables dbT = new DBTables(conn, "HMCatalog");
-			dbT.createMediaTable();
+			DBTables.createMediaTable(conn, "hmcatalog");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -84,8 +84,7 @@ public class Upload extends HttpServlet {
 			
 			JDBCUtilities util = new JDBCUtilities("root","root");
 	    	Connection conn = util.getConnection();
-			DBTables dbT = new DBTables(conn, "hmcatalog");
-			dbT.insertMediaRow(description, path);
+			DBTables.insertMediaRow(conn, "hmcatalog", description, path);
 
 			request.setAttribute("imagePath", path);
 	        RequestDispatcher view = request.getRequestDispatcher("Result.jsp");

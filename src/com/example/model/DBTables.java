@@ -5,16 +5,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DBTables {
-	private Connection con = null;	
+	/*private Connection con = null;	
 	private String dbName;
-	private static int MediaTableCount = 0;
-	
+		
 	public DBTables(Connection con, String dbName) {
 		this.con = con;
 		this.dbName = dbName;
-	}
+	}*/
+	private static int MediaTableCount = 0;
 	
-	public void createMediaTable() throws SQLException {
+	public static void createMediaTable(Connection con, String dbName) throws SQLException {
 	    String createString =
 	    	"create table if not exists " + dbName +
 	        ".MEDIA" +
@@ -36,7 +36,8 @@ public class DBTables {
 	    }
 	}
 	
-	public void insertMediaRow(String description, String path) throws SQLException {
+	public static void insertMediaRow(Connection con, String dbName, 
+			String description, String path) throws SQLException {
 		String query = "insert into " + dbName +
 			            ".MEDIA " +
 			            "values("+ MediaTableCount +", '"+ description +
