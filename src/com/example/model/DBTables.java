@@ -18,7 +18,7 @@ public class DBTables {
 	    String createString =
 	    	"create table if not exists " + dbName +
 	        ".MEDIA" +
-	        "(ID integer NOT NULL, " +
+	        "(ID integer AUTO_INCREMENT, " +
 	        "DESCRIPTION varchar(100), " +
 	        "PATH varchar(150) NOT NULL, " +
 	        "SIZE integer, " +
@@ -40,7 +40,7 @@ public class DBTables {
 			String description, String path) throws SQLException {
 		String query = "insert into " + dbName +
 			            ".MEDIA " +
-			            "values("+ MediaTableCount +", '"+ description +
+			            "values(NULL, '"+ description +
 			            "', '" + path +"',0,'1000-01-01 00:00:00')";
 		System.out.println(query);
 		
