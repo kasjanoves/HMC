@@ -33,7 +33,6 @@ public class Upload extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
@@ -88,6 +87,7 @@ public class Upload extends HttpServlet {
 			util.closeConnection(conn);
 
 			request.setAttribute("imagePath", path);
+			request.setAttribute("description", description);
 	        RequestDispatcher view = request.getRequestDispatcher("Result.jsp");
 			view.forward(request, response);
 			
