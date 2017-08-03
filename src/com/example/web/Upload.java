@@ -3,7 +3,6 @@ package com.example.web;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -33,7 +32,6 @@ public class Upload extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
@@ -85,8 +83,10 @@ public class Upload extends HttpServlet {
 			JDBCUtilities util = new JDBCUtilities("root","root");
 	    	Connection conn = util.getConnection();
 			DBTables.insertMediaRow(conn, "hmcatalog", description, path);
+			util.closeConnection(conn);
 
 			request.setAttribute("imagePath", path);
+			request.setAttribute("description", description);
 	        RequestDispatcher view = request.getRequestDispatcher("Result.jsp");
 			view.forward(request, response);
 			
@@ -105,19 +105,18 @@ public class Upload extends HttpServlet {
 	 * @throws Exception
 	 */
 	private void processUploadedFile(FileItem item) throws Exception {
-		File uploadetFile = null;
+		File uploadedFile = null;
 		//выбираем файлу имя пока не найдём свободное
 		do{
 			path = getServletContext().getRealPath("/upload/"+random.nextInt() + item.getName()); 
-			uploadetFile = new File(path);		
-		}while(uploadetFile.exists());
+			uploadedFile = new File(path);		
+		}while(uploadedFile.exists());
 		
-		//создаём файл
-		uploadetFile.createNewFile();
-		//записываем в него данные
-		item.write(uploadetFile);
 		System.out.println(path);
-				
+		//создаём файл
+		uploadedFile.createNewFile();
+		//записываем в него данные
+		item.write(uploadedFile);
 	}
  
 	/**

@@ -85,4 +85,13 @@ public class JDBCUtilities {
 	        return true;
 		return false;
 	}
+	
+	public void closeConnection(Connection conn){
+		try {
+			conn.close();
+			conn = null;
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+	}
 }

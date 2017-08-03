@@ -4,9 +4,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Hello</title>
+<title>File was uploaded</title>
 </head>
 <body>
-	<img src="${imagePath}" width="250">
+	<img src="${imagePath}" width="250"><br>
+	${description}
 </body>
 </html>
