@@ -48,10 +48,18 @@ public class DBTables {
 	    }
 	}
 	
+	
+	/**
+	 * Returns first 10 rows in MEDIA table
+	 * @param con
+	 * @param dbName
+	 * @return ResultSet
+	 * @throws SQLException
+	 */
 	public static ResultSet getMedia(Connection con, String dbName) throws SQLException {
 		String query =
 		        "select DESCRIPTION, PATH " +
-		        "from " + dbName + ".MEDIA";
+		        "from " + dbName + ".MEDIA limit 10";
 		Statement stmt = null;
 		ResultSet rs = null;
 		
