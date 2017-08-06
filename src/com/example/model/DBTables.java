@@ -1,9 +1,13 @@
 package com.example.model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Calendar;
+
+import com.mysql.jdbc.PreparedStatement;
 
 public class DBTables {
 		
@@ -31,20 +35,24 @@ public class DBTables {
 	
 	public static void insertMediaRow(Connection con, String dbName, 
 			String description, String path) throws SQLException {
-		String query = "insert into " + dbName +
+		String queryString = "insert into " + dbName +
 			            ".MEDIA " +
-			            "values(NULL, '"+ description +
-			            "', '" + path +"',0,'1000-01-01 00:00:00')";
-		System.out.println(query);
+			            "values(NULL,?,?,?,?)";
+		System.out.println(queryString);
 		
-	    Statement stmt = null;
+		java.sql.PreparedStatement insertRow = null;
+		Calendar cal = Calendar.getInstance();
 	    try {
-	        stmt = con.createStatement();
-	        stmt.executeUpdate(query);
+	    	insertRow = con.prepareStatement(queryString);
+	    	insertRow.setString(1, description);
+	    	insertRow.setString(2, path);
+	    	insertRow.setInt(3, 0);
+	    	insertRow.setDate(4, (Date) cal.getTime());
+	    	insertRow.executeUpdate();
 	    } catch (SQLException e) {
 	    	JDBCUtilities.printSQLException(e);
 	    } finally {
-	        if (stmt != null) { stmt.close(); }
+	        if (insertRow != null) { insertRow.close(); }
 	    }
 	}
 	
@@ -71,6 +79,10 @@ public class DBTables {
 	    }
 				
 		return rs;
+	}
+	
+	public static String ProcessSQlString(String str) {
+		return str.replace('\\', '\\');
 	}
 	
 }
