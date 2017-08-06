@@ -68,8 +68,6 @@ public class DBTables {
 	        rs = stmt.executeQuery(query);
 	    } catch (SQLException e) {
 	    	JDBCUtilities.printSQLException(e);
-	    } finally {
-	        if (stmt != null) { stmt.close(); }
 	    }
 				
 		return rs;

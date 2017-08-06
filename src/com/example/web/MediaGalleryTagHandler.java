@@ -45,6 +45,13 @@ public class MediaGalleryTagHandler extends SimpleTagSupport{
 			}
 		} catch (SQLException e) {
 			JDBCUtilities.printSQLException(e);
+		} finally {
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					JDBCUtilities.printSQLException(e);
+				}
 		}
     	    	
     	
