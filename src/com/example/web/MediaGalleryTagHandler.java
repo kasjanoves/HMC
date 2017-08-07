@@ -36,12 +36,20 @@ public class MediaGalleryTagHandler extends SimpleTagSupport{
 			return;
 		}
     	
+    	out.print("<table>");
     	try {
 			while(rs.next()){
 				String path = rs.getString("PATH");
 				String descr = rs.getString("DESCRIPTION");
 				
-				out.print(String.format(IMG_TEMPLATE, path, descr));
+				out.print("<tr>");
+				out.print("<td>");
+				out.print(String.format(IMG_TEMPLATE, path));
+				out.print("</td>");
+				out.print("<td>");
+				out.print(descr);
+				out.print("</td>");
+				out.print("</tr>");
 			}
 		} catch (SQLException e) {
 			JDBCUtilities.printSQLException(e);
@@ -53,9 +61,9 @@ public class MediaGalleryTagHandler extends SimpleTagSupport{
 					JDBCUtilities.printSQLException(e);
 				}
 		}
-    	    	
+    	out.print("</table>");    	
     	
 	}
 	
-	private static final String IMG_TEMPLATE = "<img src='%1$s' width='250'> %2$s";
+	private static final String IMG_TEMPLATE = "<img src='%1$s' width='250'>";
 }

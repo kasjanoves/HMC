@@ -1,13 +1,10 @@
 package com.example.model;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Calendar;
-
-import com.mysql.jdbc.PreparedStatement;
 
 public class DBTables {
 		
@@ -19,7 +16,7 @@ public class DBTables {
 	        "DESCRIPTION varchar(100), " +
 	        "PATH varchar(150) NOT NULL, " +
 	        "SIZE integer, " +
-	        "DATE datetime, " +
+	        "CREATION_DATE datetime, " +
 	        "PRIMARY KEY (ID))";
 
 	    Statement stmt = null;
@@ -47,7 +44,8 @@ public class DBTables {
 	    	insertRow.setString(1, description);
 	    	insertRow.setString(2, path);
 	    	insertRow.setInt(3, 0);
-	    	insertRow.setDate(4, (Date) cal.getTime());
+	    	//insertRow.setDate(4, new java.sql.Date(cal.getTime().getTime()));
+	    	insertRow.setTimestamp(4, new java.sql.Timestamp(cal.getTime().getTime()));
 	    	insertRow.executeUpdate();
 	    } catch (SQLException e) {
 	    	JDBCUtilities.printSQLException(e);
