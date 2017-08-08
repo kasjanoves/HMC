@@ -108,11 +108,17 @@ public class Upload extends HttpServlet {
 		File uploadedFile = null;
 		//выбираем файлу имя пока не найдём свободное
 		do{
-			path = getServletContext().getRealPath("/upload/"+random.nextInt() + item.getName()); 
+			String fileName = item.getName();
+			//Cutoff full path if one exists 
+			int lastSlash = fileName.lastIndexOf("\\");
+			if(lastSlash>0)
+				fileName = fileName.substring(lastSlash+1); 					
+			String cPath = "/upload/"+random.nextInt() + fileName; 
+			path = getServletContext().getRealPath(cPath);
+			System.out.println(path);
 			uploadedFile = new File(path);		
 		}while(uploadedFile.exists());
 		
-		System.out.println(path);
 		//создаём файл
 		uploadedFile.createNewFile();
 		//записываем в него данные
