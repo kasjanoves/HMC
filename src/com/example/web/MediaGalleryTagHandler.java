@@ -36,20 +36,32 @@ public class MediaGalleryTagHandler extends SimpleTagSupport{
 			return;
 		}
     	
+    	int rowSize = 3;
+    	int itemsCount = 0;
+    	String descrRow = "<tr>";
+    	
     	out.print("<table>");
+    	out.print("<tr>");
     	try {
 			while(rs.next()){
 				String path = rs.getString("PATH");
 				String descr = rs.getString("DESCRIPTION");
+													
+				out.print("<td align='center'>");
+				out.print(String.format(IMG_TEMPLATE, path, descr));
+				//out.print(descr);
+				out.print("</td>");
+				descrRow = descrRow + "<td align='center'>" + descr + "</td>";
 				
-				out.print("<tr>");
-				out.print("<td>");
-				out.print(String.format(IMG_TEMPLATE, path));
-				out.print("</td>");
-				out.print("<td>");
-				out.print(descr);
-				out.print("</td>");
-				out.print("</tr>");
+				if(++itemsCount == rowSize) {
+					out.print("</tr>");
+					out.print("<tr>");
+					descrRow = descrRow + "</tr>";
+					out.print(descrRow);
+					descrRow = "<tr>";
+					itemsCount = 0;
+				}
+				
 			}
 		} catch (SQLException e) {
 			JDBCUtilities.printSQLException(e);
@@ -61,9 +73,12 @@ public class MediaGalleryTagHandler extends SimpleTagSupport{
 					JDBCUtilities.printSQLException(e);
 				}
 		}
+    	descrRow = descrRow + "</tr>";
+		out.print(descrRow);
+    	out.print("</tr>");
     	out.print("</table>");    	
     	
 	}
 	
-	private static final String IMG_TEMPLATE = "<img src='%1$s' width='250'>";
+	private static final String IMG_TEMPLATE = "<img src='%1$s' width='250' alt='%2$s'>";
 }
