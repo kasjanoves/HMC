@@ -13,8 +13,8 @@ public class DBTables {
 	    	"create table if not exists " + dbName +
 	        ".MEDIA" +
 	        "(ID integer AUTO_INCREMENT, " +
-	        "DESCRIPTION varchar(100), " +
-	        "PATH varchar(150) NOT NULL, " +
+	        "DESCRIPTION varchar(150), " +
+	        "PATH varchar(250) NOT NULL, " +
 	        "SIZE integer, " +
 	        "CREATION_DATE datetime, " +
 	        "PRIMARY KEY (ID))";
