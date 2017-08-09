@@ -79,7 +79,7 @@ public class Upload extends HttpServlet {
 			    	//в противном случае рассматриваем как файл
 			    	UploadedFile = processUploadedFile(item);
 			    	contentType = item.getContentType();
-			    	//System.out.println(contentType);
+			    	System.out.println(contentType);
 			    }
 			}
 			

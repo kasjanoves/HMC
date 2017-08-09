@@ -14,7 +14,7 @@
 	<c:when test = "${mType == 'image'}">
 		<img src="${filePath}" width="250"><br>
 	</c:when>
-	<c:when test = "${mType == 'video'}">
+	<c:when test = "${mType == 'video'||mType == 'application' }">
 		<video>
 			<source src="${filePath}">
 		</video><br>
