@@ -13,10 +13,7 @@ public class DBTables {
 	    	"create table if not exists " + dbName +
 	        ".MEDIA" +
 	        "(ID integer AUTO_INCREMENT, " +
-<<<<<<< HEAD
-=======
 	        "TYPE varchar(15), " +
->>>>>>> branch 'master' of ssh://git@github.com/EvgKB/HMC.git
 	        "DESCRIPTION varchar(150), " +
 	        "PATH varchar(250) NOT NULL, " +
 	        "SIZE integer, " +
