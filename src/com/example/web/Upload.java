@@ -125,11 +125,12 @@ public class Upload extends HttpServlet {
 			//Cutoff full path if one exists 
 			int lastSlash = fileName.lastIndexOf("\\");
 			if(lastSlash>-1)
-				fileName = fileName.substring(lastSlash+1); 					
-			String cPath = "/upload/"+random.nextInt() + fileName; 
-			path = getServletContext().getRealPath(cPath);
+				fileName = fileName.substring(lastSlash+1); 
+			String relPath = "upload/"+random.nextInt() + fileName;
+			String filePath = getServletContext().getRealPath("/"+relPath);
+			path = relPath;
 			System.out.println(path);
-			uploadedFile = new File(path);		
+			uploadedFile = new File(filePath);		
 		}while(uploadedFile.exists());
 		
 		//סמחהא¸ל פאיכ
