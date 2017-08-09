@@ -26,6 +26,7 @@ public class Upload extends HttpServlet {
 	private Random random = new Random();
 	private String path;
 	private String description;
+	private String contentType = "";
 	        
     public Upload() {
         super();
@@ -44,6 +45,7 @@ public class Upload extends HttpServlet {
 			return;
 		}
  
+		File UploadedFile = null;
 		// Создаём класс фабрику 
 		DiskFileItemFactory factory = new DiskFileItemFactory();
  
@@ -61,11 +63,11 @@ public class Upload extends HttpServlet {
 		
 		//максимальный размер данных который разрешено загружать в байтах
 		//по умолчанию -1, без ограничений. Устанавливаем 10 мегабайт. 
-		upload.setSizeMax(1024 * 1024 * 10);
+		//upload.setSizeMax(1024 * 1024 * 10);
  
 		try {
-			List items = upload.parseRequest(request);
-			Iterator iter = items.iterator();
+			List<FileItem> items = upload.parseRequest(request);
+			Iterator<FileItem> iter = items.iterator();
 			
 			while (iter.hasNext()) {
 			    FileItem item = (FileItem) iter.next();
@@ -75,20 +77,31 @@ public class Upload extends HttpServlet {
 			        processFormField(item);
 			    } else {
 			    	//в противном случае рассматриваем как файл
-			        processUploadedFile(item);
-			        
+			    	UploadedFile = processUploadedFile(item);
+			    	contentType = item.getContentType();
+			    	System.out.println(contentType);
 			    }
 			}
 			
-			JDBCUtilities util = new JDBCUtilities("root","root");
-	    	Connection conn = util.getConnection();
-			DBTables.insertMediaRow(conn, "hmcatalog", description, path);
-			util.closeConnection(conn);
-
-			request.setAttribute("imagePath", path);
-			request.setAttribute("description", description);
-	        RequestDispatcher view = request.getRequestDispatcher("Result.jsp");
-			view.forward(request, response);
+			if(UploadedFile != null) {
+				
+				int delimiter = contentType.indexOf("/");
+				String mediaType = contentType;
+				if(delimiter>-1)
+					mediaType = contentType.substring(0, delimiter);
+				
+				JDBCUtilities util = new JDBCUtilities("root","root");
+		    	Connection conn = util.getConnection();
+				DBTables.insertMediaRow(conn, "hmcatalog", mediaType,
+						description, path, UploadedFile.length());
+				util.closeConnection(conn);
+	
+				request.setAttribute("mediaType", mediaType);
+				request.setAttribute("filePath", path);
+				request.setAttribute("description", description);
+		        RequestDispatcher view = request.getRequestDispatcher("Result.jsp");
+				view.forward(request, response);
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -104,14 +117,14 @@ public class Upload extends HttpServlet {
 	 * @param item
 	 * @throws Exception
 	 */
-	private void processUploadedFile(FileItem item) throws Exception {
+	private File processUploadedFile(FileItem item) throws Exception {
 		File uploadedFile = null;
 		//выбираем файлу имя пока не найдём свободное
 		do{
 			String fileName = item.getName();
 			//Cutoff full path if one exists 
 			int lastSlash = fileName.lastIndexOf("\\");
-			if(lastSlash>0)
+			if(lastSlash>-1)
 				fileName = fileName.substring(lastSlash+1); 					
 			String cPath = "/upload/"+random.nextInt() + fileName; 
 			path = getServletContext().getRealPath(cPath);
@@ -123,6 +136,7 @@ public class Upload extends HttpServlet {
 		uploadedFile.createNewFile();
 		//записываем в него данные
 		item.write(uploadedFile);
+		return uploadedFile;
 	}
  
 	/**
