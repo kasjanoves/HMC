@@ -13,6 +13,7 @@ public class DBTables {
 	    	"create table if not exists " + dbName +
 	        ".MEDIA" +
 	        "(ID integer AUTO_INCREMENT, " +
+	        "TYPE varchar(10), " +
 	        "DESCRIPTION varchar(150), " +
 	        "PATH varchar(250) NOT NULL, " +
 	        "SIZE integer, " +
@@ -30,22 +31,23 @@ public class DBTables {
 	    }
 	}
 	
-	public static void insertMediaRow(Connection con, String dbName, 
-			String description, String path) throws SQLException {
+	public static void insertMediaRow(Connection con, String dbName, String type, 
+			String description, String path, long Size) throws SQLException {
 		String queryString = "insert into " + dbName +
 			            ".MEDIA " +
-			            "values(NULL,?,?,?,?)";
-		System.out.println(queryString);
+			            "values(NULL,?,?,?,?,?)";
+		//System.out.println(queryString);
 		
 		java.sql.PreparedStatement insertRow = null;
 		Calendar cal = Calendar.getInstance();
 	    try {
 	    	insertRow = con.prepareStatement(queryString);
-	    	insertRow.setString(1, description);
-	    	insertRow.setString(2, path);
-	    	insertRow.setInt(3, 0);
+	    	insertRow.setString(1, type);
+	    	insertRow.setString(2, description);
+	    	insertRow.setString(3, path);
+	    	insertRow.setLong(4, Size);
 	    	//insertRow.setDate(4, new java.sql.Date(cal.getTime().getTime()));
-	    	insertRow.setTimestamp(4, new java.sql.Timestamp(cal.getTime().getTime()));
+	    	insertRow.setTimestamp(5, new java.sql.Timestamp(cal.getTime().getTime()));
 	    	insertRow.executeUpdate();
 	    } catch (SQLException e) {
 	    	JDBCUtilities.printSQLException(e);
