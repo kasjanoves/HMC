@@ -48,17 +48,21 @@ public class MediaGalleryTagHandler extends SimpleTagSupport{
 				String descr = rs.getString("DESCRIPTION");
 													
 				out.print("<td align='center'>");
-				out.print(String.format(IMG_TEMPLATE, path, descr));
+				if(rs.getString("TYPE").equalsIgnoreCase("image"))
+					out.print(String.format(IMG_TEMPLATE, path, descr));
+				else
+					out.print(String.format(VIDEO_TEMPLATE, path));
 				//out.print(descr);
 				out.print("</td>");
 				descrRow = descrRow + "<td align='center'>" + descr + "</td>";
 				
 				if(++itemsCount == rowSize) {
 					out.print("</tr>");
-					out.print("<tr>");
 					descrRow = descrRow + "</tr>";
 					out.print(descrRow);
 					descrRow = "<tr>";
+					if(!rs.isLast())
+						out.print("<tr>");
 					itemsCount = 0;
 				}
 				
@@ -73,12 +77,15 @@ public class MediaGalleryTagHandler extends SimpleTagSupport{
 					JDBCUtilities.printSQLException(e);
 				}
 		}
-    	descrRow = descrRow + "</tr>";
-		out.print(descrRow);
-    	out.print("</tr>");
+    	if(itemsCount>0) {
+	    	descrRow = descrRow + "</tr>";
+			out.print(descrRow);
+	    	out.print("</tr>");
+    	}
     	out.print("</table>");    	
     	
 	}
 	
 	private static final String IMG_TEMPLATE = "<img src='%1$s' width='250' alt='%2$s'>";
+	private static final String VIDEO_TEMPLATE = "<video src='%1$s' width='250'>";
 }
