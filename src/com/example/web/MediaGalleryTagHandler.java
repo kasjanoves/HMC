@@ -87,5 +87,7 @@ public class MediaGalleryTagHandler extends SimpleTagSupport{
 	}
 	
 	private static final String IMG_TEMPLATE = "<img src='%1$s' width='250' alt='%2$s'>";
-	private static final String VIDEO_TEMPLATE = "<video src='%1$s' width='250'>";
+	private static final String VIDEO_TEMPLATE = "<video src='%1$s' width='250' controls='controls'>"
+			+ "Video not supported..."
+			+ "<a href='%1$s'>Download video</a>.</video>";
 }
