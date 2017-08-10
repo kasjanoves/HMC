@@ -24,7 +24,8 @@ import com.example.model.JDBCUtilities;
 public class Upload extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Random random = new Random();
-	private String path;
+	private String relPath;
+	private String filePath;
 	private String description;
 	private String contentType = "";
 	        
@@ -93,11 +94,11 @@ public class Upload extends HttpServlet {
 				JDBCUtilities util = new JDBCUtilities("root","root");
 		    	Connection conn = util.getConnection();
 				DBTables.insertMediaRow(conn, "hmcatalog", mediaType,
-						description, path, UploadedFile.length());
+						description, relPath, UploadedFile.length());
 				util.closeConnection(conn);
 	
 				request.setAttribute("mediaType", mediaType);
-				request.setAttribute("filePath", path);
+				request.setAttribute("filePath", filePath);
 				request.setAttribute("description", description);
 		        RequestDispatcher view = request.getRequestDispatcher("Result.jsp");
 				view.forward(request, response);
@@ -126,10 +127,9 @@ public class Upload extends HttpServlet {
 			int lastSlash = fileName.lastIndexOf("\\");
 			if(lastSlash>-1)
 				fileName = fileName.substring(lastSlash+1); 
-			String relPath = "upload/"+random.nextInt() + fileName;
-			String filePath = getServletContext().getRealPath("/"+relPath);
-			path = relPath;
-			System.out.println(path);
+			relPath = "upload/"+random.nextInt() + fileName;
+			filePath = getServletContext().getRealPath("/"+relPath);
+			System.out.println(filePath);
 			uploadedFile = new File(filePath);		
 		}while(uploadedFile.exists());
 		
@@ -148,5 +148,7 @@ public class Upload extends HttpServlet {
 		System.out.println(item.getFieldName()+"="+item.getString());
 		this.description = item.getString();
 	}
+	
+	
 
 }
