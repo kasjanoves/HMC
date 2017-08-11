@@ -94,7 +94,7 @@ public class Upload extends HttpServlet {
 				JDBCUtilities util = new JDBCUtilities("root","root");
 		    	Connection conn = util.getConnection();
 				DBTables.insertMediaRow(conn, "hmcatalog", mediaType,
-						description, relPath, UploadedFile.length());
+						description, relPath, UploadedFile.length(), null);
 				util.closeConnection(conn);
 	
 				request.setAttribute("mediaType", mediaType);

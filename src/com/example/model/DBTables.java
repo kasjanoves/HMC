@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Calendar;
+import java.util.Date;
 
 public class DBTables {
 		
@@ -32,7 +33,7 @@ public class DBTables {
 	}
 	
 	public static void insertMediaRow(Connection con, String dbName, String type, 
-			String description, String path, long Size) throws SQLException {
+			String description, String path, long Size, Date creationDate) throws SQLException {
 		String queryString = "insert into " + dbName +
 			            ".MEDIA " +
 			            "values(NULL,?,?,?,?,?)";
@@ -46,8 +47,7 @@ public class DBTables {
 	    	insertRow.setString(2, description);
 	    	insertRow.setString(3, path);
 	    	insertRow.setLong(4, Size);
-	    	//insertRow.setDate(4, new java.sql.Date(cal.getTime().getTime()));
-	    	insertRow.setTimestamp(5, new java.sql.Timestamp(cal.getTime().getTime()));
+	    	insertRow.setTimestamp(5, new java.sql.Timestamp(creationDate.getTime()));
 	    	insertRow.executeUpdate();
 	    } catch (SQLException e) {
 	    	JDBCUtilities.printSQLException(e);
