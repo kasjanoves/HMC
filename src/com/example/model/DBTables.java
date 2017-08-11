@@ -32,22 +32,20 @@ public class DBTables {
 	    }
 	}
 	
-	public static void insertMediaRow(Connection con, String dbName, String type, 
-			String description, String path, long Size, Date creationDate) throws SQLException {
-		String queryString = "insert into " + dbName +
+	public static void insertMediaRow(Connection con, MediaRow mediaRow) throws SQLException {
+		String queryString = "insert into " + MediaRow.TABLE_NAME +
 			            ".MEDIA " +
 			            "values(NULL,?,?,?,?,?)";
 		//System.out.println(queryString);
 		
 		java.sql.PreparedStatement insertRow = null;
-		Calendar cal = Calendar.getInstance();
-	    try {
+		try {
 	    	insertRow = con.prepareStatement(queryString);
-	    	insertRow.setString(1, type);
-	    	insertRow.setString(2, description);
-	    	insertRow.setString(3, path);
-	    	insertRow.setLong(4, Size);
-	    	insertRow.setTimestamp(5, new java.sql.Timestamp(creationDate.getTime()));
+	    	insertRow.setString(1, mediaRow.getMediaType());
+	    	insertRow.setString(2, mediaRow.getDescription());
+	    	insertRow.setString(3, mediaRow.getRelativePath());
+	    	insertRow.setLong(4, mediaRow.getSize());
+	    	insertRow.setTimestamp(5, new java.sql.Timestamp(mediaRow.getCreationDate().getTime()));
 	    	insertRow.executeUpdate();
 	    } catch (SQLException e) {
 	    	JDBCUtilities.printSQLException(e);

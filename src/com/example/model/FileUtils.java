@@ -17,4 +17,17 @@ public class FileUtils {
 		attrMap.put(BasicFileAttrs.LAST_MODIFIED_TIME, attr.lastModifiedTime().toString());
 		return attrMap;
 	}
+	
+	/**
+	 * Extracts file name from full path
+	 * @param fullPath
+	 * @return
+	 */
+	public static String ExctractFileName(String fullPath) {
+		String fileName = fullPath; 
+		int lastSlash = fullPath.lastIndexOf("\\");
+		if(lastSlash>-1)
+			fileName = fullPath.substring(lastSlash+1);
+		return fileName;
+	}
 }

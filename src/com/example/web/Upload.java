@@ -18,7 +18,10 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.example.model.DBTables;
+import com.example.model.FileUtils;
 import com.example.model.JDBCUtilities;
+import com.example.model.MediaRow;
+import com.example.model.WebUtils;
 
 
 public class Upload extends HttpServlet {
@@ -86,15 +89,17 @@ public class Upload extends HttpServlet {
 			
 			if(UploadedFile != null) {
 				
-				int delimiter = contentType.indexOf("/");
-				String mediaType = contentType;
-				if(delimiter>-1)
-					mediaType = contentType.substring(0, delimiter);
+				String mediaType = WebUtils.ExtractHeader(contentType);
+				MediaRow mRow = new MediaRow();
+				mRow.setMediaType(mediaType);
+				mRow.setDescription(description);
+				mRow.setRelativePath(relPath);
+				mRow.setSize(UploadedFile.length());
+				mRow.setCreationDate(null);
 				
 				JDBCUtilities util = new JDBCUtilities("root","root");
 		    	Connection conn = util.getConnection();
-				DBTables.insertMediaRow(conn, "hmcatalog", mediaType,
-						description, relPath, UploadedFile.length(), null);
+				DBTables.insertMediaRow(conn, mRow);
 				util.closeConnection(conn);
 	
 				request.setAttribute("mediaType", mediaType);
@@ -122,11 +127,7 @@ public class Upload extends HttpServlet {
 		File uploadedFile = null;
 		//выбираем файлу имя пока не найдём свободное
 		do{
-			String fileName = item.getName();
-			//Cutoff full path if one exists 
-			int lastSlash = fileName.lastIndexOf("\\");
-			if(lastSlash>-1)
-				fileName = fileName.substring(lastSlash+1); 
+			String fileName = FileUtils.ExctractFileName(item.getName());
 			relPath = "upload/"+random.nextInt() + fileName;
 			filePath = getServletContext().getRealPath("/"+relPath);
 			System.out.println(filePath);
