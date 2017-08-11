@@ -1,4 +1,4 @@
-package com.example.model;
+package com.example.web;
 
 public class WebUtils {
 

@@ -21,7 +21,7 @@ import com.example.model.DBTables;
 import com.example.model.FileUtils;
 import com.example.model.JDBCUtilities;
 import com.example.model.MediaRow;
-import com.example.model.WebUtils;
+import com.example.web.WebUtils;
 
 
 public class Upload extends HttpServlet {
@@ -88,7 +88,6 @@ public class Upload extends HttpServlet {
 			}
 			
 			if(UploadedFile != null) {
-				
 				String mediaType = WebUtils.ExtractHeader(contentType);
 				MediaRow mRow = new MediaRow();
 				mRow.setMediaType(mediaType);
@@ -97,7 +96,7 @@ public class Upload extends HttpServlet {
 				mRow.setSize(UploadedFile.length());
 				mRow.setCreationDate(null);
 				
-				JDBCUtilities util = new JDBCUtilities("root","root");
+				JDBCUtilities util = (JDBCUtilities) getServletContext().getAttribute("DBUtils");
 		    	Connection conn = util.getConnection();
 				DBTables.insertMediaRow(conn, mRow);
 				util.closeConnection(conn);

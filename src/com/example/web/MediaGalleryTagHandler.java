@@ -27,9 +27,10 @@ public class MediaGalleryTagHandler extends SimpleTagSupport{
 		JspWriter out = pageContext.getOut();
 		ResultSet rs = null;
 		
-		JDBCUtilities util = new JDBCUtilities("root","root");
+		JDBCUtilities util = (JDBCUtilities) pageContext.getServletContext().getAttribute("DBUtils");
+		Connection conn = null;
     	try {
-			Connection conn = util.getConnection();
+			conn = util.getConnection();
 			rs = DBTables.getMedia(conn, "hmcatalog");
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
@@ -82,7 +83,10 @@ public class MediaGalleryTagHandler extends SimpleTagSupport{
 			out.print(descrRow);
 	    	out.print("</tr>");
     	}
-    	out.print("</table>");    	
+    	out.print("</table>");
+    	
+    	if(conn != null)
+			util.closeConnection(conn);
     	
 	}
 	
