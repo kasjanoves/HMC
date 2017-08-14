@@ -19,7 +19,9 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.example.model.DBTables;
 import com.example.model.FileUtils;
+import com.example.model.ImageMetadataReader;
 import com.example.model.JDBCUtilities;
+import com.example.model.MediaMetadataReader;
 import com.example.model.MediaRow;
 import com.example.web.WebUtils;
 
@@ -88,7 +90,13 @@ public class Upload extends HttpServlet {
 			}
 			
 			if(UploadedFile != null) {
+				
 				String mediaType = WebUtils.ExtractHeader(contentType);
+				if(mediaType.equals("image")) {
+					MediaMetadataReader imr = new ImageMetadataReader();
+					imr.getMetadata(filePath);
+				}
+				
 				MediaRow mRow = new MediaRow();
 				mRow.setMediaType(mediaType);
 				mRow.setDescription(description);
