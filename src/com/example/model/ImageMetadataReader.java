@@ -45,7 +45,7 @@ public class ImageMetadataReader implements MediaMetadataReader {
                 int length = names.length;
                 for (int i = 0; i < length; i++) {
                     System.out.println( "Format name: " + names[ i ] );
-                    getMetadataMap(metadata.getAsTree(names[i]),0);
+                    displayMetadata(metadata.getAsTree(names[i]),0);
                 }
             }
         }
@@ -54,10 +54,10 @@ public class ImageMetadataReader implements MediaMetadataReader {
             e.printStackTrace();
         }
 				
-		return mmap;
+		return null;
 	}
 	
-	Map<String, Map<String, String>> getMetadataMap(Node node, int level) {
+	void  displayMetadata(Node node, int level) {
         // print open tag of element
         System.out.print("<" + node.getNodeName());
         NamedNodeMap map = node.getAttributes();
