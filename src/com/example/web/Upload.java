@@ -3,6 +3,7 @@ package com.example.web;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -19,10 +20,10 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.example.model.DBTables;
 import com.example.model.FileUtils;
-import com.example.model.ImageMetadataReader;
 import com.example.model.JDBCUtilities;
 import com.example.model.MediaMetadataReader;
 import com.example.model.MediaRow;
+import com.example.model.imageMetadataReader;
 import com.example.web.WebUtils;
 
 
@@ -93,8 +94,8 @@ public class Upload extends HttpServlet {
 				
 				String mediaType = WebUtils.ExtractHeader(contentType);
 				if(mediaType.equals("image")) {
-					MediaMetadataReader imr = new ImageMetadataReader();
-					imr.getMetadata(filePath);
+					MediaMetadataReader imr = new imageMetadataReader();
+					imr.getMetadata(UploadedFile);
 				}
 				
 				MediaRow mRow = new MediaRow();
@@ -102,7 +103,7 @@ public class Upload extends HttpServlet {
 				mRow.setDescription(description);
 				mRow.setRelativePath(relPath);
 				mRow.setSize(UploadedFile.length());
-				mRow.setCreationDate(null);
+				mRow.setCreationDate(new Date(UploadedFile.lastModified()));
 				
 				JDBCUtilities util = (JDBCUtilities) getServletContext().getAttribute("DBUtils");
 		    	Connection conn = util.getConnection();
