@@ -32,6 +32,28 @@ public class DBTables {
 	    }
 	}
 	
+	public static void createMetadataTable(Connection con, String dbName) throws SQLException {
+		
+		String createString =
+		    	"create table if not exists " + dbName +
+		        ".METADATA" +
+		        "(MEDIA_ID integer not null, " +
+		        "MDATA_ID integer not null, " +
+		        "VALUE varchar(150), " +
+		        "PRIMARY KEY (MEDIA_ID, MDATA_ID))";
+
+		    Statement stmt = null;
+		    try {
+		        stmt = con.createStatement();
+		        stmt.executeUpdate(createString);
+		    } catch (SQLException e) {
+		        JDBCUtilities.printSQLException(e);
+		    } finally {
+		        if (stmt != null) { stmt.close(); }
+		    }
+		
+	}
+	
 	public static void insertMediaRow(Connection con, MediaRow mediaRow) throws SQLException {
 		String queryString = "insert into " + MediaRow.TABLE_NAME +
 			            ".MEDIA " +
@@ -78,9 +100,6 @@ public class DBTables {
 				
 		return rs;
 	}
-	
-	public static String ProcessSQlString(String str) {
-		return str.replace('\\', '\\');
-	}
+		
 	
 }
