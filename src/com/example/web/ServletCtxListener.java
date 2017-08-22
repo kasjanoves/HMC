@@ -24,6 +24,8 @@ public class ServletCtxListener implements ServletContextListener {
     	try {
 			Connection conn = util.getConnection();
 			DBTables.createMediaTable(conn, "hmcatalog");
+			DBTables.createMetadataTable(conn, "hmcatalog");
+			DBTables.createMetadaTypesTable(conn, "hmcatalog");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {

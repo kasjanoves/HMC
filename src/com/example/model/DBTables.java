@@ -40,7 +40,34 @@ public class DBTables {
 		        "(MEDIA_ID integer not null, " +
 		        "MDATA_ID integer not null, " +
 		        "VALUE varchar(150), " +
-		        "PRIMARY KEY (MEDIA_ID, MDATA_ID))";
+		        "PRIMARY KEY (MEDIA_ID, MDATA_ID)," + 
+		        "FOREIGN KEY (MEDIA_ID)" + 
+		        	"REFERENCES MEDIA(ID)" +
+		        	"ON DELETE CASCADE," + 
+		        "FOREIGN KEY (MDATA_ID)" + 
+		        	"REFERENCES METADATA_TYPES(ID)" +
+		        	"ON DELETE CASCADE)";
+
+		    Statement stmt = null;
+		    try {
+		        stmt = con.createStatement();
+		        stmt.executeUpdate(createString);
+		    } catch (SQLException e) {
+		        JDBCUtilities.printSQLException(e);
+		    } finally {
+		        if (stmt != null) { stmt.close(); }
+		    }
+		
+	}
+	
+public static void createMetadaTypesTable(Connection con, String dbName) throws SQLException {
+		
+		String createString =
+		    	"create table if not exists " + dbName +
+		        ".METADATA_TYPES" +
+		        "(ID integer AUTO_INCREMENT, " +
+		        "NAME varchar(150), " +
+		        "PRIMARY KEY (ID))";
 
 		    Statement stmt = null;
 		    try {
