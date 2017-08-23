@@ -8,10 +8,12 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DBTables {
+	
+	public final static String DBNAME = "HMCATALOG";
 		
-	public static void createMediaTable(Connection con, String dbName) throws SQLException {
+	public static void createMediaTable(Connection con) throws SQLException {
 	    String createString =
-	    	"create table if not exists " + dbName +
+	    	"create table if not exists " + DBNAME +
 	        ".MEDIA" +
 	        "(ID integer AUTO_INCREMENT, " +
 	        "TYPE varchar(15), " +
@@ -32,10 +34,10 @@ public class DBTables {
 	    }
 	}
 	
-	public static void createMetadataTable(Connection con, String dbName) throws SQLException {
+	public static void createMetadataTable(Connection con) throws SQLException {
 		
 		String createString =
-		    	"create table if not exists " + dbName +
+		    	"create table if not exists " + DBNAME +
 		        ".METADATA" +
 		        "(MEDIA_ID integer not null, " +
 		        "MDATA_ID integer not null, " +
@@ -60,13 +62,15 @@ public class DBTables {
 		
 	}
 	
-public static void createMetadaTypesTable(Connection con, String dbName) throws SQLException {
+	public static void createMetadaTypesTable(Connection con) throws SQLException {
 		
 		String createString =
-		    	"create table if not exists " + dbName +
+		    	"create table if not exists " + DBNAME +
 		        ".METADATA_TYPES" +
 		        "(ID integer AUTO_INCREMENT, " +
-		        "NAME varchar(150), " +
+		        "DESTINATION varchar(15), " +
+		        "DIRECTORY varchar(50), " +
+		        "TAG varchar(50), " +
 		        "PRIMARY KEY (ID))";
 
 		    Statement stmt = null;
@@ -81,28 +85,90 @@ public static void createMetadaTypesTable(Connection con, String dbName) throws 
 		
 	}
 	
-	public static void insertMediaRow(Connection con, MediaRow mediaRow) throws SQLException {
-		String queryString = "insert into " + MediaRow.TABLE_NAME +
-			            ".MEDIA " +
-			            "values(NULL,?,?,?,?,?)";
-		//System.out.println(queryString);
+	public static int insertMediaRow(Connection con, MediaRow mediaRow) throws SQLException {
+		String queryString = "insert into " + DBNAME +
+					"." + MediaRow.TABLE_NAME +
+			        "values(NULL,?,?,?,?,?)";
+		int autoIncKey = -1;
 		
 		java.sql.PreparedStatement insertRow = null;
+		ResultSet rs = null;
 		try {
-	    	insertRow = con.prepareStatement(queryString);
+	    	insertRow = con.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
 	    	insertRow.setString(1, mediaRow.getMediaType());
 	    	insertRow.setString(2, mediaRow.getDescription());
 	    	insertRow.setString(3, mediaRow.getRelativePath());
 	    	insertRow.setLong(4, mediaRow.getSize());
 	    	insertRow.setTimestamp(5, new java.sql.Timestamp(mediaRow.getCreationDate().getTime()));
 	    	insertRow.executeUpdate();
+	    	rs = insertRow.getGeneratedKeys();
+	        if (rs.next()) {
+	        	autoIncKey = rs.getInt(1);
+	        } else {
+	            // throw an exception from here
+	        }
 	    } catch (SQLException e) {
 	    	JDBCUtilities.printSQLException(e);
 	    } finally {
+	    	if (rs != null) { rs.close(); }
 	        if (insertRow != null) { insertRow.close(); }
 	    }
+		return autoIncKey;
 	}
 	
+	public static int insertMetadataTagRow(Connection con, MetadataTagRow mDataRow) throws SQLException {
+		String queryString = "select ID " +
+		        "from " + DBNAME + "." + MetadataTagRow.TABLE_NAME +
+		        "WHERE DESTINATION = " + mDataRow.getDestination() +
+		        "AND DIRECTORY = " + mDataRow.getDirectory() +
+		        "AND TAG = " + mDataRow.getTag();
+			
+		int autoIncKey = -1;
+		
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			stmt = con.createStatement();
+	        rs = stmt.executeQuery(queryString);
+	        if(rs.next()) {
+	        	autoIncKey = rs.getInt("ID");
+	        	return autoIncKey;	//row already exists, returns its ID
+	        }	
+	    } catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    	return autoIncKey;
+	    } finally {	
+	    	if (rs != null) { rs.close(); }
+	    	if (stmt != null) { stmt.close(); }
+	    }
+		
+		String insertString = "insert into " + DBNAME +
+				"." + MetadataTagRow.TABLE_NAME +
+		        "values(NULL,?,?,?)";
+		
+		java.sql.PreparedStatement insertRow = null;
+		
+		try {
+	    	insertRow = con.prepareStatement(insertString, Statement.RETURN_GENERATED_KEYS);
+	    	insertRow.setString(1, mDataRow.getDestination());
+	    	insertRow.setString(2, mDataRow.getDirectory());
+	    	insertRow.setString(3, mDataRow.getTag());
+	    	insertRow.executeUpdate();
+	    	rs = insertRow.getGeneratedKeys();
+	        if (rs.next()) {
+	        	autoIncKey = rs.getInt(1);
+	        } else {
+	            // throw an exception from here
+	        }
+	    } catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    } finally {
+	    	if (rs != null) { rs.close(); }
+	        if (insertRow != null) { insertRow.close(); }
+	    }
+		return autoIncKey;
+	}
 	
 	/**
 	 * Returns first 10 rows in MEDIA table
@@ -112,7 +178,7 @@ public static void createMetadaTypesTable(Connection con, String dbName) throws 
 	 * @throws SQLException
 	 */
 	public static ResultSet getMedia(Connection con, String dbName) throws SQLException {
-		String query =
+		String queryString =
 		        "select TYPE, DESCRIPTION, PATH " +
 		        "from " + dbName + ".MEDIA limit 10";
 		Statement stmt = null;
@@ -120,7 +186,7 @@ public static void createMetadaTypesTable(Connection con, String dbName) throws 
 		
 		try {
 			stmt = con.createStatement();
-	        rs = stmt.executeQuery(query);
+	        rs = stmt.executeQuery(queryString);
 	    } catch (SQLException e) {
 	    	JDBCUtilities.printSQLException(e);
 	    }
