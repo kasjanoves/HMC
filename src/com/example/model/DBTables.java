@@ -4,8 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.Map.Entry;
 
 public class DBTables {
 	
@@ -88,7 +87,7 @@ public class DBTables {
 	public static int insertMediaRow(Connection con, MediaRow mediaRow) throws SQLException {
 		String queryString = "insert into " + DBNAME +
 					"." + MediaRow.TABLE_NAME +
-			        "values(NULL,?,?,?,?,?)";
+			        " values(NULL,?,?,?,?,?)";
 		int autoIncKey = -1;
 		
 		java.sql.PreparedStatement insertRow = null;
@@ -119,9 +118,10 @@ public class DBTables {
 	public static int insertMetadataTagRow(Connection con, MetadataTagRow mDataRow) throws SQLException {
 		String queryString = "select ID " +
 		        "from " + DBNAME + "." + MetadataTagRow.TABLE_NAME +
-		        "WHERE DESTINATION = " + mDataRow.getDestination() +
-		        "AND DIRECTORY = " + mDataRow.getDirectory() +
-		        "AND TAG = " + mDataRow.getTag();
+		        " WHERE DESTINATION = '" + mDataRow.getDestination() + "'" +
+		        " AND DIRECTORY = '" + mDataRow.getDirectory() + "'" +
+		        " AND TAG = '" + mDataRow.getTag() + "'";
+		System.out.println(queryString);
 			
 		int autoIncKey = -1;
 		
@@ -145,7 +145,7 @@ public class DBTables {
 		
 		String insertString = "insert into " + DBNAME +
 				"." + MetadataTagRow.TABLE_NAME +
-		        "values(NULL,?,?,?)";
+		        " values(NULL,?,?,?)";
 		
 		java.sql.PreparedStatement insertRow = null;
 		
@@ -168,6 +168,27 @@ public class DBTables {
 	        if (insertRow != null) { insertRow.close(); }
 	    }
 		return autoIncKey;
+	}
+	
+	public static void insertMetadataRows(Connection con, MetadataRows mdataValues) throws SQLException {
+		String queryString = "insert into " + DBNAME +
+					".METADATA" +
+			        " values(?,?,?)";
+				
+		java.sql.PreparedStatement insertRow = null;
+		try {
+	    	insertRow = con.prepareStatement(queryString);
+	    	for(Entry<Integer, String> entry : mdataValues.getItems()) {
+		    	insertRow.setInt(1, mdataValues.getMediaRowID());
+		    	insertRow.setInt(2, entry.getKey());
+		    	insertRow.setString(3, entry.getValue());
+		    	insertRow.executeUpdate();
+	    	}
+	    } catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    } finally {
+	        if (insertRow != null) { insertRow.close(); }
+	    }
 	}
 	
 	/**

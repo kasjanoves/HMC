@@ -8,7 +8,7 @@ public class MediaRow {
 	private String RelativePath;
 	private long Size;
 	private Date CreationDate;
-	public final static String TABLE_NAME = "hmcatalog";
+	public final static String TABLE_NAME = "MEDIA";
 	
 	public MediaRow() {	}
 
