@@ -17,7 +17,7 @@ import com.drew.metadata.Tag;
  * @author kasjyanoves
  *
  */
-public class imageMetadataReader implements MediaMetadataReader {
+public class ImageMetadataReaderImpl implements MediaMetadataReader {
 
 	public Map<String, Map<String, String>> getMetadata(File file) {
 	

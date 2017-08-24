@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.RequestDispatcher;
@@ -20,10 +21,12 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.example.model.DBTables;
 import com.example.model.FileUtils;
+import com.example.model.ImageMetadataReaderImpl;
 import com.example.model.JDBCUtilities;
 import com.example.model.MediaMetadataReader;
 import com.example.model.MediaRow;
-import com.example.model.imageMetadataReader;
+import com.example.model.MetadataRows;
+import com.example.model.MetadataTagRow;
 import com.example.web.WebUtils;
 
 
@@ -93,9 +96,10 @@ public class Upload extends HttpServlet {
 			if(UploadedFile != null) {
 				
 				String mediaType = WebUtils.ExtractHeader(contentType);
+				Map<String, Map<String, String>> MetadataMap = null;
 				if(mediaType.equals("image")) {
-					MediaMetadataReader imr = new imageMetadataReader();
-					imr.getMetadata(UploadedFile);
+					MediaMetadataReader imr = new ImageMetadataReaderImpl();
+					MetadataMap = imr.getMetadata(UploadedFile);
 				}
 				
 				MediaRow mRow = new MediaRow();
@@ -107,9 +111,13 @@ public class Upload extends HttpServlet {
 				
 				JDBCUtilities util = (JDBCUtilities) getServletContext().getAttribute("DBUtils");
 		    	Connection conn = util.getConnection();
-				DBTables.insertMediaRow(conn, mRow);
+		    	int MediaRowID;
+		    	MediaRowID = DBTables.insertMediaRow(conn, mRow);
+		    	MetadataRows mdataRows = new MetadataRows(MediaRowID, mediaType);
+		    	mdataRows.fillItems(MetadataMap);
+		    	DBTables.insertMetadataRows(conn, mdataRows);
 				util.closeConnection(conn);
-	
+					
 				request.setAttribute("mediaType", mediaType);
 				request.setAttribute("filePath", filePath);
 				request.setAttribute("description", description);
