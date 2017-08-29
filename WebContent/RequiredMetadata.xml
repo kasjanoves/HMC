@@ -1,0 +1,8 @@
+<preferences>
+	<destination name="video"></destination>
+	<destination name="image">
+		<directory name="Exif SubIFD">
+			<tag name="Date/Time Digitized"></tag></directory>
+		<directory name="JFIF">
+			<tag name="Thumbnail Height Pixels"></tag>
+			<tag name="Thumbnail Width Pixels"></tag></directory></destination></preferences>

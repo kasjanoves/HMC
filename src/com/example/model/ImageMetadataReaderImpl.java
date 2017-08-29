@@ -37,7 +37,7 @@ public class ImageMetadataReaderImpl implements MediaMetadataReader {
         	e.printStackTrace();
         }
 		
-		System.out.println(mmap);
+		//System.out.println(mmap);
 		return mmap;
 	}
 }
