@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -97,8 +98,10 @@ public class Upload extends HttpServlet {
 				
 				String mediaType = WebUtils.ExtractHeader(contentType);
 				Map<String, Map<String, String>> MetadataMap = null;
+				Map<String,Map<String,Set<String>>> requiredMetadata
+					= (Map<String,Map<String,Set<String>>>) getServletContext().getAttribute("requiredMetadata");
 				if(mediaType.equals("image")) {
-					MediaMetadataReader imr = new ImageMetadataReaderImpl();
+					MediaMetadataReader imr = new ImageMetadataReaderImpl(requiredMetadata);
 					MetadataMap = imr.getMetadata(UploadedFile);
 				}
 				

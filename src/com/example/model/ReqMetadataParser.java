@@ -3,7 +3,9 @@ package com.example.model;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -16,10 +18,13 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class ReqMetadataParser extends DefaultHandler {
 	
-	Map<String,Map<String,String>> mmap;
+	private Map<String,Map<String,Set<String>>> mmap;
+	private Map<String,Set<String>> destination = null;
+	private Set<String> directory = null;
+	
 	
 	public void startDocument() throws SAXException {
-		mmap = new HashMap<String,Map<String,String>>();
+		mmap = new HashMap<String,Map<String,Set<String>>>();
     }
 	
 	public void startElement(String namespaceURI,
@@ -27,14 +32,31 @@ public class ReqMetadataParser extends DefaultHandler {
             String qName, 
             Attributes atts) {
 		
+		String Name = atts.getValue("name");
 		if(localName.equals("destination")) {
-			Map<String, String> dest = mmap.get(atts.getValue("name"));
-			if(dest == null) {
-				dest = new HashMap<String, String>();
-				mmap.put(atts.getValue("name"), dest);
+			destination = mmap.get(Name);
+			if(destination == null) {
+				destination = new HashMap<String,Set<String>>();
+				mmap.put(Name, destination);
+			}
+		}else if(localName.equals("directory")) {
+			if(destination != null) {
+				directory = destination.get(Name);
+				if(directory == null) {
+					directory = new HashSet<String>();
+					destination.put(Name, directory);
+				}
+			}
+		}else if(localName.equals("tag")) {
+			if(directory != null) {
+				directory.add(Name);
 			}
 		}
 			
+	}
+	
+	public void endDocument() throws SAXException {
+		
 	}
 	
 	private static String convertToFileURL(String filename) {
@@ -49,14 +71,16 @@ public class ReqMetadataParser extends DefaultHandler {
         return "file:" + path;
 	}
 	
-	public Map<String,Map<String,String>> parse(String filename) throws ParserConfigurationException, SAXException, IOException{
+	public Map<String,Map<String,Set<String>>> parse(String filename) throws ParserConfigurationException,
+											SAXException, IOException{
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 	    spf.setNamespaceAware(true);
 		SAXParser saxParser = spf.newSAXParser();
 		XMLReader xmlReader = saxParser.getXMLReader();
-		xmlReader.setContentHandler(new ReqMetadataParser());
+		xmlReader.setContentHandler(this);
 		xmlReader.parse(convertToFileURL(filename));
 		return mmap;
 	}
+		 
 	
 }

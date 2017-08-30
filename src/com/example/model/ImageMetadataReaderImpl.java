@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
@@ -18,6 +19,12 @@ import com.drew.metadata.Tag;
  *
  */
 public class ImageMetadataReaderImpl implements MediaMetadataReader {
+	
+	private Map<String, Set<String>> destination;
+	
+	public ImageMetadataReaderImpl(Map<String, Map<String, Set<String>>> reqMetadata) {
+		destination = reqMetadata.get("image");
+	}
 
 	public Map<String, Map<String, String>> getMetadata(File file) {
 	
@@ -26,12 +33,17 @@ public class ImageMetadataReaderImpl implements MediaMetadataReader {
 		try {
             Metadata metadata = ImageMetadataReader.readMetadata(file);
             for (Directory directory : metadata.getDirectories()) {
-            	Map<String, String> mTags = new HashMap<String, String>();
-                for (Tag tag : directory.getTags()) {
-                    //System.out.println(tag);
-                	mTags.put(tag.getTagName(), tag.getDescription());
-                }
-                mmap.put(directory.getName(), mTags);
+            	Set<String> reqDirectory = destination.get(directory.getName());
+            	if(reqDirectory != null) {
+	            	Map<String, String> mTags = new HashMap<String, String>();
+	                for (Tag tag : directory.getTags()) {
+	                    //System.out.println(tag);
+	                	if(reqDirectory.contains(tag.getTagName())) {
+	                		mTags.put(tag.getTagName(), tag.getDescription());
+	                	}
+	                }
+	                if(!mTags.isEmpty()) mmap.put(directory.getName(), mTags);
+            	}
             }
         } catch (IOException | ImageProcessingException e) {
         	e.printStackTrace();
