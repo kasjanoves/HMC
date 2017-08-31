@@ -200,7 +200,7 @@ public class DBTables {
 	 */
 	public static ResultSet getMedia(Connection con, String dbName) throws SQLException {
 		String queryString =
-		        "select TYPE, DESCRIPTION, PATH " +
+		        "select ID, TYPE, DESCRIPTION, PATH " +
 		        "from " + dbName + ".MEDIA limit 10";
 		Statement stmt = null;
 		ResultSet rs = null;

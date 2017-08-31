@@ -47,10 +47,11 @@ public class MediaGalleryTagHandler extends SimpleTagSupport{
 			while(rs.next()){
 				String path = rs.getString("PATH");
 				String descr = rs.getString("DESCRIPTION");
+				int id = rs.getInt("ID");
 													
 				out.print("<td align='center'>");
 				if(rs.getString("TYPE").equalsIgnoreCase("image"))
-					out.print(String.format(IMG_TEMPLATE, path, descr));
+					out.print(String.format(IMG_TEMPLATE, path, descr, id));
 				else
 					out.print(String.format(VIDEO_TEMPLATE, path));
 				//out.print(descr);
@@ -90,7 +91,8 @@ public class MediaGalleryTagHandler extends SimpleTagSupport{
     	
 	}
 	
-	private static final String IMG_TEMPLATE = "<img src='%1$s' width='250' alt='%2$s'>";
+	private static final String IMG_TEMPLATE = "<a href='View.jsp?id=%3$d&path=%1$s'>"
+			+ "<img src='%1$s' width='250' alt='%2$s'></a>";
 	private static final String VIDEO_TEMPLATE = "<video src='%1$s' width='250' controls='controls'>"
 			+ "Video not supported..."
 			+ "<a href='%1$s'>Download video</a>.</video>";
