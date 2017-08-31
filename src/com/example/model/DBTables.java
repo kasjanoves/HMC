@@ -121,7 +121,7 @@ public class DBTables {
 		        " WHERE DESTINATION = '" + mDataRow.getDestination() + "'" +
 		        " AND DIRECTORY = '" + mDataRow.getDirectory() + "'" +
 		        " AND TAG = '" + mDataRow.getTag() + "'";
-		System.out.println(queryString);
+		//System.out.println(queryString);
 			
 		int autoIncKey = -1;
 		
