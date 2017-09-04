@@ -198,10 +198,33 @@ public class DBTables {
 	 * @return ResultSet
 	 * @throws SQLException
 	 */
-	public static ResultSet getMedia(Connection con, String dbName) throws SQLException {
+	public static ResultSet getMedia(Connection con) throws SQLException {
 		String queryString =
 		        "select ID, TYPE, DESCRIPTION, PATH " +
-		        "from " + dbName + ".MEDIA limit 10";
+		        "from " + DBNAME + ".MEDIA";
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			stmt = con.createStatement();
+	        rs = stmt.executeQuery(queryString);
+	    } catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    }
+				
+		return rs;
+	}
+	
+	public static ResultSet getMediaAndMetadata(Connection con, int id) throws SQLException {
+		String queryString =
+				"SELECT media.*," + 
+				"metadata_types.DIRECTORY," + 
+				"metadata_types.TAG," + 
+				"metadata.VALUE " + 
+				"FROM hmcatalog.media " + 
+				"left join " + DBNAME + ".metadata on metadata.MEDIA_ID=media.ID " + 
+				"left join " + DBNAME + ".metadata_types on metadata.MDATA_ID = metadata_types.ID " + 
+				"where media.ID=" + id;
 		Statement stmt = null;
 		ResultSet rs = null;
 		

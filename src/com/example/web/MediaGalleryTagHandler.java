@@ -31,7 +31,7 @@ public class MediaGalleryTagHandler extends SimpleTagSupport{
 		Connection conn = null;
     	try {
 			conn = util.getConnection();
-			rs = DBTables.getMedia(conn, "hmcatalog");
+			rs = DBTables.getMedia(conn);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 			return;
@@ -91,7 +91,7 @@ public class MediaGalleryTagHandler extends SimpleTagSupport{
     	
 	}
 	
-	private static final String IMG_TEMPLATE = "<a href='View.jsp?id=%3$d&path=%1$s'>"
+	private static final String IMG_TEMPLATE = "<a href='View.jsp?id=%3$d'>"
 			+ "<img src='%1$s' width='250' alt='%2$s'></a>";
 	private static final String VIDEO_TEMPLATE = "<video src='%1$s' width='250' controls='controls'>"
 			+ "Video not supported..."
