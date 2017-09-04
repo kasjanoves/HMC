@@ -38,7 +38,7 @@ public class ServletCtxListener implements ServletContextListener {
 			Map<String,Map<String,Set<String>>> requiredMetadata =
 					rmp.parse(sc.getRealPath("/WEB-INF/RequiredMetadata.xml"));
 			sc.setAttribute("requiredMetadata", requiredMetadata);
-			System.out.println(requiredMetadata);
+			//System.out.println(requiredMetadata);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {

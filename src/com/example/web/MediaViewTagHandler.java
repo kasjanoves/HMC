@@ -38,18 +38,20 @@ public class MediaViewTagHandler extends SimpleTagSupport {
     	
     	String path = "";
     	String descr = "";
+    	String type = "";
     	String table = "<table>";
     	try {
 			while(rs.next()){
 				path = rs.getString("PATH");
 				descr = rs.getString("DESCRIPTION");
+				type = rs.getString("TYPE");
 				String directory = rs.getString("DIRECTORY");
 				String tag = rs.getString("TAG");
 				String value = rs.getString("VALUE");
 				table = table + String.format(ROW_TEMPLATE, directory, tag, value);
 			}
 			table = table + "</table>";
-			if(rs.getString("TYPE").equalsIgnoreCase("image")) 
+			if(type.equalsIgnoreCase("image")) 
 				out.print(String.format(IMG_TEMPLATE, path, descr));
 			else
 				out.print(String.format(VIDEO_TEMPLATE, path));
@@ -77,6 +79,6 @@ public class MediaViewTagHandler extends SimpleTagSupport {
 	private static final String VIDEO_TEMPLATE = "<video src='%1$s' controls='controls'>"
 			+ "Video not supported..."
 			+ "<a href='%1$s'>Download video</a>.</video>";
-	private static final String ROW_TEMPLATE = "<tr><td>'%1$s'</td><td>'%2$s'</td><td>'%3$s'</td></tr>";
+	private static final String ROW_TEMPLATE = "<tr><td>%1$s</td><td>%2$s</td><td>%3$s</td></tr>";
 	
 }

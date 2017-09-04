@@ -43,12 +43,13 @@ public class DBTables {
 		        "VALUE varchar(150), " +
 		        "PRIMARY KEY (MEDIA_ID, MDATA_ID)," + 
 		        "FOREIGN KEY (MEDIA_ID)" + 
-		        	"REFERENCES MEDIA(ID)" +
+		        	"REFERENCES "+ DBNAME +".MEDIA(ID)" +
 		        	"ON DELETE CASCADE," + 
 		        "FOREIGN KEY (MDATA_ID)" + 
-		        	"REFERENCES METADATA_TYPES(ID)" +
+		        	"REFERENCES "+ DBNAME +".METADATA_TYPES(ID)" +
 		        	"ON DELETE CASCADE)";
-
+		//System.out.println(createString);
+		
 		    Statement stmt = null;
 		    try {
 		        stmt = con.createStatement();
@@ -221,10 +222,10 @@ public class DBTables {
 				"metadata_types.DIRECTORY," + 
 				"metadata_types.TAG," + 
 				"metadata.VALUE " + 
-				"FROM hmcatalog.media " + 
+				"FROM "+ DBNAME +".media " + 
 				"left join " + DBNAME + ".metadata on metadata.MEDIA_ID=media.ID " + 
 				"left join " + DBNAME + ".metadata_types on metadata.MDATA_ID = metadata_types.ID " + 
-				"where media.ID=" + id;
+				"where media.ID=" + String.valueOf(id);
 		Statement stmt = null;
 		ResultSet rs = null;
 		
