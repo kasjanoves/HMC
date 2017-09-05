@@ -15,16 +15,21 @@
 		<tag-class>com.example.web.MediaGalleryTagHandler</tag-class>
 		<body-content>empty</body-content>
 		<description>This tag constructs an HTML tag that represents a set of IMG/VIDEO tags.</description>
+		<attribute>
+			<name>MediaSet</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 	</tag>
 	<tag>
 		<name>MediaView</name>
 		<tag-class>com.example.web.MediaViewTagHandler</tag-class>
 		<body-content>empty</body-content>
+		<description>This tag constructs an HTML tags than represents media item with additional info and metadata</description>
 		<attribute>
 			<name>id</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
-			<description>This tag constructs an HTML tags than represents media item with additional info and metadata</description>
 		</attribute>
 	</tag>
 </taglib>

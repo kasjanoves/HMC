@@ -239,5 +239,21 @@ public class DBTables {
 		return rs;
 	}
 		
-	
+	public static ResultSet getMediaByDescription(Connection con, String descr) throws SQLException {
+		String queryString =
+		        "select ID, TYPE, DESCRIPTION, PATH " +
+		        "from " + DBNAME + ".MEDIA "+
+		        "where DESCRIPTION like '%" + descr +"%'";
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			stmt = con.createStatement();
+	        rs = stmt.executeQuery(queryString);
+	    } catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    }
+				
+		return rs;
+	}
 }

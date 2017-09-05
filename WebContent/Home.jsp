@@ -8,7 +8,7 @@
 <title>Home Media Catalog</title>
 </head>
 <body>
-	<form action="Search.do" method="post" enctype="multipart/form-data">
+	<form action="Search.do" method="post">
 		<input name="search" type="text">
 		<input type="submit">
 	</form>
