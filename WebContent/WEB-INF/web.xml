@@ -13,10 +13,4 @@
 	  <servlet-name>Upload</servlet-name>
 	  <url-pattern>/Upload.do</url-pattern>
 	</servlet-mapping>
-	<servlet>
-		<servlet-name>Search</servlet-name>
-		<servlet-class>com.example.web.Search</servlet-class></servlet>
-	<servlet-mapping>
-		<servlet-name>Search</servlet-name>
-		<url-pattern>/Search.do</url-pattern></servlet-mapping>
 </web-app>

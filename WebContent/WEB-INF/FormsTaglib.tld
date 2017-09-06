@@ -16,7 +16,7 @@
 		<body-content>empty</body-content>
 		<description>This tag constructs an HTML tag that represents a set of IMG/VIDEO tags.</description>
 		<attribute>
-			<name>MediaSet</name>
+			<name>search</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>

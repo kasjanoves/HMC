@@ -30,7 +30,7 @@ public class MediaViewTagHandler extends SimpleTagSupport {
 		Connection conn = null;
     	try {
 			conn = util.getConnection();
-			rs = DBTables.getMediaAndMetadata(conn, id);
+			rs = DBTables.getMediaInfo(conn, id);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 			return;

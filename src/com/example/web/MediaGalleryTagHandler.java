@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.example.web;
 
 import java.io.IOException;
@@ -22,21 +19,30 @@ import com.example.model.JDBCUtilities;
  */
 public class MediaGalleryTagHandler extends SimpleTagSupport{
 	
+	private String SearchString = null;
+	
+	public void setSearch(String SearchString){
+		this.SearchString = SearchString;
+	}
+	
 	public void doTag() throws JspException, IOException {
 		PageContext pageContext = (PageContext) getJspContext();
 		JspWriter out = pageContext.getOut();
-		ResultSet rs = null;
-		
 		JDBCUtilities util = (JDBCUtilities) pageContext.getServletContext().getAttribute("DBUtils");
 		Connection conn = null;
-    	try {
+		ResultSet rs = null;
+		
+		try {
 			conn = util.getConnection();
-			rs = DBTables.getMedia(conn);
+			if(SearchString.isEmpty()) 
+				rs = DBTables.getMedia(conn);
+			else
+				rs = DBTables.getMediaByDescription(conn, SearchString);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 			return;
 		}
-    	
+		    	
     	int rowSize = 3;
     	int itemsCount = 0;
     	String descrRow = "<tr>";

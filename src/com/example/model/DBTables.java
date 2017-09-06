@@ -216,7 +216,7 @@ public class DBTables {
 		return rs;
 	}
 	
-	public static ResultSet getMediaAndMetadata(Connection con, int id) throws SQLException {
+	public static ResultSet getMediaInfo(Connection con, int id) throws SQLException {
 		String queryString =
 				"SELECT media.*," + 
 				"metadata_types.DIRECTORY," + 
