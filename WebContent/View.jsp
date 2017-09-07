@@ -5,9 +5,16 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Media details</title>
 </head>
 <body>
 	<formTags:MediaView id='${param.id}' />
+	<br>
+	Add tag
+	<form action="AddTag.do" method="post">
+		<input name="tag" type="text">
+		<input type="submit">
+		<input name="id" type="hidden" value = '${param.id}'>
+	</form>	
 </body>
 </html>

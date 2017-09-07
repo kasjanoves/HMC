@@ -85,6 +85,53 @@ public class DBTables {
 		
 	}
 	
+	public static void createTagsTable(Connection con) throws SQLException {
+		
+		String createString =
+		    	"create table if not exists " + DBNAME +
+		        ".TAGS" +
+		        "(ID integer AUTO_INCREMENT, " +
+		        "NAME varchar(35) not null, " +
+		        "PRIMARY KEY (ID))";
+
+		    Statement stmt = null;
+		    try {
+		        stmt = con.createStatement();
+		        stmt.executeUpdate(createString);
+		    } catch (SQLException e) {
+		        JDBCUtilities.printSQLException(e);
+		    } finally {
+		        if (stmt != null) { stmt.close(); }
+		    }
+	}
+	
+	public static void createMediaTagsTable(Connection con) throws SQLException {
+		
+		String createString =
+		    	"create table if not exists " + DBNAME +
+		        ".MEDIA_TAGS" +
+		        "(MEDIA_ID integer not null, " +
+		        "TAG_ID integer not null, " +
+		        "PRIMARY KEY (MEDIA_ID, TAG_ID)," + 
+		        "FOREIGN KEY (MEDIA_ID)" + 
+		        	"REFERENCES "+ DBNAME +".MEDIA(ID)" +
+		        	"ON DELETE CASCADE," + 
+		        "FOREIGN KEY (TAG_ID)" + 
+		        	"REFERENCES "+ DBNAME +".TAGS(ID)" +
+		        	"ON DELETE CASCADE)";
+		//System.out.println(createString);
+		
+		    Statement stmt = null;
+		    try {
+		        stmt = con.createStatement();
+		        stmt.executeUpdate(createString);
+		    } catch (SQLException e) {
+		        JDBCUtilities.printSQLException(e);
+		    } finally {
+		        if (stmt != null) { stmt.close(); }
+		    }
+	}
+	
 	public static int insertMediaRow(Connection con, MediaRow mediaRow) throws SQLException {
 		String queryString = "insert into " + DBNAME +
 					"." + MediaRow.TABLE_NAME +
@@ -186,6 +233,50 @@ public class DBTables {
 		    	insertRow.executeUpdate();
 	    	}
 	    } catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    } finally {
+	        if (insertRow != null) { insertRow.close(); }
+	    }
+	}
+	
+	public static int insertTagsRow(Connection con, String name) throws SQLException {
+		String queryString = "insert into " + DBNAME +
+					".TAGS" + 
+			        " values(NULL,?)";
+		int autoIncKey = -1;
+		
+		java.sql.PreparedStatement insertRow = null;
+		ResultSet rs = null;
+		try {
+	    	insertRow = con.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
+	    	insertRow.setString(1, name);
+	    	insertRow.executeUpdate();
+	    	rs = insertRow.getGeneratedKeys();
+	        if (rs.next()) {
+	        	autoIncKey = rs.getInt(1);
+	        } else {
+	            // throw an exception from here
+	        }
+	    } catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    } finally {
+	    	if (rs != null) { rs.close(); }
+	        if (insertRow != null) { insertRow.close(); }
+	    }
+		return autoIncKey;
+	}
+	
+	public static void insertMediaTagRow(Connection con, int MediaID, int TagID) throws SQLException {
+		String queryString = "insert into " + DBNAME +
+					".MEDIA_TAGS" +
+			        " values(?,?)";
+				
+		java.sql.PreparedStatement insertRow = null;
+		try {
+	    	insertRow = con.prepareStatement(queryString);
+	    	insertRow.setInt(1, MediaID);
+		    insertRow.setInt(2, TagID);
+		} catch (SQLException e) {
 	    	JDBCUtilities.printSQLException(e);
 	    } finally {
 	        if (insertRow != null) { insertRow.close(); }

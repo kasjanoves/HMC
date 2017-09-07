@@ -13,4 +13,10 @@
 	  <servlet-name>Upload</servlet-name>
 	  <url-pattern>/Upload.do</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-class>com.example.web.AddTag</servlet-class>
+		<servlet-name>AddTag</servlet-name></servlet>
+	<servlet-mapping>
+		<servlet-name>AddTag</servlet-name>
+		<url-pattern>/AddTag.do</url-pattern></servlet-mapping>
 </web-app>

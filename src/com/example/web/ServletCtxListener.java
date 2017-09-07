@@ -29,17 +29,21 @@ public class ServletCtxListener implements ServletContextListener {
     	JDBCUtilities util = new JDBCUtilities("root","root");
     	sc.setAttribute("DBUtils", util);
     	ReqMetadataParser rmp = new ReqMetadataParser();
+    	Connection conn = null;
     	    	
     	try {
-			Connection conn = util.getConnection();
+			conn = util.getConnection();
 			DBTables.createMediaTable(conn);
 			DBTables.createMetadaTypesTable(conn);
 			DBTables.createMetadataTable(conn);
+			DBTables.createTagsTable(conn);
+			DBTables.createMediaTagsTable(conn);
 			Map<String,Map<String,Set<String>>> requiredMetadata =
 					rmp.parse(sc.getRealPath("/WEB-INF/RequiredMetadata.xml"));
 			sc.setAttribute("requiredMetadata", requiredMetadata);
 			//System.out.println(requiredMetadata);
 		} catch (SQLException e) {
+			JDBCUtilities.printSQLException(e);
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -49,6 +53,9 @@ public class ServletCtxListener implements ServletContextListener {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}finally {
+			if(conn != null)
+				util.closeConnection(conn);
 		}
     	
     	
