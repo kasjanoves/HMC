@@ -32,4 +32,15 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
+	<tag>
+		<name>MediaTags</name>
+		<tag-class>com.example.web.MediaTagsTagHandler</tag-class>
+		<body-content>empty</body-content>
+		<description>This tag constructs an HTML tags than represents media tags</description>
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
 </taglib>

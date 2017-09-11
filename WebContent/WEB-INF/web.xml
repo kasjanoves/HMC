@@ -19,4 +19,10 @@
 	<servlet-mapping>
 		<servlet-name>AddTag</servlet-name>
 		<url-pattern>/AddTag.do</url-pattern></servlet-mapping>
+	<servlet>
+		<servlet-name>RemoveTag</servlet-name>
+		<servlet-class>com.example.web.RemoveTag</servlet-class></servlet>
+	<servlet-mapping>
+		<servlet-name>RemoveTag</servlet-name>
+		<url-pattern>/RemoveTag.do</url-pattern></servlet-mapping>
 </web-app>

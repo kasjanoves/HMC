@@ -10,6 +10,8 @@
 <body>
 	<formTags:MediaView id='${param.id}' />
 	<br>
+	<formTags:MediaTags id='${param.id}' />
+	<br>
 	Add tag
 	<form action="AddTag.do" method="post">
 		<input name="tag" type="text">

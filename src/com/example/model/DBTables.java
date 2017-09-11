@@ -276,6 +276,7 @@ public class DBTables {
 	    	insertRow = con.prepareStatement(queryString);
 	    	insertRow.setInt(1, MediaID);
 		    insertRow.setInt(2, TagID);
+		    insertRow.executeUpdate();
 		} catch (SQLException e) {
 	    	JDBCUtilities.printSQLException(e);
 	    } finally {
@@ -309,11 +310,11 @@ public class DBTables {
 	
 	public static ResultSet getMediaInfo(Connection con, int id) throws SQLException {
 		String queryString =
-				"SELECT media.*," + 
+				"SELECT MEDIA.*," + 
 				"metadata_types.DIRECTORY," + 
 				"metadata_types.TAG," + 
 				"metadata.VALUE " + 
-				"FROM "+ DBNAME +".media " + 
+				"FROM "+ DBNAME +".MEDIA " + 
 				"left join " + DBNAME + ".metadata on metadata.MEDIA_ID=media.ID " + 
 				"left join " + DBNAME + ".metadata_types on metadata.MDATA_ID = metadata_types.ID " + 
 				"where media.ID=" + String.valueOf(id);
@@ -346,5 +347,43 @@ public class DBTables {
 	    }
 				
 		return rs;
+	}
+	
+	public static ResultSet getMediaTags(Connection con, int id) throws SQLException {
+		String queryString =
+				"SELECT TAG_ID, NAME "
+				+ "FROM "+ DBNAME +".MEDIA_TAGS, "+ DBNAME +".TAGS " + 
+				"where MEDIA_ID = "+ String.valueOf(id)
+				+ " and MEDIA_TAGS.TAG_ID=TAGS.ID";
+						
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			stmt = con.createStatement();
+	        rs = stmt.executeQuery(queryString);
+	    } catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    }
+				
+		return rs;
+	}
+	
+	public static void removeMediaTagRow(Connection con, int MediaID, int TagID) throws SQLException {
+		String queryString = "delete from " + DBNAME +
+					".MEDIA_TAGS" +
+			        " where MEDIA_TAGS.MEDIA_ID = ? and MEDIA_TAGS.TAG_ID = ?";
+				
+		java.sql.PreparedStatement deleteRow = null;
+		try {
+	    	deleteRow = con.prepareStatement(queryString);
+	    	deleteRow.setInt(1, MediaID);
+		    deleteRow.setInt(2, TagID);
+		    deleteRow.executeUpdate();
+		} catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    } finally {
+	        if (deleteRow != null) { deleteRow.close(); }
+	    }
 	}
 }

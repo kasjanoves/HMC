@@ -2,7 +2,6 @@ package com.example.web;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,24 +12,19 @@ import javax.servlet.http.HttpServletResponse;
 import com.example.model.DBTables;
 import com.example.model.JDBCUtilities;
 
-public class AddTag extends HttpServlet {
-	private static final long serialVersionUID = -335418515443847548L;
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
+public class RemoveTag extends HttpServlet{
+	private static final long serialVersionUID = 4865237263889847211L;
 	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String tagName = request.getParameter("tag");
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int MediaID = Integer.parseInt(request.getParameter("id"));
+		int TagID = Integer.parseInt(request.getParameter("tag_id"));
+		
 		JDBCUtilities util = (JDBCUtilities) getServletContext().getAttribute("DBUtils");
 		Connection conn = null;
 		
 		try {
 			conn = util.getConnection();
-			int TagRowID;
-			TagRowID = DBTables.insertTagsRow(conn, tagName);
-			DBTables.insertMediaTagRow(conn, MediaID, TagRowID);
+			DBTables.removeMediaTagRow(conn, MediaID, TagID);
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -42,7 +36,10 @@ public class AddTag extends HttpServlet {
 		
 		RequestDispatcher view = request.getRequestDispatcher("View.jsp");
 		view.forward(request, response);
-    	
 	}
 	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
 }
