@@ -369,6 +369,44 @@ public class DBTables {
 		return rs;
 	}
 	
+	public static ResultSet getAllTags(Connection con) throws SQLException {
+		String queryString =
+				"SELECT ID, NAME "
+				+ "FROM "+ DBNAME +".TAGS ";
+						
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			stmt = con.createStatement();
+	        rs = stmt.executeQuery(queryString);
+	    } catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    }
+				
+		return rs;
+	}
+	
+	public static ResultSet getUnselectedTags(Connection con, int MediaID) throws SQLException {
+		String queryString =
+				"SELECT ID, NAME FROM "+ DBNAME +".TAGS " +
+				"where ID not in (select TAG_ID from "+ DBNAME +".MEDIA_TAGS " + 
+				"where MEDIA_ID = ?)";
+										
+		java.sql.PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			stmt = con.prepareStatement(queryString);
+			stmt.setInt(1, MediaID);
+	        rs = stmt.executeQuery();
+	    } catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    }
+				
+		return rs;
+	}
+	
 	public static void removeMediaTagRow(Connection con, int MediaID, int TagID) throws SQLException {
 		String queryString = "delete from " + DBNAME +
 					".MEDIA_TAGS" +

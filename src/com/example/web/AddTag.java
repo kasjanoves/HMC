@@ -15,12 +15,16 @@ import com.example.model.JDBCUtilities;
 
 public class AddTag extends HttpServlet {
 	private static final long serialVersionUID = -335418515443847548L;
+	private int SelectedTagID =-1;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String tagSelect = request.getParameter("tagSelect");
+		if(tagSelect != null)
+			SelectedTagID = Integer.parseInt(tagSelect);
 		String tagName = request.getParameter("tag");
 		int MediaID = Integer.parseInt(request.getParameter("id"));
 		JDBCUtilities util = (JDBCUtilities) getServletContext().getAttribute("DBUtils");
@@ -29,7 +33,10 @@ public class AddTag extends HttpServlet {
 		try {
 			conn = util.getConnection();
 			int TagRowID;
-			TagRowID = DBTables.insertTagsRow(conn, tagName);
+			if(SelectedTagID == -1)
+				TagRowID = DBTables.insertTagsRow(conn, tagName);
+			else
+				TagRowID = SelectedTagID;
 			DBTables.insertMediaTagRow(conn, MediaID, TagRowID);
 		} catch (Exception e) {
 			e.printStackTrace();

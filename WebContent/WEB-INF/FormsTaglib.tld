@@ -43,4 +43,15 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
+	<tag>
+		<name>TagSelector</name>
+		<tag-class>com.example.web.TagSelectTagHandler</tag-class>
+		<body-content>empty</body-content>
+		<description>This tag constructs an HTML tag than represents Select form for tags</description>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
 </taglib>

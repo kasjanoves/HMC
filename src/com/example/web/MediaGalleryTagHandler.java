@@ -60,7 +60,6 @@ public class MediaGalleryTagHandler extends SimpleTagSupport{
 					out.print(String.format(IMG_TEMPLATE, path, descr, id));
 				else
 					out.print(String.format(VIDEO_TEMPLATE, path));
-				//out.print(descr);
 				out.print("</td>");
 				descrRow = descrRow + "<td align='center'>" + descr + "</td>";
 				
