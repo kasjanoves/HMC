@@ -16,7 +16,7 @@ import com.example.model.JDBCUtilities;
 public class MediaTagsTagHandler extends SimpleTagSupport{
 
 	private int id;
-	
+		
 	public void setId(int id){
 		this.id = id;
 	}

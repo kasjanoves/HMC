@@ -39,7 +39,7 @@
 		<description>This tag constructs an HTML tags than represents media tags</description>
 		<attribute>
 			<name>id</name>
-			<required>true</required>
+			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
