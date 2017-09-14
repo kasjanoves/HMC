@@ -29,6 +29,7 @@ public class ServletCtxListener implements ServletContextListener {
     	JDBCUtilities util = new JDBCUtilities("root","root");
     	sc.setAttribute("DBUtils", util);
     	ReqMetadataParser rmp = new ReqMetadataParser();
+    	
     	Connection conn = null;
     	    	
     	try {
@@ -41,6 +42,7 @@ public class ServletCtxListener implements ServletContextListener {
 			Map<String,Map<String,Set<String>>> requiredMetadata =
 					rmp.parse(sc.getRealPath("/WEB-INF/RequiredMetadata.xml"));
 			sc.setAttribute("requiredMetadata", requiredMetadata);
+			
 			//System.out.println(requiredMetadata);
 		} catch (SQLException e) {
 			JDBCUtilities.printSQLException(e);

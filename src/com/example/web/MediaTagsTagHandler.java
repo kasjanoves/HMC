@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
@@ -16,9 +17,14 @@ import com.example.model.JDBCUtilities;
 public class MediaTagsTagHandler extends SimpleTagSupport{
 
 	private int id;
+	private List<Integer> tags;
 		
 	public void setId(int id){
 		this.id = id;
+	}
+	
+	public void setTags(List<Integer> tags){
+		this.tags = tags;
 	}
 	
 	public void doTag() throws JspException, IOException {
@@ -31,7 +37,10 @@ public class MediaTagsTagHandler extends SimpleTagSupport{
 		Connection conn = null;
     	try {
 			conn = util.getConnection();
-			rs = DBTables.getMediaTags(conn, id);
+			if(tags != null)
+				rs = DBTables.getTagsByIDs(conn, tags);
+			else	
+				rs = DBTables.getMediaTags(conn, id);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 			return;

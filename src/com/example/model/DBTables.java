@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 
 public class DBTables {
@@ -399,6 +401,30 @@ public class DBTables {
 		try {
 			stmt = con.prepareStatement(queryString);
 			stmt.setInt(1, MediaID);
+	        rs = stmt.executeQuery();
+	    } catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    }
+				
+		return rs;
+	}
+	
+	public static ResultSet getTagsByIDs(Connection con, List<Integer> tags) throws SQLException {
+		String queryString =
+				"SELECT ID, NAME "
+				+ "FROM "+ DBNAME +".TAGS "
+				+ "WHERE ID IN (?)";
+						
+		java.sql.PreparedStatement stmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder();
+		Iterator<Integer> it = tags.iterator();
+		while(it.hasNext())
+			sb.append(Integer.toString(it.next()) + (it.hasNext() ? "," : ""));
+				
+		try {
+			stmt = con.prepareStatement(queryString);
+			stmt.setString(1, sb.toString());
 	        rs = stmt.executeQuery();
 	    } catch (SQLException e) {
 	    	JDBCUtilities.printSQLException(e);
