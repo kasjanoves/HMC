@@ -15,6 +15,9 @@
 		<input type="submit">
 	</form>
 	<a href ="Upload.html">Upload file</a><br>
+	<formTags:MediaTags tags = '${sessionScope.SelectedTags}'/>
+	<br>
+	<formTags:MediaTags />
 	<c:set var = "search" scope = "session" value = "${param.search}"/>
 	<c:if test = "${fn:length(search) > 0}" >
 		Results for ${param.search}

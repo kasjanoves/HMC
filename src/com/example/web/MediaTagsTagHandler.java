@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
@@ -16,14 +17,14 @@ import com.example.model.JDBCUtilities;
 
 public class MediaTagsTagHandler extends SimpleTagSupport{
 
-	private int id;
-	private List<Integer> tags;
+	private int id = -1;
+	private Set<Integer> tags;
 		
 	public void setId(int id){
 		this.id = id;
 	}
 	
-	public void setTags(List<Integer> tags){
+	public void setTags(Set<Integer> tags){
 		this.tags = tags;
 	}
 	
@@ -39,8 +40,10 @@ public class MediaTagsTagHandler extends SimpleTagSupport{
 			conn = util.getConnection();
 			if(tags != null)
 				rs = DBTables.getTagsByIDs(conn, tags);
-			else	
+			else if(id != -1)	
 				rs = DBTables.getMediaTags(conn, id);
+			else
+				rs = DBTables.getAllTags(conn);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 			return;
@@ -49,8 +52,11 @@ public class MediaTagsTagHandler extends SimpleTagSupport{
     	try {
 			while(rs.next()){
 				String tagName = rs.getString("NAME");
-				int tagID = rs.getInt("TAG_ID");
-				out.print(String.format(TAG_TEMPLATE, tagName, id, tagID));
+				int tagID = rs.getInt("ID");
+				if(id != -1)
+					out.print(String.format(TAG_VIEW_TEMPLATE, tagName, id, tagID));
+				else
+					out.print(String.format(TAG_SELECT_TEMPLATE, tagName, tagID));
 			}
 		} catch (SQLException e) {
 			JDBCUtilities.printSQLException(e);
@@ -68,5 +74,6 @@ public class MediaTagsTagHandler extends SimpleTagSupport{
 		
 	}
 	
-	private static final String TAG_TEMPLATE = "[%1$s <a href='RemoveTag.do?id=%2$d&tag_id=%3$d'>X</a>] ";
+	private static final String TAG_VIEW_TEMPLATE = "[%1$s <a href='RemoveTag.do?id=%2$d&tag_id=%3$d'>X</a>] ";
+	private static final String TAG_SELECT_TEMPLATE = "[<a href='SearchAddTag.do?tag_id=%2$d'>%1$s</a>] ";
 }

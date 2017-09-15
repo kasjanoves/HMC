@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 public class DBTables {
 	
@@ -353,7 +354,7 @@ public class DBTables {
 	
 	public static ResultSet getMediaTags(Connection con, int id) throws SQLException {
 		String queryString =
-				"SELECT TAG_ID, NAME "
+				"select TAG_ID as ID, NAME "
 				+ "FROM "+ DBNAME +".MEDIA_TAGS, "+ DBNAME +".TAGS " + 
 				"where MEDIA_ID = "+ String.valueOf(id)
 				+ " and MEDIA_TAGS.TAG_ID=TAGS.ID";
@@ -373,8 +374,8 @@ public class DBTables {
 	
 	public static ResultSet getAllTags(Connection con) throws SQLException {
 		String queryString =
-				"SELECT ID, NAME "
-				+ "FROM "+ DBNAME +".TAGS ";
+				"select ID, NAME "
+				+ "from "+ DBNAME +".TAGS ";
 						
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -391,7 +392,7 @@ public class DBTables {
 	
 	public static ResultSet getUnselectedTags(Connection con, int MediaID) throws SQLException {
 		String queryString =
-				"SELECT ID, NAME FROM "+ DBNAME +".TAGS " +
+				"select ID, NAME FROM "+ DBNAME +".TAGS " +
 				"where ID not in (select TAG_ID from "+ DBNAME +".MEDIA_TAGS " + 
 				"where MEDIA_ID = ?)";
 										
@@ -409,24 +410,24 @@ public class DBTables {
 		return rs;
 	}
 	
-	public static ResultSet getTagsByIDs(Connection con, List<Integer> tags) throws SQLException {
-		String queryString =
-				"SELECT ID, NAME "
-				+ "FROM "+ DBNAME +".TAGS "
-				+ "WHERE ID IN (?)";
-						
-		java.sql.PreparedStatement stmt = null;
+	public static ResultSet getTagsByIDs(Connection con, Set<Integer> tags) throws SQLException {
+								
+		Statement stmt = null;
 		ResultSet rs = null;
 		StringBuilder sb = new StringBuilder();
 		Iterator<Integer> it = tags.iterator();
 		while(it.hasNext())
 			sb.append(Integer.toString(it.next()) + (it.hasNext() ? "," : ""));
-				
+		
+		String queryString =
+				"select ID, NAME "
+				+ "from "+ DBNAME +".TAGS "
+				+ "where ID in ("+sb.toString()+")";
+		
 		try {
-			stmt = con.prepareStatement(queryString);
-			stmt.setString(1, sb.toString());
-	        rs = stmt.executeQuery();
-	    } catch (SQLException e) {
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(queryString);
+		} catch (SQLException e) {
 	    	JDBCUtilities.printSQLException(e);
 	    }
 				

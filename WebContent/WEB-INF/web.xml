@@ -25,4 +25,10 @@
 	<servlet-mapping>
 		<servlet-name>RemoveTag</servlet-name>
 		<url-pattern>/RemoveTag.do</url-pattern></servlet-mapping>
+	<servlet>
+		<servlet-class>com.example.web.SearchAddTag</servlet-class>
+		<servlet-name>SearchAddTag</servlet-name></servlet>
+	<servlet-mapping>
+		<servlet-name>SearchAddTag</servlet-name>
+		<url-pattern>/SearchAddTag.do</url-pattern></servlet-mapping>
 </web-app>
