@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Set;
 
+import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
@@ -20,9 +22,14 @@ import com.example.model.JDBCUtilities;
 public class MediaGalleryTagHandler extends SimpleTagSupport{
 	
 	private String SearchString = null;
+	private Set<Integer> tags;
 	
 	public void setSearch(String SearchString){
 		this.SearchString = SearchString;
+	}
+	
+	public void setTags(Set<Integer> tags){
+		this.tags = tags;
 	}
 	
 	public void doTag() throws JspException, IOException {
@@ -34,10 +41,10 @@ public class MediaGalleryTagHandler extends SimpleTagSupport{
 		
 		try {
 			conn = util.getConnection();
-			if(SearchString.isEmpty()) 
+			if(SearchString.isEmpty() && tags == null) 
 				rs = DBTables.getMedia(conn);
 			else
-				rs = DBTables.getMediaByDescription(conn, SearchString);
+				rs = DBTables.getMediaByCriteria(conn, SearchString, tags);
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 			return;

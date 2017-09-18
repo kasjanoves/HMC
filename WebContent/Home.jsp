@@ -15,13 +15,16 @@
 		<input type="submit">
 	</form>
 	<a href ="Upload.html">Upload file</a><br>
-	<formTags:MediaTags tags = '${sessionScope.SelectedTags}'/>
+	<c:set var = "SelectedTags" scope = "session" value = "${sessionScope.SelectedTags}"/>
+	<c:if test = "${SelectedTags != null}" >
+		<formTags:MediaTags tags = '${sessionScope.SelectedTags}'/>
+	</c:if>	
 	<br>
 	<formTags:MediaTags />
 	<c:set var = "search" scope = "session" value = "${param.search}"/>
 	<c:if test = "${fn:length(search) > 0}" >
-		Results for ${param.search}
+		<br>Results for ${param.search}
 	</c:if>
-	<formTags:MediaGallery search = '${param.search}'/>
+	<formTags:MediaGallery search = '${param.search}' tags = '${sessionScope.SelectedTags}'/>
 </body>
 </html>

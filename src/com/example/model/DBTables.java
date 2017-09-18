@@ -288,9 +288,8 @@ public class DBTables {
 	}
 	
 	/**
-	 * Returns first 10 rows in MEDIA table
+	 * Returns all rows in MEDIA table
 	 * @param con
-	 * @param dbName
 	 * @return ResultSet
 	 * @throws SQLException
 	 */
@@ -334,11 +333,28 @@ public class DBTables {
 		return rs;
 	}
 		
-	public static ResultSet getMediaByDescription(Connection con, String descr) throws SQLException {
+	public static ResultSet getMediaByCriteria(Connection con, String descr, Set<Integer> tags) throws SQLException {
+		
+		StringBuilder sb = new StringBuilder();
+		if(tags != null) {
+			Iterator<Integer> it = tags.iterator();
+			while(it.hasNext())
+				sb.append(Integer.toString(it.next()) + (it.hasNext() ? "," : ""));
+		}
+				
 		String queryString =
 		        "select ID, TYPE, DESCRIPTION, PATH " +
-		        "from " + DBNAME + ".MEDIA "+
-		        "where DESCRIPTION like '%" + descr +"%'";
+				"from " + DBNAME + ".media ";
+		if(sb.length()>0)
+			queryString = queryString +
+				"," + DBNAME + ".media_tags ";
+		queryString = queryString +
+				"where " +
+				"DESCRIPTION like '%" + descr.trim() +"%'";
+		if(sb.length()>0)
+			queryString = queryString +
+				" and media_tags.TAG_ID in ("+sb.toString()+")" +
+				" and media.ID = media_tags.MEDIA_ID";
 		Statement stmt = null;
 		ResultSet rs = null;
 		
@@ -418,6 +434,8 @@ public class DBTables {
 		Iterator<Integer> it = tags.iterator();
 		while(it.hasNext())
 			sb.append(Integer.toString(it.next()) + (it.hasNext() ? "," : ""));
+		if(sb.length()==0)
+			sb.append("null");
 		
 		String queryString =
 				"select ID, NAME "

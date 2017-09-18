@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.example.model.DBTables;
 import com.example.model.JDBCUtilities;
@@ -23,13 +26,14 @@ public class Search extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		HttpSession session = request.getSession();
 		String searchString = request.getParameter("search");
+		Set<Integer> tags = (HashSet<Integer>) session.getAttribute("SelectedTags");
 		//System.out.println(searchString);
 		JDBCUtilities util = (JDBCUtilities) getServletContext().getAttribute("DBUtils");
     	try {
 			Connection conn = util.getConnection();
-			ResultSet rs = DBTables.getMediaByDescription(conn, searchString);
+			ResultSet rs = DBTables.getMediaByCriteria(conn, searchString, tags);
 			request.setAttribute("MediaSet", rs);
 			RequestDispatcher view = request.getRequestDispatcher("Home.jsp");
 			view.forward(request, response);

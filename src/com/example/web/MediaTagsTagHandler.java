@@ -53,7 +53,9 @@ public class MediaTagsTagHandler extends SimpleTagSupport{
 			while(rs.next()){
 				String tagName = rs.getString("NAME");
 				int tagID = rs.getInt("ID");
-				if(id != -1)
+				if(tags != null)
+					out.print(String.format(TAG_SELECTED_TEMPLATE, tagName, tagID));
+				else if(id != -1)
 					out.print(String.format(TAG_VIEW_TEMPLATE, tagName, id, tagID));
 				else
 					out.print(String.format(TAG_SELECT_TEMPLATE, tagName, tagID));
@@ -75,5 +77,6 @@ public class MediaTagsTagHandler extends SimpleTagSupport{
 	}
 	
 	private static final String TAG_VIEW_TEMPLATE = "[%1$s <a href='RemoveTag.do?id=%2$d&tag_id=%3$d'>X</a>] ";
+	private static final String TAG_SELECTED_TEMPLATE = "[%1$s <a href='SearchRemoveTag.do?tag_id=%2$d'>X</a>] ";
 	private static final String TAG_SELECT_TEMPLATE = "[<a href='SearchAddTag.do?tag_id=%2$d'>%1$s</a>] ";
 }
