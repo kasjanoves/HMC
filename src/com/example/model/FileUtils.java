@@ -30,4 +30,12 @@ public class FileUtils {
 			fileName = fullPath.substring(lastSlash+1);
 		return fileName;
 	}
+	
+	public static String FileNameWithoutExt(String filename){
+		String name = filename;
+		int lastDot = filename.lastIndexOf(".");
+		if(lastDot>-1)
+			name = filename.substring(0, lastDot);
+		return name;
+	}
 }

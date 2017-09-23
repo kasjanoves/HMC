@@ -26,8 +26,9 @@ import com.example.model.ImageMetadataReaderImpl;
 import com.example.model.JDBCUtilities;
 import com.example.model.MediaMetadataReader;
 import com.example.model.MediaRow;
+import com.example.model.MediaThumbnailCreator;
 import com.example.model.MetadataRows;
-import com.example.model.MetadataTagRow;
+import com.example.model.VideoThumbCreatorImpl;
 import com.example.web.WebUtils;
 
 
@@ -97,18 +98,25 @@ public class Upload extends HttpServlet {
 			if(UploadedFile != null) {
 				
 				String mediaType = WebUtils.ExtractHeader(contentType);
+				String thumbPath = "";
 				Map<String, Map<String, String>> MetadataMap = null;
+				MediaMetadataReader mreader;
 				Map<String,Map<String,Set<String>>> requiredMetadata
 					= (Map<String,Map<String,Set<String>>>) getServletContext().getAttribute("requiredMetadata");
 				if(mediaType.equals("image")) {
-					MediaMetadataReader imr = new ImageMetadataReaderImpl(requiredMetadata);
-					MetadataMap = imr.getMetadata(UploadedFile);
+					mreader = new ImageMetadataReaderImpl(requiredMetadata);
+					MetadataMap = mreader.getMetadata(UploadedFile);
+				} else if(mediaType.equals("video")) {
+					MediaThumbnailCreator tmbCreator = new VideoThumbCreatorImpl();
+					thumbPath = tmbCreator.getThumbnail(UploadedFile, relPath);
 				}
 				
 				MediaRow mRow = new MediaRow();
 				mRow.setMediaType(mediaType);
 				mRow.setDescription(description);
 				mRow.setRelativePath(relPath);
+				if(!thumbPath.isEmpty())
+					mRow.setThumbnailPath(thumbPath);
 				mRow.setSize(UploadedFile.length());
 				mRow.setCreationDate(new Date(UploadedFile.lastModified()));
 				
