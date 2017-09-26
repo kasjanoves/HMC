@@ -21,6 +21,7 @@ public class DBTables {
 	        "TYPE varchar(15), " +
 	        "DESCRIPTION varchar(150), " +
 	        "PATH varchar(250) NOT NULL, " +
+	        "THUMBNAIL_PATH varchar(250), " +
 	        "SIZE integer, " +
 	        "CREATION_DATE datetime, " +
 	        "PRIMARY KEY (ID))";
