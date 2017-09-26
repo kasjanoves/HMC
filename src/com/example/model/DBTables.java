@@ -139,7 +139,7 @@ public class DBTables {
 	public static int insertMediaRow(Connection con, MediaRow mediaRow) throws SQLException {
 		String queryString = "insert into " + DBNAME +
 					"." + MediaRow.TABLE_NAME +
-			        " values(NULL,?,?,?,?,?)";
+			        " values(NULL,?,?,?,?,?,?)";
 		int autoIncKey = -1;
 		
 		java.sql.PreparedStatement insertRow = null;
@@ -149,8 +149,9 @@ public class DBTables {
 	    	insertRow.setString(1, mediaRow.getMediaType());
 	    	insertRow.setString(2, mediaRow.getDescription());
 	    	insertRow.setString(3, mediaRow.getRelativePath());
-	    	insertRow.setLong(4, mediaRow.getSize());
-	    	insertRow.setTimestamp(5, new java.sql.Timestamp(mediaRow.getCreationDate().getTime()));
+	    	insertRow.setString(4, mediaRow.getThumbnailPath());
+	    	insertRow.setLong(5, mediaRow.getSize());
+	    	insertRow.setTimestamp(6, new java.sql.Timestamp(mediaRow.getCreationDate().getTime()));
 	    	insertRow.executeUpdate();
 	    	rs = insertRow.getGeneratedKeys();
 	        if (rs.next()) {

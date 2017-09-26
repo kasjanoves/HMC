@@ -125,8 +125,10 @@ public class Upload extends HttpServlet {
 		    	int MediaRowID;
 		    	MediaRowID = DBTables.insertMediaRow(conn, mRow);
 		    	MetadataRows mdataRows = new MetadataRows(MediaRowID, mediaType);
-		    	mdataRows.fillItems(MetadataMap);
-		    	DBTables.insertMetadataRows(conn, mdataRows);
+		    	if(MetadataMap != null) {
+			    	mdataRows.fillItems(MetadataMap);
+			    	DBTables.insertMetadataRows(conn, mdataRows);
+		    	}
 				util.closeConnection(conn);
 					
 				request.setAttribute("mediaType", mediaType);

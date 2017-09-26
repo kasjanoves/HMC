@@ -1,11 +1,8 @@
 package com.example.model;
 
 import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import javax.imageio.ImageIO;
-
+import javafx.embed.swing.JFXPanel;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.WritableImage;
 import javafx.scene.media.Media;
@@ -13,6 +10,9 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 
 public class VideoThumbCreatorImpl implements MediaThumbnailCreator {
+	
+	//to avoid "Toolkit not initialized" exception
+	final JFXPanel fxPanel = new JFXPanel(); 
 		
 	public String getThumbnail(File file, String relPath) {
 		
@@ -24,7 +24,6 @@ public class VideoThumbCreatorImpl implements MediaThumbnailCreator {
 		MediaPlayer mediaPlayer = new MediaPlayer(media);
 		mediaPlayer.setOnReady(new Runnable() {
 			public void run() {
-				System.out.println("MediaPlayer ready!");
 				int width = mediaPlayer.getMedia().getWidth();
 				int height = mediaPlayer.getMedia().getHeight();
 				WritableImage wim = new WritableImage(width, height);
@@ -36,6 +35,7 @@ public class VideoThumbCreatorImpl implements MediaThumbnailCreator {
 				try {
 				    ImageIO.write(SwingFXUtils.fromFXImage(wim, null), "png", new File(thumbPath));
 				} catch (Exception s) {
+					s.printStackTrace();
 				    System.out.println(s);
 				}			
 			}
