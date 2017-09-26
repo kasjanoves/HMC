@@ -6,6 +6,7 @@ public class MediaRow {
 	private String MediaType;
 	private String Description;
 	private String RelativePath;
+	private String ThumbnailPath;
 	private long Size;
 	private Date CreationDate;
 	public final static String TABLE_NAME = "MEDIA";
@@ -52,5 +53,11 @@ public class MediaRow {
 		CreationDate = creationDate;
 	}
 	
-	
+	public String getThumbnailPath() {
+		return ThumbnailPath;
+	}
+
+	public void setThumbnailPath(String thumbnailPath) {
+		ThumbnailPath = thumbnailPath;
+	}
 }
