@@ -28,7 +28,7 @@ public class VideoMetadataReaderImpl implements MediaMetadataReader {
 		MediaPlayer mediaPlayer = new MediaPlayer(media);
 		mediaPlayer.setOnReady(new Runnable() {
 			public void run() {
-				System.out.println("MediaPlayer ready");
+				System.out.println("extractMetadata MediaPlayer ready");
 				Map<String, Object> metadata = media.getMetadata();
 				System.out.println(metadata);
 			}

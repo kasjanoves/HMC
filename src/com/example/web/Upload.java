@@ -124,9 +124,10 @@ public class Upload extends HttpServlet {
 		    	MetadataRows mdataRows = new MetadataRows(MediaRowID, mediaType);
 		    	if(mediaType.equals("image"))
 					mreader = new ImageMetadataReaderImpl(requiredMetadata);
-				else if(mediaType.equals("video"))
-					mreader = new VideoMetadataReaderImpl(requiredMetadata);
-				mreader.extractMetadata(UploadedFile, mdataRows, util);
+				//else 
+				//if(mediaType.equals("video"))
+					//mreader = new VideoMetadataReaderImpl(requiredMetadata);
+				//mreader.extractMetadata(UploadedFile, mdataRows, util);
 				util.closeConnection(conn);
 					
 				request.setAttribute("mediaType", mediaType);

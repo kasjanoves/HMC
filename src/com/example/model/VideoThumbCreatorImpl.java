@@ -1,7 +1,12 @@
 package com.example.model;
 
 import java.io.File;
+import java.util.Map;
+
 import javax.imageio.ImageIO;
+
+import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableMap;
 import javafx.embed.swing.JFXPanel;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.WritableImage;
@@ -21,10 +26,15 @@ public class VideoThumbCreatorImpl implements MediaThumbnailCreator {
 		String thumbPath = file.getAbsolutePath().replaceAll(videoFileName,	thumbFileName);
 				
 		Media media = new Media(file.toURI().toString());
+		ObservableMap<String, Object> metadata = media.getMetadata();
+		metadata.addListener((MapChangeListener<String, Object>) change -> {
+			System.out.println("MapChangeListener");
+		});
+		metadata = media.getMetadata();
 		MediaPlayer mediaPlayer = new MediaPlayer(media);
 		mediaPlayer.setOnReady(new Runnable() {
 			public void run() {
-				System.out.println("MediaPlayer ready");
+				System.out.println("getThumbnail MediaPlayer ready");
 				int width = mediaPlayer.getMedia().getWidth();
 				int height = mediaPlayer.getMedia().getHeight();
 				WritableImage wim = new WritableImage(width, height);
@@ -38,6 +48,8 @@ public class VideoThumbCreatorImpl implements MediaThumbnailCreator {
 				} catch (Exception s) {
 					s.printStackTrace();
 				    System.out.println(s);
+				} finally {
+					mediaPlayer.dispose();
 				}			
 			}
 		});
