@@ -28,6 +28,7 @@ import com.example.model.MediaMetadataReader;
 import com.example.model.MediaRow;
 import com.example.model.MediaThumbnailCreator;
 import com.example.model.MetadataRows;
+import com.example.model.VideoMetadataReaderImpl;
 import com.example.model.VideoThumbCreatorImpl;
 import com.example.web.WebUtils;
 
@@ -99,18 +100,14 @@ public class Upload extends HttpServlet {
 				
 				String mediaType = WebUtils.ExtractHeader(contentType);
 				String thumbPath = "";
-				Map<String, Map<String, String>> MetadataMap = null;
-				MediaMetadataReader mreader;
+				MediaMetadataReader mreader = null;
 				Map<String,Map<String,Set<String>>> requiredMetadata
 					= (Map<String,Map<String,Set<String>>>) getServletContext().getAttribute("requiredMetadata");
-				if(mediaType.equals("image")) {
-					mreader = new ImageMetadataReaderImpl(requiredMetadata);
-					MetadataMap = mreader.getMetadata(UploadedFile);
-				} else if(mediaType.equals("video")) {
+				
+				if(mediaType.equals("video")) {
 					MediaThumbnailCreator tmbCreator = new VideoThumbCreatorImpl();
 					thumbPath = tmbCreator.getThumbnail(UploadedFile, relPath);
 				}
-				
 				MediaRow mRow = new MediaRow();
 				mRow.setMediaType(mediaType);
 				mRow.setDescription(description);
@@ -125,10 +122,11 @@ public class Upload extends HttpServlet {
 		    	int MediaRowID;
 		    	MediaRowID = DBTables.insertMediaRow(conn, mRow);
 		    	MetadataRows mdataRows = new MetadataRows(MediaRowID, mediaType);
-		    	if(MetadataMap != null) {
-			    	mdataRows.fillItems(MetadataMap);
-			    	DBTables.insertMetadataRows(conn, mdataRows);
-		    	}
+		    	if(mediaType.equals("image"))
+					mreader = new ImageMetadataReaderImpl(requiredMetadata);
+				else if(mediaType.equals("video"))
+					mreader = new VideoMetadataReaderImpl(requiredMetadata);
+				mreader.extractMetadata(UploadedFile, mdataRows, util);
 				util.closeConnection(conn);
 					
 				request.setAttribute("mediaType", mediaType);

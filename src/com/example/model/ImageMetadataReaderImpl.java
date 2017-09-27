@@ -2,6 +2,8 @@ package com.example.model;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -26,7 +28,8 @@ public class ImageMetadataReaderImpl implements MediaMetadataReader {
 		destination = reqMetadata.get("image");
 	}
 
-	public Map<String, Map<String, String>> getMetadata(File file) {
+	public void extractMetadata(File file, MetadataRows mdataRows, JDBCUtilities util) 
+			throws ClassNotFoundException, SQLException {
 	
 		Map<String, Map<String, String>> mmap = new HashMap<String, Map<String, String>>();
 		
@@ -50,6 +53,9 @@ public class ImageMetadataReaderImpl implements MediaMetadataReader {
         }
 		
 		//System.out.println(mmap);
-		return mmap;
+		mdataRows.fillItems(mmap);
+		Connection conn = util.getConnection();
+    	DBTables.insertMetadataRows(conn, mdataRows);
+    	util.closeConnection(conn);
 	}
 }

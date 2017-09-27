@@ -12,10 +12,10 @@ import javafx.scene.media.MediaView;
 public class VideoThumbCreatorImpl implements MediaThumbnailCreator {
 	
 	//to avoid "Toolkit not initialized" exception
-	final JFXPanel fxPanel = new JFXPanel(); 
-		
+	final JFXPanel fxPanel = new JFXPanel();
+	
 	public String getThumbnail(File file, String relPath) {
-		
+			
 		String videoFileName = FileUtils.ExctractFileName(file.getAbsolutePath());
 		String thumbFileName = FileUtils.FileNameWithoutExt(videoFileName)+"thmb.png";
 		String thumbPath = file.getAbsolutePath().replaceAll(videoFileName,	thumbFileName);
@@ -24,6 +24,7 @@ public class VideoThumbCreatorImpl implements MediaThumbnailCreator {
 		MediaPlayer mediaPlayer = new MediaPlayer(media);
 		mediaPlayer.setOnReady(new Runnable() {
 			public void run() {
+				System.out.println("MediaPlayer ready");
 				int width = mediaPlayer.getMedia().getWidth();
 				int height = mediaPlayer.getMedia().getHeight();
 				WritableImage wim = new WritableImage(width, height);
