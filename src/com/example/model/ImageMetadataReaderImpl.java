@@ -31,6 +31,10 @@ public class ImageMetadataReaderImpl implements MediaMetadataReader {
 	public void extractMetadata(File file, MetadataRows mdataRows, JDBCUtilities util) 
 			throws ClassNotFoundException, SQLException {
 	
+		
+	}
+
+	public Map<String, Map<String, String>> extractMetadata(File file) throws IOException {
 		Map<String, Map<String, String>> mmap = new HashMap<String, Map<String, String>>();
 		
 		try {
@@ -48,14 +52,10 @@ public class ImageMetadataReaderImpl implements MediaMetadataReader {
 	                if(!mTags.isEmpty()) mmap.put(directory.getName(), mTags);
             	}
             }
-        } catch (IOException | ImageProcessingException e) {
+        } catch (ImageProcessingException e) {
         	e.printStackTrace();
         }
 		
-		//System.out.println(mmap);
-		mdataRows.fillItems(mmap);
-		Connection conn = util.getConnection();
-    	DBTables.insertMetadataRows(conn, mdataRows);
-    	util.closeConnection(conn);
+		return mmap;
 	}
 }

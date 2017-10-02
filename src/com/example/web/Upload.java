@@ -122,11 +122,14 @@ public class Upload extends HttpServlet {
 		    	int MediaRowID;
 		    	MediaRowID = DBTables.insertMediaRow(conn, mRow);
 		    	MetadataRows mdataRows = new MetadataRows(MediaRowID, mediaType);
+		    	Map<String, Map<String, String>> metadata;
 		    	if(mediaType.equals("image"))
 					mreader = new ImageMetadataReaderImpl(requiredMetadata);
 				else if(mediaType.equals("video"))
 					mreader = new VideoMetadataReaderImpl(requiredMetadata);
-				mreader.extractMetadata(UploadedFile, mdataRows, util);
+		    	metadata = mreader.extractMetadata(UploadedFile);
+		    	mdataRows.fillItems(metadata);
+		    	//DBTables.insertMetadataRows(conn, mdataRows);
 				util.closeConnection(conn);
 					
 				request.setAttribute("mediaType", mediaType);

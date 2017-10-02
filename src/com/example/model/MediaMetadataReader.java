@@ -1,11 +1,12 @@
 package com.example.model;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Map;
 
 public interface MediaMetadataReader {
 		
-	public void extractMetadata(File file, MetadataRows mdataRows, JDBCUtilities util) 
-			throws ClassNotFoundException, SQLException;
+	public Map<String, Map<String, String>> extractMetadata(File file) 
+			throws FileNotFoundException, IOException;
 }
