@@ -1,5 +1,7 @@
 <preferences>
-	<destination name="video"></destination>
+	<destination name="video">
+		<directory name="dir1"></directory>
+		<directory name="dir2"></directory></destination>
 	<destination name="image">
 		<directory name="Exif SubIFD">
 			<tag name="Date/Time Digitized"></tag></directory>
