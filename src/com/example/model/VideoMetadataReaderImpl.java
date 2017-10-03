@@ -10,11 +10,7 @@ import java.util.Set;
 
 import org.mp4parser.Box;
 import org.mp4parser.IsoFile;
-import org.mp4parser.boxes.UserBox;
-import org.mp4parser.boxes.apple.AppleNameBox;
 import org.mp4parser.boxes.iso14496.part12.MovieBox;
-import org.mp4parser.boxes.iso14496.part12.TrackRunBox;
-import org.mp4parser.tools.Path;
 
 public class VideoMetadataReaderImpl implements MediaMetadataReader {
 	private Map<String, Set<String>> destination;
@@ -40,8 +36,10 @@ public class VideoMetadataReaderImpl implements MediaMetadataReader {
 //        String xml = nam.getValue();
         MovieBox moov = isoFile.getMovieBox();
         for(Box b : moov.getBoxes()) {
+        	System.out.println(b.getType());
             System.out.println(b);
         }
+        
         isoFile.close();
         fis.close();
                             
