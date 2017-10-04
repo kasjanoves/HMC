@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 import org.mp4parser.Box;
 import org.mp4parser.Container;
 import org.mp4parser.IsoFile;
-import org.mp4parser.boxes.iso14496.part12.MovieBox;
 import org.mp4parser.tools.Path;
 
 public class VideoMetadataReaderImpl implements MediaMetadataReader {
@@ -47,28 +46,23 @@ public class VideoMetadataReaderImpl implements MediaMetadataReader {
         		Box box = Path.getPath(isoFile, dir.getKey());
         		System.out.println(box);
         		//pseudo code to retrieve tag pairs from box
-        		//tags = box.getTags
+        		Map<String, String> TagPairs = parseTagPairs(box.toString());
         		for(String tag : dir.getValue()) {
         			//pseudo code to find tag in tags structure
-        			//tagPair = tags.find(tag) 
-        			//if(tagPair) mTags.put(tagPair.getTagName(), tagPair.getValue()); 
-        			Pattern ptrn = Pattern.compile(tag+"=(^;+)[;\\]]");
-        			Matcher m = ptrn.matcher(box.toString());
-        			if(m.find())
-        				System.out.println("Match\\ "+m.group());
+        			String value = TagPairs.get(tag);
+        			if(value != null) mTags.put(tag, value); 
         		}
         		if(!mTags.isEmpty()) mmap.put(dir.getKey(), mTags);	
-        		
         	}catch (Exception e) {
 				System.out.println(e);
 				continue;
 			}	
-        	
         }	
         
         isoFile.close();
         fis.close();
-                            
+        
+        System.out.println(mmap);
 		return mmap;
 	}
 	
@@ -79,9 +73,21 @@ public class VideoMetadataReaderImpl implements MediaMetadataReader {
 				Print(ch, tabs+"\t");
 		}else
 			System.out.println(tabs+box.getType()+":"+box);
-		
 	}
 
+	private Map<String, String> parseTagPairs(String boxStr) {
+		Map<String, String> map = new HashMap<String, String>();
+		Matcher m = Pattern.compile("\\[.+\\]").matcher(boxStr);
+		if(m.find()){
+			String pairs = m.group().substring(1, m.group().length()-1);
+			for(String pair : pairs.split(";")){
+				String[] entry = pair.split("=");
+				if(entry.length == 2)
+					map.put(entry[0], entry[1]);
+			}	
+		}
+		return map;
+	}
 		
 
 }
