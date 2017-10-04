@@ -1,7 +1,10 @@
 <preferences>
 	<destination name="video">
-		<directory name="dir1"></directory>
-		<directory name="dir2"></directory></destination>
+		<directory name="moov/mvhd">
+			<tag name="creationTime"></tag></directory>
+		<directory name="moov/trak[0]/tkhd">
+			<tag name="width"></tag>
+			<tag name="height"></tag></directory></destination>
 	<destination name="image">
 		<directory name="Exif SubIFD">
 			<tag name="Date/Time Digitized"></tag></directory>

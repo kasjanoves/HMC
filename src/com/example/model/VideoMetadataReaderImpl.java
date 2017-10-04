@@ -6,11 +6,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.mp4parser.Box;
+import org.mp4parser.Container;
 import org.mp4parser.IsoFile;
 import org.mp4parser.boxes.iso14496.part12.MovieBox;
+import org.mp4parser.tools.Path;
 
 public class VideoMetadataReaderImpl implements MediaMetadataReader {
 	private Map<String, Set<String>> destination;
@@ -32,18 +37,49 @@ public class VideoMetadataReaderImpl implements MediaMetadataReader {
         FileInputStream fis = new FileInputStream(file);
         IsoFile isoFile = new IsoFile(fis.getChannel());
 		
-//        AppleNameBox nam = Path.getPath(isoFile, "/moov[0]/udta[0]/meta[0]/ilst/©nam");
-//        String xml = nam.getValue();
-        MovieBox moov = isoFile.getMovieBox();
-        for(Box b : moov.getBoxes()) {
-        	System.out.println(b.getType());
-            System.out.println(b);
-        }
+        //Print(isoFile.getMovieBox(), "");
+//        Box b = Path.getPath(isoFile, "moov/trak[0]/tkhd");
+//        System.out.println(b);
+        
+        for(Entry<String, Set<String>> dir : destination.entrySet()) {
+        	try {
+        		Map<String, String> mTags = new HashMap<String, String>();
+        		Box box = Path.getPath(isoFile, dir.getKey());
+        		System.out.println(box);
+        		//pseudo code to retrieve tag pairs from box
+        		//tags = box.getTags
+        		for(String tag : dir.getValue()) {
+        			//pseudo code to find tag in tags structure
+        			//tagPair = tags.find(tag) 
+        			//if(tagPair) mTags.put(tagPair.getTagName(), tagPair.getValue()); 
+        			Pattern ptrn = Pattern.compile(tag+"=(^;+)[;\\]]");
+        			Matcher m = ptrn.matcher(box.toString());
+        			if(m.find())
+        				System.out.println("Match\\ "+m.group());
+        		}
+        		if(!mTags.isEmpty()) mmap.put(dir.getKey(), mTags);	
+        		
+        	}catch (Exception e) {
+				System.out.println(e);
+				continue;
+			}	
+        	
+        }	
         
         isoFile.close();
         fis.close();
                             
 		return mmap;
+	}
+	
+	private void Print(Box box, String tabs) {
+		if(box instanceof Container) {
+			System.out.println(tabs+box.getType()+"\\");
+			for(Box ch : ((Container) box).getBoxes())
+				Print(ch, tabs+"\t");
+		}else
+			System.out.println(tabs+box.getType()+":"+box);
+		
 	}
 
 		
