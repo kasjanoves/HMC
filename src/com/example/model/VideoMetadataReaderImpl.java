@@ -80,6 +80,7 @@ public class VideoMetadataReaderImpl implements MediaMetadataReader {
 			String pairs = m.group().substring(1, m.group().length()-1);
 			for(String pair : pairs.split(";")){
 				String[] entry = pair.split("=");
+				//SimpleDateFormat
 				if(entry.length == 2)
 					map.put(entry[0], entry[1]);
 			}	
