@@ -297,7 +297,7 @@ public class DBTables {
 	 */
 	public static ResultSet getMedia(Connection con) throws SQLException {
 		String queryString =
-		        "select ID, TYPE, DESCRIPTION, PATH " +
+		        "select * " +
 		        "from " + DBNAME + ".MEDIA";
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -345,7 +345,7 @@ public class DBTables {
 		}
 				
 		String queryString =
-		        "select ID, TYPE, DESCRIPTION, PATH " +
+		        "select * " +
 				"from " + DBNAME + ".media ";
 		if(sb.length()>0)
 			queryString = queryString +

@@ -59,16 +59,21 @@ public class MediaGalleryTagHandler extends SimpleTagSupport{
     	try {
 			while(rs.next()){
 				String path = rs.getString("PATH");
+				String tmbPath = rs.getString("THUMB_PATH");
 				String descr = rs.getString("DESCRIPTION");
+				String type = rs.getString("TYPE");
 				int id = rs.getInt("ID");
 													
 				out.print("<td align='center'>");
-				if(rs.getString("TYPE").equalsIgnoreCase("image"))
+				if(type.equals("image"))
 					out.print(String.format(IMG_TEMPLATE, path, descr, id));
-				else
-					out.print(String.format(VIDEO_TEMPLATE, path));
+				else if(type.equals("video"))
+					out.print(String.format(IMG_TEMPLATE, tmbPath, descr, id));
 				out.print("</td>");
-				descrRow = descrRow + "<td align='center'>" + descr + "</td>";
+				if(type.equals("video"))
+					descrRow = descrRow + "<td align='center'>" + descr + " [video]</td>";
+				else
+					descrRow = descrRow + "<td align='center'>" + descr + "</td>";
 				
 				if(++itemsCount == rowSize) {
 					out.print("</tr>");

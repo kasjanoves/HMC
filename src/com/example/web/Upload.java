@@ -129,7 +129,7 @@ public class Upload extends HttpServlet {
 					mreader = new VideoMetadataReaderImpl(requiredMetadata);
 		    	metadata = mreader.extractMetadata(UploadedFile);
 		    	mdataRows.fillItems(metadata);
-		    	//DBTables.insertMetadataRows(conn, mdataRows);
+		    	DBTables.insertMetadataRows(conn, mdataRows);
 				util.closeConnection(conn);
 					
 				request.setAttribute("mediaType", mediaType);
