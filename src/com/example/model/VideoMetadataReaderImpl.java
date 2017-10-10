@@ -4,7 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -76,13 +81,26 @@ public class VideoMetadataReaderImpl implements MediaMetadataReader {
 	private Map<String, String> parseTagPairs(String boxStr) {
 		Map<String, String> map = new HashMap<String, String>();
 		Matcher m = Pattern.compile("\\[.+\\]").matcher(boxStr);
+		Pattern DatePtr = Pattern.compile("\\w{3} \\w{3} \\d\\d \\d\\d:\\d\\d:\\d\\d \\w{3} \\d{4}");
 		if(m.find()){
 			String pairs = m.group().substring(1, m.group().length()-1);
 			for(String pair : pairs.split(";")){
 				String[] entry = pair.split("=");
 				//SimpleDateFormat
-				if(entry.length == 2)
-					map.put(entry[0], entry[1]);
+				if(entry.length == 2) {
+					String value = entry[1];
+					m = DatePtr.matcher(entry[1]);
+					if(m.find()) {
+						SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+						Date date = sdf.parse(value, new ParsePosition(0));
+						if(date != null) {
+							sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
+							value = sdf.format(date);
+							System.out.println(value);
+						}
+					}
+					map.put(entry[0], value);
+				}	
 			}	
 		}
 		return map;
