@@ -25,6 +25,10 @@
 		<input name="tag" type="text">
 		<input type="submit">
 		<input name="id" type="hidden" value = '${param.id}'>
+	</form>
+	<form action="Delete.do" method="post">
+		<input type="submit">
+		<input name="id" type="hidden" value = '${param.id}'>
 	</form>	
 </body>
 </html>

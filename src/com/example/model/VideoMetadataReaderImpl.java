@@ -86,17 +86,16 @@ public class VideoMetadataReaderImpl implements MediaMetadataReader {
 			String pairs = m.group().substring(1, m.group().length()-1);
 			for(String pair : pairs.split(";")){
 				String[] entry = pair.split("=");
-				//SimpleDateFormat
 				if(entry.length == 2) {
 					String value = entry[1];
 					m = DatePtr.matcher(entry[1]);
 					if(m.find()) {
-						SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+						SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
 						Date date = sdf.parse(value, new ParsePosition(0));
 						if(date != null) {
 							sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
 							value = sdf.format(date);
-							System.out.println(value);
+							//System.out.println(value);
 						}
 					}
 					map.put(entry[0], value);

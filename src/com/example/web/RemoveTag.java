@@ -24,7 +24,7 @@ public class RemoveTag extends HttpServlet{
 		
 		try {
 			conn = util.getConnection();
-			DBTables.removeMediaTagRow(conn, MediaID, TagID);
+			DBTables.deleteMediaTagRow(conn, MediaID, TagID);
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

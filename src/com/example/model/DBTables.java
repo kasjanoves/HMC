@@ -312,6 +312,24 @@ public class DBTables {
 		return rs;
 	}
 	
+	public static ResultSet getMediaById(Connection con, int id) throws SQLException {
+		String queryString =
+		        "select * " +
+		        "from " + DBNAME + ".MEDIA" +
+		        "where ID=" + String.valueOf(id);
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			stmt = con.createStatement();
+	        rs = stmt.executeQuery(queryString);
+	    } catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    }
+				
+		return rs;
+	}
+	
 	public static ResultSet getMediaInfo(Connection con, int id) throws SQLException {
 		String queryString =
 				"SELECT MEDIA.*," + 
@@ -454,7 +472,7 @@ public class DBTables {
 		return rs;
 	}
 	
-	public static void removeMediaTagRow(Connection con, int MediaID, int TagID) throws SQLException {
+	public static void deleteMediaTagRow(Connection con, int MediaID, int TagID) throws SQLException {
 		String queryString = "delete from " + DBNAME +
 					".MEDIA_TAGS" +
 			        " where MEDIA_TAGS.MEDIA_ID = ? and MEDIA_TAGS.TAG_ID = ?";
@@ -464,6 +482,23 @@ public class DBTables {
 	    	deleteRow = con.prepareStatement(queryString);
 	    	deleteRow.setInt(1, MediaID);
 		    deleteRow.setInt(2, TagID);
+		    deleteRow.executeUpdate();
+		} catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    } finally {
+	        if (deleteRow != null) { deleteRow.close(); }
+	    }
+	}
+	
+	public static void deleteMediaRow(Connection con, int MediaID) throws SQLException {
+		String queryString = "delete from " + DBNAME +
+					".MEDIA" +
+			        " where ID = ?";
+				
+		java.sql.PreparedStatement deleteRow = null;
+		try {
+	    	deleteRow = con.prepareStatement(queryString);
+	    	deleteRow.setInt(1, MediaID);
 		    deleteRow.executeUpdate();
 		} catch (SQLException e) {
 	    	JDBCUtilities.printSQLException(e);
