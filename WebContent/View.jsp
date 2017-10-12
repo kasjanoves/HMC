@@ -12,14 +12,12 @@
 	<formTags:MediaView id='${param.id}' />
 	<br>
 	<formTags:MediaTags id='${param.id}' />
-	<br>
 	Select tag
 	<form action="AddTag.do" method="post">
 		<formTags:TagSelector id='${param.id}' />
 		<input type="submit">
 		<input name="id" type="hidden" value = '${param.id}'>
 	</form>
-	<br>
 	Add new tag
 	<form action="AddTag.do" method="post">
 		<input name="tag" type="text">
@@ -27,7 +25,7 @@
 		<input name="id" type="hidden" value = '${param.id}'>
 	</form>
 	<form action="Delete.do" method="post">
-		<input type="submit">
+		<input type="submit" value="Delete" >
 		<input name="id" type="hidden" value = '${param.id}'>
 	</form>	
 </body>

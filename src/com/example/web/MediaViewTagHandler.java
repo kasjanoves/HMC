@@ -55,7 +55,11 @@ public class MediaViewTagHandler extends SimpleTagSupport {
 				out.print(String.format(IMG_TEMPLATE, path, descr));
 			else
 				out.print(String.format(VIDEO_TEMPLATE, path));
-			out.print(descr+"<br>");
+			out.print("<form action='Update.do' method='post'>");
+			out.print(String.format("<input name='descr' type='text' value='%1$s'>", descr));
+			out.print(String.format("<input name='id' type='hidden' value='%1$d'>", id));
+			out.print("<input type='submit' value='apply'>");
+			out.print("</form>");
 			out.print(table);
 			
 					

@@ -43,4 +43,10 @@
 	<servlet-mapping>
 		<servlet-name>Delete</servlet-name>
 		<url-pattern>/Delete.do</url-pattern></servlet-mapping>
+	<servlet>
+		<servlet-name>Update</servlet-name>
+		<servlet-class>com.example.web.Update</servlet-class></servlet>
+	<servlet-mapping>
+		<servlet-name>Update</servlet-name>
+		<url-pattern>/Update.do</url-pattern></servlet-mapping>
 </web-app>

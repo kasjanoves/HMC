@@ -315,8 +315,8 @@ public class DBTables {
 	public static ResultSet getMediaById(Connection con, int id) throws SQLException {
 		String queryString =
 		        "select * " +
-		        "from " + DBNAME + ".MEDIA" +
-		        "where ID=" + String.valueOf(id);
+		        "from " + DBNAME + ".MEDIA " +
+		        "where ID = " + String.valueOf(id);
 		Statement stmt = null;
 		ResultSet rs = null;
 		
@@ -332,14 +332,14 @@ public class DBTables {
 	
 	public static ResultSet getMediaInfo(Connection con, int id) throws SQLException {
 		String queryString =
-				"SELECT MEDIA.*," + 
-				"metadata_types.DIRECTORY," + 
-				"metadata_types.TAG," + 
-				"metadata.VALUE " + 
-				"FROM "+ DBNAME +".MEDIA " + 
-				"left join " + DBNAME + ".metadata on metadata.MEDIA_ID=media.ID " + 
-				"left join " + DBNAME + ".metadata_types on metadata.MDATA_ID = metadata_types.ID " + 
-				"where media.ID=" + String.valueOf(id);
+				"select MEDIA.*," + 
+				"METADATA_TYPES.DIRECTORY," + 
+				"METADATA_TYPES.TAG," + 
+				"METADATA.VALUE " + 
+				"from "+ DBNAME +".MEDIA " + 
+				"left join " + DBNAME + ".METADATA on METADATA.MEDIA_ID=MEDIA.ID " + 
+				"left join " + DBNAME + ".METADATA_TYPES on METADATA.MDATA_ID = METADATA_TYPES.ID " + 
+				"where MEDIA.ID=" + String.valueOf(id);
 		Statement stmt = null;
 		ResultSet rs = null;
 		
@@ -492,13 +492,30 @@ public class DBTables {
 	
 	public static void deleteMediaRow(Connection con, int MediaID) throws SQLException {
 		String queryString = "delete from " + DBNAME +
-					".MEDIA" +
-			        " where ID = ?";
+					".MEDIA where MEDIA.ID = ?";
 				
 		java.sql.PreparedStatement deleteRow = null;
 		try {
 	    	deleteRow = con.prepareStatement(queryString);
 	    	deleteRow.setInt(1, MediaID);
+		    deleteRow.executeUpdate();
+		} catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    } finally {
+	        if (deleteRow != null) { deleteRow.close(); }
+	    }
+	}
+	
+	public static void updateMediaDescription(Connection con, int MediaID, String descr) throws SQLException {
+		String queryString = "update " + DBNAME +
+					".MEDIA set DESCRIPTION = ? "
+					+ "where MEDIA.ID = ?";
+				
+		java.sql.PreparedStatement deleteRow = null;
+		try {
+	    	deleteRow = con.prepareStatement(queryString);
+	    	deleteRow.setString(1, descr);
+	    	deleteRow.setInt(2, MediaID);
 		    deleteRow.executeUpdate();
 		} catch (SQLException e) {
 	    	JDBCUtilities.printSQLException(e);
