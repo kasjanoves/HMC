@@ -37,7 +37,7 @@ public class Delete extends HttpServlet{
 				if(file.exists()) {
 					file.delete();
 				}
-				if(!tmbPath.isEmpty()) {
+				if(tmbPath != null && !tmbPath.isEmpty()) {
 					filePath = getServletContext().getRealPath("/"+tmbPath);
 					file = new File(filePath);
 					if(file.exists()) {
@@ -45,6 +45,7 @@ public class Delete extends HttpServlet{
 					}
 				}
 				DBTables.deleteMediaRow(conn, MediaID);
+				DBTables.deleteUnusedTags(conn);
 			}
 			
 		} catch (Exception e) {

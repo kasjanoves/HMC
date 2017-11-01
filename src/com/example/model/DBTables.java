@@ -388,11 +388,11 @@ public class DBTables {
 		return rs;
 	}
 	
-	public static ResultSet getMediaTags(Connection con, int id) throws SQLException {
+	public static ResultSet getMediaTags(Connection con, int mediaID) throws SQLException {
 		String queryString =
 				"select TAG_ID as ID, NAME "
 				+ "FROM "+ DBNAME +".MEDIA_TAGS, "+ DBNAME +".TAGS " + 
-				"where MEDIA_ID = "+ String.valueOf(id)
+				"where MEDIA_ID = "+ String.valueOf(mediaID)
 				+ " and MEDIA_TAGS.TAG_ID=TAGS.ID";
 						
 		Statement stmt = null;
@@ -428,7 +428,7 @@ public class DBTables {
 	
 	public static ResultSet getUnselectedTags(Connection con, int MediaID) throws SQLException {
 		String queryString =
-				"select ID, NAME FROM "+ DBNAME +".TAGS " +
+				"select ID, NAME from "+ DBNAME +".TAGS " +
 				"where ID not in (select TAG_ID from "+ DBNAME +".MEDIA_TAGS " + 
 				"where MEDIA_ID = ?)";
 										
@@ -499,6 +499,38 @@ public class DBTables {
 	    	deleteRow = con.prepareStatement(queryString);
 	    	deleteRow.setInt(1, MediaID);
 		    deleteRow.executeUpdate();
+		} catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    } finally {
+	        if (deleteRow != null) { deleteRow.close(); }
+	    }
+	}
+	
+	public static void deleteTagRow(Connection con, int tagID) throws SQLException {
+		String queryString = "delete from " + DBNAME +
+					".TAGS where TAGS.ID = ?";
+				
+		java.sql.PreparedStatement deleteRow = null;
+		try {
+	    	deleteRow = con.prepareStatement(queryString);
+	    	deleteRow.setInt(1, tagID);
+		    deleteRow.executeUpdate();
+		} catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    } finally {
+	        if (deleteRow != null) { deleteRow.close(); }
+	    }
+	}
+	
+	public static void deleteUnusedTags(Connection con) throws SQLException {
+		String queryString = "delete from " + DBNAME +
+					".TAGS where ID not in "
+					+ "(select distinct TAG_ID from " + DBNAME + ".MEDIA_TAGS)";
+				
+		java.sql.PreparedStatement deleteRow = null;
+		try {
+	    	deleteRow = con.prepareStatement(queryString);
+	    	deleteRow.executeUpdate();
 		} catch (SQLException e) {
 	    	JDBCUtilities.printSQLException(e);
 	    } finally {
