@@ -1,13 +1,13 @@
 <preferences>
 	<destination name="video">
 		<directory name="moov/mvhd">
-			<tag name="creationTime"></tag></directory>
+			<tag name="creationTime" type="DateTime"></tag></directory>
 		<directory name="moov/trak[0]/tkhd">
-			<tag name="width"></tag>
-			<tag name="height"></tag></directory></destination>
+			<tag name="width" type="Num"></tag>
+			<tag name="height" type="Num"></tag></directory></destination>
 	<destination name="image">
 		<directory name="Exif SubIFD">
-			<tag name="Date/Time Digitized"></tag></directory>
+			<tag name="Date/Time Digitized" type="DateTime"></tag></directory>
 		<directory name="JFIF">
-			<tag name="X Resolution"></tag>
-			<tag name="Y Resolution"></tag></directory></destination></preferences>
+			<tag name="X Resolution" type="Num"></tag>
+			<tag name="Y Resolution" type="Num"></tag></directory></destination></preferences>

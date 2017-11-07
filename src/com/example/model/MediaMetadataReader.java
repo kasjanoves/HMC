@@ -7,6 +7,12 @@ import java.util.Map;
 
 public interface MediaMetadataReader {
 		
-	public Map<String, Map<String, String>> extractMetadata(File file) 
+	/**
+	 * @param file
+	 * @return Map<String, Map<String, Map<String, String>>>
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public Map<String, Map<String, Map<String, String>>> extractMetadata(File file) 
 			throws FileNotFoundException, IOException;
 }

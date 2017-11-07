@@ -5,14 +5,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
+//so much boilerplate code here
 public class DBTables {
 	
 	public final static String DBNAME = "HMCATALOG";
-		
+	
 	public static void createMediaTable(Connection con) throws SQLException {
 	    String createString =
 	    	"create table if not exists " + DBNAME +
@@ -45,6 +45,8 @@ public class DBTables {
 		        "(MEDIA_ID integer not null, " +
 		        "MDATA_ID integer not null, " +
 		        "VALUE varchar(150), " +
+		        "NUM_VALUE numeric(10,2), " +
+		        "DATA_VALUE datetime, " +
 		        "PRIMARY KEY (MEDIA_ID, MDATA_ID)," + 
 		        "FOREIGN KEY (MEDIA_ID)" + 
 		        	"REFERENCES "+ DBNAME +".MEDIA(ID)" +
@@ -75,6 +77,7 @@ public class DBTables {
 		        "DESTINATION varchar(15), " +
 		        "DIRECTORY varchar(50), " +
 		        "TAG varchar(50), " +
+		        "TYPE varchar(10), " +
 		        "PRIMARY KEY (ID))";
 
 		    Statement stmt = null;
@@ -198,7 +201,7 @@ public class DBTables {
 		
 		String insertString = "insert into " + DBNAME +
 				"." + MetadataTagRow.TABLE_NAME +
-		        " values(NULL,?,?,?)";
+		        " values(NULL,?,?,?,?)";
 		
 		java.sql.PreparedStatement insertRow = null;
 		
@@ -207,6 +210,7 @@ public class DBTables {
 	    	insertRow.setString(1, mDataRow.getDestination());
 	    	insertRow.setString(2, mDataRow.getDirectory());
 	    	insertRow.setString(3, mDataRow.getTag());
+	    	insertRow.setString(4, mDataRow.getType());
 	    	insertRow.executeUpdate();
 	    	rs = insertRow.getGeneratedKeys();
 	        if (rs.next()) {
