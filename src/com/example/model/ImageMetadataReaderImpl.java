@@ -38,8 +38,6 @@ public class ImageMetadataReaderImpl implements MediaMetadataReader {
 	                for (Tag tag : directory.getTags()) {
 	                    //System.out.println(tag);
 	                	if(reqDirectory.containsKey(tag.getTagName())) {
-	                		Map<String, String> mTag = new HashMap<String, String>();
-	                		mTag.put(tag.getTagName(), value);
 	                		mTags.put(tag.getTagName(), tag.getDescription());
 	                	}
 	                }

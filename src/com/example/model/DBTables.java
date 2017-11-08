@@ -171,9 +171,9 @@ public class DBTables {
 		return autoIncKey;
 	}
 	
-	public static int insertMetadataTagRow(Connection con, MetadataTagRow mDataRow) throws SQLException {
+	public static int insertMetadataTagRow(Connection con, MetadataTag mDataRow) throws SQLException {
 		String queryString = "select ID " +
-		        "from " + DBNAME + "." + MetadataTagRow.TABLE_NAME +
+		        "from " + DBNAME + "." + MetadataTag.TABLE_NAME +
 		        " WHERE DESTINATION = '" + mDataRow.getDestination() + "'" +
 		        " AND DIRECTORY = '" + mDataRow.getDirectory() + "'" +
 		        " AND TAG = '" + mDataRow.getTag() + "'";
@@ -200,7 +200,7 @@ public class DBTables {
 	    }
 		
 		String insertString = "insert into " + DBNAME +
-				"." + MetadataTagRow.TABLE_NAME +
+				"." + MetadataTag.TABLE_NAME +
 		        " values(NULL,?,?,?,?)";
 		
 		java.sql.PreparedStatement insertRow = null;

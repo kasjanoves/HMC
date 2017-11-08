@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -15,7 +17,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class ReqMetadataParser extends DefaultHandler {
 	
-	private Map<String,Map<String,Map<String, String>>> mmap;
+	private Set<MetadataTag> mset;
 	private Map<String,Map<String, String>> destination = null;
 	private Map<String, String> directory = null;
 	
@@ -68,7 +70,7 @@ public class ReqMetadataParser extends DefaultHandler {
         return "file:" + path;
 	}
 	
-	public Map<String, Map<String, Map<String, String>>> parse(String filename) throws ParserConfigurationException,
+	public Set<MetadataTag> parse(String filename) throws ParserConfigurationException,
 											SAXException, IOException{
 		SAXParserFactory spf = SAXParserFactory.newInstance();
 	    spf.setNamespaceAware(true);
@@ -76,7 +78,7 @@ public class ReqMetadataParser extends DefaultHandler {
 		XMLReader xmlReader = saxParser.getXMLReader();
 		xmlReader.setContentHandler(this);
 		xmlReader.parse(convertToFileURL(filename));
-		return mmap;
+		return mset;
 	}
 		 
 	
