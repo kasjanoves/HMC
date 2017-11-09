@@ -2,8 +2,7 @@ package com.example.model;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -18,12 +17,12 @@ import org.xml.sax.helpers.DefaultHandler;
 public class ReqMetadataParser extends DefaultHandler {
 	
 	private Set<MetadataTag> mset;
-	private Map<String,Map<String, String>> destination = null;
-	private Map<String, String> directory = null;
+	private String destination = "";
+	private String directory = "";
 	
 	
 	public void startDocument() throws SAXException {
-		mmap = new HashMap<String,Map<String,Map<String, String>>>();
+		mset = new HashSet<MetadataTag>();
     }
 	
 	public void startElement(String namespaceURI,
@@ -33,22 +32,14 @@ public class ReqMetadataParser extends DefaultHandler {
 		
 		String Name = atts.getValue("name");
 		if(localName.equals("destination")) {
-			destination = mmap.get(Name);
-			if(destination == null) {
-				destination = new HashMap<String,Map<String, String>>();
-				mmap.put(Name, destination);
-			}
+			destination = Name;
 		}else if(localName.equals("directory")) {
-			if(destination != null) {
-				directory = destination.get(Name);
-				if(directory == null) {
-					directory = new HashMap<String, String>();
-					destination.put(Name, directory);
-				}
-			}
+			directory = Name;
 		}else if(localName.equals("tag")) {
-			if(directory != null) {
-				directory.put(Name, atts.getValue("type"));
+			if(!destination.isEmpty() && !directory.isEmpty()) {
+				MetadataTag newTag = new MetadataTag(destination, directory,
+						Name, atts.getValue("type"));
+				mset.add(newTag);
 			}
 		}
 			

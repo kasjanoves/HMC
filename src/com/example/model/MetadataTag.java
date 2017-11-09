@@ -1,17 +1,22 @@
 package com.example.model;
 
 public class MetadataTag {
+	
+	public final static String TABLE_NAME = "METADATA_TYPES";
+	
 	private String Destination;
 	private String Directory;
 	private String Tag;
 	private String Type;
-	public final static String TABLE_NAME = "METADATA_TYPES";
 	
-	public MetadataTag(String destination, String directory, String tag, String type) {
+	public MetadataTag(String destination, String directory, String tag) {
 		super();
 		Destination = destination;
 		Directory = directory;
 		Tag = tag;
+	}		
+	public MetadataTag(String destination, String directory, String tag, String type) {
+		this(destination, directory, tag);
 		Type = type;
 	}
 	public String getDestination() {
@@ -26,11 +31,13 @@ public class MetadataTag {
 	public String getType() {
 		return Type;
 	}
-	
+	public void setType(String type) {
+		Type = type;
+	}
 	public String toString() {
 		return Destination+"\\"+Directory+"\\"+Tag;
 	}
-	
+		
 	@Override
 	public int hashCode() {
 		return Destination.hashCode()+Directory.hashCode()+Tag.hashCode();

@@ -20,29 +20,32 @@ import com.drew.metadata.Tag;
  */
 public class ImageMetadataReaderImpl implements MediaMetadataReader {
 	
-	private Map<String, Map<String, String>> destination;
+	private Set<MetadataTag> reqMetadata;
+	private final String destination = "image";
 	
-	public ImageMetadataReaderImpl(Map<String, Map<String, Map<String, String>>> reqMetadata) {
-		destination = reqMetadata.get("image");
+	public ImageMetadataReaderImpl(Set<MetadataTag> reqMetadata) {
+		this.reqMetadata = reqMetadata;
 	}
 	
-	public Map<String, Map<String, Map<String, String>>> extractMetadata(File file) throws IOException {
-		Map<String, Map<String, Map<String, String>>> mmap = new HashMap<String, Map<String, Map<String, String>>>();
+	public Map<MetadataTag, String> extractMetadata(File file) throws IOException {
+		
+		Map<MetadataTag, String> mmap = new HashMap<MetadataTag, String>();
 		
 		try {
             Metadata metadata = ImageMetadataReader.readMetadata(file);
             for (Directory directory : metadata.getDirectories()) {
-            	Map<String, String> reqDirectory = destination.get(directory.getName());
-            	if(reqDirectory != null) {
-	            	Map<String, Map<String, String>> mTags = new HashMap<String, Map<String, String>>();
-	                for (Tag tag : directory.getTags()) {
-	                    //System.out.println(tag);
-	                	if(reqDirectory.containsKey(tag.getTagName())) {
-	                		mTags.put(tag.getTagName(), tag.getDescription());
-	                	}
-	                }
-	                if(!mTags.isEmpty()) mmap.put(directory.getName(), mTags);
-            	}
+            	String dir = directory.getName();
+        	   	for (Tag tag : directory.getTags()) {
+                    //System.out.println(tag);
+        	   		MetadataTag newTag = new MetadataTag(destination, dir, tag.getTagName());
+        	   		if(reqMetadata.contains(newTag)) {
+        	   			for(MetadataTag reqTag : reqMetadata)
+        	   				if(reqTag.equals(newTag)) {
+        	   					newTag.setType(reqTag.getType());
+        	   					mmap.put(newTag, tag.getDescription());
+        	   				}	
+                	}
+                }
             }
         } catch (ImageProcessingException e) {
         	e.printStackTrace();

@@ -9,6 +9,7 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -22,14 +23,27 @@ import org.mp4parser.IsoFile;
 import org.mp4parser.tools.Path;
 
 public class VideoMetadataReaderImpl implements MediaMetadataReader {
-	private Map<String, Set<String>> destination;
-	private Map<String, Map<String, String>> mmap = new HashMap<String, Map<String, String>>();
+	
+	private Map<String, Set<MetadataTag>> reqMetadataMap;
+	private final String destination = "video";
+	
+	private Map<MetadataTag, String> mmap = new HashMap<MetadataTag, String>();
 				
-	public VideoMetadataReaderImpl(Map<String, Map<String, Set<String>>> reqMetadata) {
-		destination = reqMetadata.get("video");
+	public VideoMetadataReaderImpl(Set<MetadataTag> reqMetadata) {
+		
+		reqMetadataMap = new HashMap<String, Set<MetadataTag>>();
+		for(MetadataTag tag : reqMetadata) {
+			if(tag.getDestination().equals(destination)) {
+				Set<MetadataTag> mtags = reqMetadataMap.get(tag.getDirectory());
+				if(mtags == null)
+					mtags = new HashSet<MetadataTag>();
+				mtags.add(tag);	
+				reqMetadataMap.put(tag.getDirectory(), mtags);	
+			}	
+		}	
 	}
 
-	public Map<String, Map<String, String>> extractMetadata(File file) throws IOException {
+	public Map<MetadataTag, String> extractMetadata(File file) throws IOException {
 		
 		if (!file.exists()) {
             throw new FileNotFoundException("File " + file.getPath() + " not exists");
@@ -45,10 +59,10 @@ public class VideoMetadataReaderImpl implements MediaMetadataReader {
 //        Box b = Path.getPath(isoFile, "moov/trak[0]/tkhd");
 //        System.out.println(b);
         
-        for(Entry<String, Set<String>> dir : destination.entrySet()) {
+        for(Entry<String, Set<MetadataTag>> dir : reqMetadataMap.entrySet()) {
         	try {
         		Map<String, String> mTags = new HashMap<String, String>();
-        		Box box = Path.getPath(isoFile, dir.getKey());
+        		Box box = Path.getPath(isoFile, reqTag.getDirectory());
         		//System.out.println(box);
         		Map<String, String> TagPairs = parseTagPairs(box.toString());
         		for(String tag : dir.getValue()) {
@@ -59,7 +73,7 @@ public class VideoMetadataReaderImpl implements MediaMetadataReader {
         	}catch (Exception e) {
 				System.out.println(e);
 				continue;
-			}	
+			}
         }	
         
         isoFile.close();

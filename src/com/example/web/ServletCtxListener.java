@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.Set;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -13,6 +15,7 @@ import org.xml.sax.SAXException;
 
 import com.example.model.DBTables;
 import com.example.model.JDBCUtilities;
+import com.example.model.MetadataTag;
 import com.example.model.ReqMetadataParser;
 
 public class ServletCtxListener implements ServletContextListener {
@@ -33,7 +36,7 @@ public class ServletCtxListener implements ServletContextListener {
 			DBTables.createMetadataTable(conn);
 			DBTables.createTagsTable(conn);
 			DBTables.createMediaTagsTable(conn);
-			Map<String, Map<String, Map<String, String>>> requiredMetadata =
+			Set<MetadataTag> requiredMetadata =
 					rmp.parse(sc.getRealPath("/WEB-INF/RequiredMetadata.xml"));
 			sc.setAttribute("requiredMetadata", requiredMetadata);
 			
