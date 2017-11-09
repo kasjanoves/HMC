@@ -171,12 +171,12 @@ public class DBTables {
 		return autoIncKey;
 	}
 	
-	public static int insertMetadataTagRow(Connection con, MetadataTag mDataRow) throws SQLException {
+	public static int insertMetadataTagRow(Connection con, MetadataTag mDataTag) throws SQLException {
 		String queryString = "select ID " +
 		        "from " + DBNAME + "." + MetadataTag.TABLE_NAME +
-		        " WHERE DESTINATION = '" + mDataRow.getDestination() + "'" +
-		        " AND DIRECTORY = '" + mDataRow.getDirectory() + "'" +
-		        " AND TAG = '" + mDataRow.getTag() + "'";
+		        " WHERE DESTINATION = '" + mDataTag.getDestination() + "'" +
+		        " AND DIRECTORY = '" + mDataTag.getDirectory() + "'" +
+		        " AND TAG = '" + mDataTag.getTag() + "'";
 		//System.out.println(queryString);
 			
 		int autoIncKey = -1;
@@ -207,10 +207,10 @@ public class DBTables {
 		
 		try {
 	    	insertRow = con.prepareStatement(insertString, Statement.RETURN_GENERATED_KEYS);
-	    	insertRow.setString(1, mDataRow.getDestination());
-	    	insertRow.setString(2, mDataRow.getDirectory());
-	    	insertRow.setString(3, mDataRow.getTag());
-	    	insertRow.setString(4, mDataRow.getType());
+	    	insertRow.setString(1, mDataTag.getDestination());
+	    	insertRow.setString(2, mDataTag.getDirectory());
+	    	insertRow.setString(3, mDataTag.getTag());
+	    	insertRow.setString(4, mDataTag.getType());
 	    	insertRow.executeUpdate();
 	    	rs = insertRow.getGeneratedKeys();
 	        if (rs.next()) {

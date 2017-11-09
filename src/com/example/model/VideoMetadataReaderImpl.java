@@ -61,15 +61,13 @@ public class VideoMetadataReaderImpl implements MediaMetadataReader {
         
         for(Entry<String, Set<MetadataTag>> dir : reqMetadataMap.entrySet()) {
         	try {
-        		Map<String, String> mTags = new HashMap<String, String>();
-        		Box box = Path.getPath(isoFile, reqTag.getDirectory());
+        		Box box = Path.getPath(isoFile, dir.getKey());
         		//System.out.println(box);
         		Map<String, String> TagPairs = parseTagPairs(box.toString());
-        		for(String tag : dir.getValue()) {
-        			String value = TagPairs.get(tag);
-        			if(value != null) mTags.put(tag, value); 
+        		for(MetadataTag tag : dir.getValue()) {
+        			String value = TagPairs.get(tag.getTag());
+        			if(value != null) mmap.put(tag, value); 
         		}
-        		if(!mTags.isEmpty()) mmap.put(box.getClass().getSimpleName(), mTags);	
         	}catch (Exception e) {
 				System.out.println(e);
 				continue;

@@ -28,6 +28,7 @@ import com.example.model.MediaMetadataReader;
 import com.example.model.MediaRow;
 import com.example.model.MediaThumbnailCreator;
 import com.example.model.MetadataRows;
+import com.example.model.MetadataTag;
 import com.example.model.VideoMetadataReaderImpl;
 import com.example.model.VideoThumbCreatorImpl;
 import com.example.web.WebUtils;
@@ -101,8 +102,8 @@ public class Upload extends HttpServlet {
 				String mediaType = WebUtils.ExtractHeader(contentType);
 				String thumbPath = "";
 				MediaMetadataReader mreader = null;
-				Map<String,Map<String,Set<String>>> requiredMetadata
-					= (Map<String,Map<String,Set<String>>>) getServletContext().getAttribute("requiredMetadata");
+				Set<MetadataTag> requiredMetadata
+					= (Set<MetadataTag>) getServletContext().getAttribute("requiredMetadata");
 				
 				if(mediaType.equals("video")) {
 					MediaThumbnailCreator tmbCreator = new VideoThumbCreatorImpl();
@@ -121,8 +122,8 @@ public class Upload extends HttpServlet {
 		    	Connection conn = util.getConnection();
 		    	int MediaRowID;
 		    	MediaRowID = DBTables.insertMediaRow(conn, mRow);
-		    	MetadataRows mdataRows = new MetadataRows(MediaRowID, mediaType);
-		    	Map<String, Map<String, String>> metadata;
+		    	MetadataRows mdataRows = new MetadataRows(util, MediaRowID);
+		    	Map<MetadataTag, String> metadata;
 		    	if(mediaType.equals("image"))
 					mreader = new ImageMetadataReaderImpl(requiredMetadata);
 				else if(mediaType.equals("video"))
