@@ -1,21 +1,50 @@
 package com.example.model;
 
-public class MetadataRow extends MetadataTag{
+public class MetadataRow {
 
+	private MetadataTag tag;
 	private String value;
 	private int RowID;
-	
-	public MetadataRow(String destination, String directory, String tag) {
-		super(destination, directory, tag);
-		// TODO Auto-generated constructor stub
-	}
-	
+			
 	public MetadataRow(MetadataTag tag, String value, int RowID) {
-		super(tag.getDestination(),
-				tag.getDirectory(),
-				tag.getTag());
+		this.tag = tag;
 		this.value = value;
 		this.RowID = RowID;
 	}
+	
+	public MetadataTag getTag() {
+		return tag;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public int getRowID() {
+		return RowID;
+	}
+
+	@Override
+	public int hashCode() {
+		return tag.hashCode()+value.hashCode()+RowID;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof  MetadataRow)
+			return tag.equals(((MetadataRow) obj).tag)&&
+					value.equals(((MetadataRow) obj).value)&&
+					RowID == ((MetadataRow) obj).RowID;
+		return super.equals(obj);
+	}
+
+	@Override
+	public String toString() {
+		return tag.toString()+
+				" ("+RowID+") "+
+				": "+value;
+	}
+	
+	
 
 }

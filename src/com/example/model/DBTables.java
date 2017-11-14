@@ -1,10 +1,15 @@
 package com.example.model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -230,15 +235,27 @@ public class DBTables {
 	public static void insertMetadataRows(Connection con, MetadataRows mdataValues) throws SQLException {
 		String queryString = "insert into " + DBNAME +
 					".METADATA" +
-			        " values(?,?,?)";
+			        " values(?,?,?,?,?)";
 				
 		java.sql.PreparedStatement insertRow = null;
 		try {
 	    	insertRow = con.prepareStatement(queryString);
-	    	for(Entry<Integer, String> entry : mdataValues.getItems()) {
+	    	for(MetadataRow mdataRow : mdataValues.getItems()) {
 		    	insertRow.setInt(1, mdataValues.getMediaRowID());
-		    	insertRow.setInt(2, entry.getKey());
-		    	insertRow.setString(3, entry.getValue());
+		    	insertRow.setInt(2, mdataRow.getRowID());
+		    	insertRow.setString(3, "");
+		    	insertRow.setFloat(4, 0.0f);
+		    	insertRow.setDate(5, null);
+		    	if(mdataRow.getTag().getType().equals("string"))
+		    		insertRow.setString(3, mdataRow.getValue());
+		    	else if(mdataRow.getTag().getType().equals("Num"))
+		    		insertRow.setFloat(4, Float.parseFloat(mdataRow.getValue()));
+		    	else if(mdataRow.getTag().getType().equals("DateTime")) {
+		    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+					java.util.Date date = sdf.parse(mdataRow.getValue(), new ParsePosition(0));
+		    		insertRow.setDate(5, date);
+		    	}
+		    		
 		    	insertRow.executeUpdate();
 	    	}
 	    } catch (SQLException e) {
