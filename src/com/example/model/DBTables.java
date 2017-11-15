@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Set;
 
 //so much boilerplate code here
@@ -248,14 +250,18 @@ public class DBTables {
 		    	insertRow.setDate(5, null);
 		    	if(mdataRow.getTag().getType().equals("string"))
 		    		insertRow.setString(3, mdataRow.getValue());
-		    	else if(mdataRow.getTag().getType().equals("Num"))
-		    		insertRow.setFloat(4, Float.parseFloat(mdataRow.getValue()));
+		    	else if(mdataRow.getTag().getType().equals("Num")) {
+		    		Matcher m = Pattern.compile("\\d+").matcher(mdataRow.getValue());
+		    		if(m.find()){
+		    			String val = m.group();
+		    			insertRow.setFloat(4, Float.parseFloat(val));
+		    		}
+		    	}
 		    	else if(mdataRow.getTag().getType().equals("DateTime")) {
 		    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 					java.util.Date date = sdf.parse(mdataRow.getValue(), new ParsePosition(0));
-		    		insertRow.setDate(5, date);
+		    		insertRow.setDate(5, new java.sql.Date(date.getTime()));
 		    	}
-		    		
 		    	insertRow.executeUpdate();
 	    	}
 	    } catch (SQLException e) {
