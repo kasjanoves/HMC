@@ -253,7 +253,7 @@ public class DBTables {
 		    	else if(mdataRow.getTag().getType().equals("DateTime")) {
 		    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 					java.util.Date date = sdf.parse(mdataRow.getValue(), new ParsePosition(0));
-		    		insertRow.setDate(5, date);
+		    		insertRow.setDate(5, new java.sql.Date(date.getTime()));
 		    	}
 		    		
 		    	insertRow.executeUpdate();
