@@ -8,6 +8,6 @@
 	<destination name="image">
 		<directory name="Exif SubIFD">
 			<tag name="Date/Time Digitized" type="DateTime"></tag></directory>
-		<directory name="JFIF">
-			<tag name="X Resolution" type="Num"></tag>
-			<tag name="Y Resolution" type="Num"></tag></directory></destination></preferences>
+		<directory name="JPEG">
+			<tag name="Image Height" type="Num"></tag>
+			<tag name="Image Width" type="Num"></tag></directory></destination></preferences>

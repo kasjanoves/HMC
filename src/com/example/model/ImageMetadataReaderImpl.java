@@ -2,7 +2,6 @@ package com.example.model;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -36,7 +35,7 @@ public class ImageMetadataReaderImpl implements MediaMetadataReader {
             for (Directory directory : metadata.getDirectories()) {
             	String dir = directory.getName();
         	   	for (Tag tag : directory.getTags()) {
-                    //System.out.println(tag);
+                    System.out.println(tag);
         	   		MetadataTag newTag = new MetadataTag(destination, dir, tag.getTagName());
         	   		if(reqMetadata.contains(newTag)) {
         	   			for(MetadataTag reqTag : reqMetadata)

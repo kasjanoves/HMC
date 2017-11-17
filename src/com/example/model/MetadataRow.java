@@ -1,39 +1,74 @@
 package com.example.model;
 
+import java.sql.Timestamp;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class MetadataRow {
 
 	private MetadataTag tag;
-	private String value;
+	private String StringValue;
+	private float NumValue;
+	private Timestamp DateTimeValue;
 	private int RowID;
 			
-	public MetadataRow(MetadataTag tag, String value, int RowID) {
+	public MetadataRow(MetadataTag tag, int RowID) {
 		this.tag = tag;
-		this.value = value;
 		this.RowID = RowID;
 	}
-	
+		
+	public void setValue(String stringValue) {
+		StringValue = stringValue;
+		//try to parsing 
+		if(tag.getType().equals("Num")) {
+    		Matcher m = Pattern.compile("\\d+").matcher(StringValue);
+    		if(m.find()){
+    			String val = m.group();
+    			NumValue = Float.parseFloat(val);
+    		}
+    	}
+    	if(tag.getType().equals("DateTime")) {
+    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss", Locale.ENGLISH);
+    		Date date = sdf.parse(StringValue, new ParsePosition(0));
+    		if(date != null)
+    			DateTimeValue = new java.sql.Timestamp(date.getTime());
+    	}
+	}
+
 	public MetadataTag getTag() {
 		return tag;
 	}
 
-	public String getValue() {
-		return value;
+	public String getStringValue() {
+		return StringValue;
 	}
 
 	public int getRowID() {
 		return RowID;
 	}
+	
+	public float getNumValue() {
+		return NumValue;
+	}
+
+	public Timestamp getDateTimeValue() {
+		return DateTimeValue;
+	}
 
 	@Override
 	public int hashCode() {
-		return tag.hashCode()+value.hashCode()+RowID;
+		return tag.hashCode()+StringValue.hashCode()+RowID;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof  MetadataRow)
 			return tag.equals(((MetadataRow) obj).tag)&&
-					value.equals(((MetadataRow) obj).value)&&
+					StringValue.equals(((MetadataRow) obj).StringValue)&&
 					RowID == ((MetadataRow) obj).RowID;
 		return super.equals(obj);
 	}
@@ -42,9 +77,7 @@ public class MetadataRow {
 	public String toString() {
 		return tag.toString()+
 				" ("+RowID+") "+
-				": "+value;
+				": "+StringValue;
 	}
-	
-	
 
 }

@@ -245,23 +245,9 @@ public class DBTables {
 	    	for(MetadataRow mdataRow : mdataValues.getItems()) {
 		    	insertRow.setInt(1, mdataValues.getMediaRowID());
 		    	insertRow.setInt(2, mdataRow.getRowID());
-		    	insertRow.setString(3, "");
-		    	insertRow.setFloat(4, 0.0f);
-		    	insertRow.setDate(5, null);
-		    	if(mdataRow.getTag().getType().equals("string"))
-		    		insertRow.setString(3, mdataRow.getValue());
-		    	else if(mdataRow.getTag().getType().equals("Num")) {
-		    		Matcher m = Pattern.compile("\\d+").matcher(mdataRow.getValue());
-		    		if(m.find()){
-		    			String val = m.group();
-		    			insertRow.setFloat(4, Float.parseFloat(val));
-		    		}
-		    	}
-		    	else if(mdataRow.getTag().getType().equals("DateTime")) {
-		    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
-					java.util.Date date = sdf.parse(mdataRow.getValue(), new ParsePosition(0));
-		    		insertRow.setDate(5, new java.sql.Date(date.getTime()));
-		    	}
+		    	insertRow.setString(3, mdataRow.getStringValue());
+		    	insertRow.setFloat(4, mdataRow.getNumValue());
+		    	insertRow.setTimestamp(5, mdataRow.getDateTimeValue());
 		    	insertRow.executeUpdate();
 	    	}
 	    } catch (SQLException e) {

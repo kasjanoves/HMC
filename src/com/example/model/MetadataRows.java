@@ -35,8 +35,12 @@ public class MetadataRows {
 		for(Entry<MetadataTag, String> tagEntry : metadata.entrySet()) {
 			int TagRowID;
 			TagRowID = DBTables.insertMetadataTagRow(conn, tagEntry.getKey());
-			if(TagRowID != -1)
-				items.add(new MetadataRow(tagEntry.getKey(), tagEntry.getValue(), TagRowID));
+			if(TagRowID != -1) {
+				MetadataRow newRow = new MetadataRow(tagEntry.getKey(), TagRowID);
+				newRow.setValue(tagEntry.getValue());
+				items.add(newRow);
+			}
+				
 		}
 		util.closeConnection(conn);
 	}

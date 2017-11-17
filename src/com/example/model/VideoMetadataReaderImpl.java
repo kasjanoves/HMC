@@ -105,7 +105,7 @@ public class VideoMetadataReaderImpl implements MediaMetadataReader {
 						SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
 						Date date = sdf.parse(value, new ParsePosition(0));
 						if(date != null) {
-							sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
+							sdf.applyPattern("yyyy:MM:dd HH:mm:ss");
 							value = sdf.format(date);
 							//System.out.println(value);
 						}
