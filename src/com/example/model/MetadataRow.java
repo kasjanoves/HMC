@@ -61,16 +61,21 @@ public class MetadataRow {
 
 	@Override
 	public int hashCode() {
-		return tag.hashCode()+StringValue.hashCode()+RowID;
+		int result = 17;
+		result = 31 * result + tag.hashCode();
+		result = 31 * result + StringValue.hashCode();
+		result = 31 * result + RowID;
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
+		if(obj == this) return true;
 		if(obj instanceof  MetadataRow)
 			return tag.equals(((MetadataRow) obj).tag)&&
 					StringValue.equals(((MetadataRow) obj).StringValue)&&
 					RowID == ((MetadataRow) obj).RowID;
-		return super.equals(obj);
+		return false;
 	}
 
 	@Override

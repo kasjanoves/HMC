@@ -40,16 +40,21 @@ public class MetadataTag {
 		
 	@Override
 	public int hashCode() {
-		return Destination.hashCode()+Directory.hashCode()+Tag.hashCode();
+		int result = 17;
+		result = 31 * result + Destination.hashCode();
+		result = 31 * result + Directory.hashCode();
+		result = 31 * result + Tag.hashCode();
+		return result;
 	}
 	@Override
 	public boolean equals(Object obj) {
+		if(obj == this) return true;
 		if(obj instanceof MetadataTag) {
 			return Destination.equals(((MetadataTag) obj).Destination)&&
 					Directory.equals(((MetadataTag) obj).Directory)&&
 					Tag.equals(((MetadataTag) obj).Tag);
 		}
-		return super.equals(obj);
+		return false;
 	}
 		 
 }
