@@ -36,9 +36,10 @@ public class ReqMetadataParser extends DefaultHandler {
 		}else if(localName.equals("directory")) {
 			directory = Name;
 		}else if(localName.equals("tag")) {
+			String type = atts.getValue("type");
 			if(!destination.isEmpty() && !directory.isEmpty()) {
 				MetadataTag newTag = new MetadataTag(destination, directory,
-						Name, atts.getValue("type"));
+						Name, MetadataTypes.valueOf(type));
 				mset.add(newTag);
 			}
 		}

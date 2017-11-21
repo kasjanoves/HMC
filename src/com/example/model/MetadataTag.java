@@ -7,7 +7,7 @@ public class MetadataTag {
 	private String Destination;
 	private String Directory;
 	private String Tag;
-	private String Type;
+	private MetadataTypes Type;
 	
 	public MetadataTag(String destination, String directory, String tag) {
 		super();
@@ -15,7 +15,7 @@ public class MetadataTag {
 		Directory = directory;
 		Tag = tag;
 	}		
-	public MetadataTag(String destination, String directory, String tag, String type) {
+	public MetadataTag(String destination, String directory, String tag, MetadataTypes type) {
 		this(destination, directory, tag);
 		Type = type;
 	}
@@ -28,10 +28,10 @@ public class MetadataTag {
 	public String getTag() {
 		return Tag;
 	}
-	public String getType() {
+	public MetadataTypes getType() {
 		return Type;
 	}
-	public void setType(String type) {
+	public void setType(MetadataTypes type) {
 		Type = type;
 	}
 	public String toString() {

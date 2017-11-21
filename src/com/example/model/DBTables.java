@@ -79,7 +79,7 @@ public class DBTables {
 		
 		String createString =
 		    	"create table if not exists " + DBNAME +
-		        ".METADATA_TYPES" +
+		        "." + MetadataTag.TABLE_NAME +
 		        "(ID integer AUTO_INCREMENT, " +
 		        "DESTINATION varchar(15), " +
 		        "DIRECTORY varchar(50), " +
@@ -217,7 +217,7 @@ public class DBTables {
 	    	insertRow.setString(1, mDataTag.getDestination());
 	    	insertRow.setString(2, mDataTag.getDirectory());
 	    	insertRow.setString(3, mDataTag.getTag());
-	    	insertRow.setString(4, mDataTag.getType());
+	    	insertRow.setString(4, mDataTag.getType().name());
 	    	insertRow.executeUpdate();
 	    	rs = insertRow.getGeneratedKeys();
 	        if (rs.next()) {
@@ -425,6 +425,25 @@ public class DBTables {
 		String queryString =
 				"select ID, NAME "
 				+ "from "+ DBNAME +".TAGS ";
+						
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			stmt = con.createStatement();
+	        rs = stmt.executeQuery(queryString);
+	    } catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    }
+				
+		return rs;
+	}
+	
+	public static ResultSet getMetadataTypes(Connection con) throws SQLException {
+		String queryString =
+				"select * "	+
+				"from "+ DBNAME +"."+MetadataTag.TABLE_NAME +
+				"sort by DESTINATION";
 						
 		Statement stmt = null;
 		ResultSet rs = null;
