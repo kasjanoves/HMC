@@ -4,16 +4,23 @@ import java.util.Arrays;
 
 public enum MetadataTypes {
 	
-	NUM(new String[] {"=","<",">","<=",">=","between"}),
-	DATETIME(new String[] {"=","<",">","<=",">=","between"}),
-	STRING(new String[] {"=","like"});
+	NUM(new String[] {"=", "&lt", "&gt", "&lt=", "&gt=", "between"}, "number"),
+	DATETIME(new String[] {"=", "&lt", "&gt", "&lt=", "&gt=", "between"}, "date"),
+	STRING(new String[] {"=", "like"}, "text");
 	
 	private String[] Comparators;
-	private MetadataTypes(String[] comp) {
+	private String InputType;
+	private MetadataTypes(String[] comp, String inputType) {
 		Comparators = comp;
+		InputType = inputType;
 	}
 	
 	public Iterable<String> Comparators() {
 		return Arrays.asList(Comparators);
 	}
+
+	public String getInputType() {
+		return InputType;
+	}
+		
 }

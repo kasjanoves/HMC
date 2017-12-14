@@ -48,5 +48,14 @@
 		<servlet-class>com.example.web.Update</servlet-class></servlet>
 	<servlet-mapping>
 		<servlet-name>Update</servlet-name>
-		<url-pattern>/Update.do</url-pattern></servlet-mapping>
+		<url-pattern>/Update.do</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>AdvSearch</servlet-name>
+		<servlet-class>com.example.web.AdvSearch</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AdvSearch</servlet-name>
+		<url-pattern>/AdvSearch.do</url-pattern>
+	</servlet-mapping>	
 </web-app>

@@ -32,18 +32,20 @@ public class MetadataFiltersTagHandler extends SimpleTagSupport{
 			while(rs.next()) {
 				String Dest = rs.getString("DESTINATION");
 				String Tag = rs.getString("TAG");
+				String TagID = rs.getString("ID");
 				String Type = rs.getString("TYPE");
 				if(!Dest.equals(CurrentDest)) {
 					CurrentDest = new String(Dest);
 					out.print("<br>"+CurrentDest+"<br>");
 				}
-				out.print(Tag);
+				//out.print(Tag);
 				StringBuilder sb = new StringBuilder();
-				MetadataTypes type = MetadataTypes.valueOf(Type);
+				MetadataTypes type = MetadataTypes.valueOf(Type.toUpperCase());
 				for(String comp : type.Comparators())
-					sb.append(String.format(OPTION_TEMPLATE, comp, comp));
-				out.print(String.format(FILTER_TEMPLATE, Tag, "Select"+Tag,
-						sb.toString(), "Input"+Tag));
+					sb.append(String.format(OPTION_TEMPLATE, comp));
+				out.print(String.format(FILTER_TEMPLATE, Tag, "Select"+TagID,
+						sb.toString(), "Input"+TagID, type.getInputType()));
+				out.print("<br>");
 				
 			}
 			
@@ -57,7 +59,7 @@ public class MetadataFiltersTagHandler extends SimpleTagSupport{
 	}
 	
 	private static final String FILTER_TEMPLATE = "%1$s <select name='%2$s'>%3$s</select> "
-			+ "<input name='%4$s' type='text'>";
-	private static final String OPTION_TEMPLATE = " <option value=%1$d>%2$s</option>";
+			+ "<input name='%4$s' type='%5$s'>";
+	private static final String OPTION_TEMPLATE = " <option value=%1$s>%1$s</option>";
 }
 

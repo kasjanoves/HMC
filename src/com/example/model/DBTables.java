@@ -443,7 +443,7 @@ public class DBTables {
 		String queryString =
 				"select * "	+
 				"from "+ DBNAME +"."+MetadataTag.TABLE_NAME +
-				"sort by DESTINATION";
+				" order by DESTINATION";
 						
 		Statement stmt = null;
 		ResultSet rs = null;
