@@ -39,7 +39,7 @@ public class MetadataFiltersTagHandler extends SimpleTagSupport{
 				}
 				out.print(Tag);
 				StringBuilder sb = new StringBuilder();
-				MetadataTypes type = MetadataTypes.valueOf(Type);
+				MetadataTypes type = MetadataTypes.valueOf(Type.toUpperCase());
 				for(String comp : type.Comparators())
 					sb.append(String.format(OPTION_TEMPLATE, comp, comp));
 				out.print(String.format(FILTER_TEMPLATE, Tag, "Select"+Tag,
@@ -58,6 +58,6 @@ public class MetadataFiltersTagHandler extends SimpleTagSupport{
 	
 	private static final String FILTER_TEMPLATE = "%1$s <select name='%2$s'>%3$s</select> "
 			+ "<input name='%4$s' type='text'>";
-	private static final String OPTION_TEMPLATE = " <option value=%1$d>%2$s</option>";
+	private static final String OPTION_TEMPLATE = " <option value=%1$s>%2$s</option>";
 }
 

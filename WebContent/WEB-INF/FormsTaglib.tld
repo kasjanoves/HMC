@@ -64,4 +64,10 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
+	<tag>
+		<name>MetadataFilters</name>
+		<tag-class>com.example.web.MetadataFiltersTagHandler</tag-class>
+		<body-content>empty</body-content>
+		<description>This tag constructs an HTML tag than represents filters for advanced search by metadata</description>
+	</tag>
 </taglib>
