@@ -2,14 +2,19 @@ package com.example.web;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.example.model.DBTables;
 import com.example.model.JDBCUtilities;
 
 public class AdvSearch extends HttpServlet {
@@ -23,13 +28,22 @@ public class AdvSearch extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		Map<String, String[]> pmap = request.getParameterMap();
-		System.out.println(pmap);
+		for( Entry<String, String[]> entry : pmap.entrySet()) {
+			System.out.print(entry.getKey()+":");
+			System.out.println(Arrays.deepToString(entry.getValue()));
+		}
+		
 		
 		JDBCUtilities util = (JDBCUtilities) getServletContext().getAttribute("DBUtils");
 		Connection conn = null;
 		
 		try {
 			conn = util.getConnection();
+			ResultSet rs = DBTables.getMediaByMeatadataAdv(conn, pmap);
+			request.setAttribute("MediaSet", rs);
+			RequestDispatcher view = request.getRequestDispatcher("Home.jsp");
+			view.forward(request, response);
+			
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

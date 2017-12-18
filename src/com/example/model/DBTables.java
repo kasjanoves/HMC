@@ -10,10 +10,15 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.sql.rowset.FilteredRowSet;
+
 import java.util.Set;
+
 
 //so much boilerplate code here
 public class DBTables {
@@ -401,6 +406,25 @@ public class DBTables {
 		return rs;
 	}
 	
+	public static ResultSet getMediaByMeatadataAdv(Connection con, Map<String, String[]> parMap) {
+						
+		//use FilteredRowSet here 
+				
+		String queryString = "";
+		Statement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			stmt = con.createStatement();
+	        rs = stmt.executeQuery(queryString);
+	    } catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    }
+		
+		FilteredRowSet frs = new FilteredRowSetImpl();
+		return rs;
+	}
+	
 	public static ResultSet getMediaTags(Connection con, int mediaID) throws SQLException {
 		String queryString =
 				"select TAG_ID as ID, NAME "
@@ -587,4 +611,5 @@ public class DBTables {
 	        if (deleteRow != null) { deleteRow.close(); }
 	    }
 	}
+	
 }

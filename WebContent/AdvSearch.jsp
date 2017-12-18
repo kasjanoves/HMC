@@ -11,7 +11,7 @@
 	Advanced search<br>
 	<form action="AdvSearch.do" method="post">
 		<formTags:MetadataFilters />
-		<input type="submit" value="Search" >
+		<input type="submit" value="search">
 	</form>
 </body>
 </html>

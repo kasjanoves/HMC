@@ -59,7 +59,9 @@ public class MetadataFiltersTagHandler extends SimpleTagSupport{
 	}
 	
 	private static final String FILTER_TEMPLATE = "%1$s <select name='%2$s'>%3$s</select> "
-			+ "<input name='%4$s' type='%5$s'>";
+			+ "<input name='%4$s' type='%5$s'>"
+			+ " <input name='%4$s' type='%5$s'>";
 	private static final String OPTION_TEMPLATE = " <option value=%1$s>%1$s</option>";
+
 }
 
