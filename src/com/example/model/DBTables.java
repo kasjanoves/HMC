@@ -10,10 +10,17 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.sql.rowset.FilteredRowSet;
+
+import com.sun.rowset.FilteredRowSetImpl;
+
 import java.util.Set;
+
 
 //so much boilerplate code here
 public class DBTables {
@@ -401,6 +408,38 @@ public class DBTables {
 		return rs;
 	}
 	
+	public static ResultSet getMediaByMeatadataAdv(Map<String, String[]> parMap) {
+						
+		//use FilteredRowSet here 
+		FilteredRowSet frs = null;
+				
+		try {
+			frs = new FilteredRowSetImpl();
+			frs.setCommand("select MEDIA.ID," + 
+					"MEDIA.TYPE," + 
+					"MEDIA.DESCRIPTION," + 
+					"MEDIA.PATH," + 
+					"MEDIA.THUMB_PATH," + 
+					"METADATA.MDATA_ID," + 
+					"METADATA.VALUE," + 
+					"METADATA.NUM_VALUE," + 
+					"METADATA.DATA_VALUE," +
+					"METADATA_TYPES.TYPE from "+ DBNAME +".METADATA, " +
+					DBNAME +".MEDIA, " +
+					DBNAME +".METADATA_TYPES " +
+					"where METADATA.MEDIA_ID = MEDIA.ID" +
+					" and METADATA.MDATA_ID = METADATA_TYPES.ID");
+			frs.setUsername("root");
+			frs.setPassword("root");
+			frs.setUrl("jdbc:mysql://localhost:3306");
+			frs.execute();
+	    } catch (SQLException e) {
+	    	JDBCUtilities.printSQLException(e);
+	    }
+		
+		return frs;
+	}
+	
 	public static ResultSet getMediaTags(Connection con, int mediaID) throws SQLException {
 		String queryString =
 				"select TAG_ID as ID, NAME "
@@ -587,4 +626,5 @@ public class DBTables {
 	        if (deleteRow != null) { deleteRow.close(); }
 	    }
 	}
+	
 }
