@@ -1,6 +1,6 @@
 package com.example.model;
 
-public interface Condition2args<T> {
+public interface Condition<T> {
 	
 	boolean Test(T a, T b);
 	
