@@ -6,25 +6,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Home Media Catalog</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<title>Home Media Catalog</title>
+	<link rel="stylesheet"
+		type="text/css"
+		href="<c:url value="/resources/style.css" />" >
 </head>
 <body>
-	<form action="Home.jsp" method="post">
-		<input name="search" type="text">
-		<input type="submit">
-	</form>
-	<a href ="Upload.html">Upload file</a><br>
-	<c:set var = "SelectedTags" scope = "session" value = "${sessionScope.SelectedTags}"/>
+	<div class="MainMenu">
+		<form action="Search.do" method="post">
+			<input name="search" type="text">
+			<input type="submit" value="Go!">
+		</form>
+		<a href ="<c:url value='Upload.jsp'/>" >Upload</a>|
+		<a href ="AdvSearchPage.do" >Advanced search</a><br>
+	</div>
+	<c:set var = "SelectedTags" value = "${SelectedTags}"/>
 	<c:if test = "${SelectedTags != null}" >
-		<formTags:MediaTags tags = '${sessionScope.SelectedTags}'/>
+		<formTags:MediaTags mediaTags="${SelectedTags}" mode='selected'/>
 	</c:if>	
 	<br>
-	<formTags:MediaTags />
-	<c:set var = "search" scope = "session" value = "${param.search}"/>
+	<formTags:MediaTags mediaTags="${AllTags}" />
+	<c:set var = "search" value = "${search}"/>
 	<c:if test = "${fn:length(search) > 0}" >
-		<br>Results for ${param.search}
+		<br>Results for ${search}
 	</c:if>
-	<formTags:MediaGallery search = '${param.search}' tags = '${sessionScope.SelectedTags}'/>
+	<formTags:MediaGallery mediaSet='${MediaSet}' />
 </body>
 </html>

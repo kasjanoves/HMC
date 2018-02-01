@@ -1,61 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:web="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.4">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns="http://java.sun.com/xml/ns/j2ee" 
+xmlns:web="http://xmlns.jcp.org/xml/ns/javaee" 
+xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.4">
+	<context-param>
+		<param-name>dbServerName</param-name>
+		<param-value>localhost</param-value>
+	</context-param>
+	<context-param>
+		<param-name>dbPortNumber</param-name>
+		<param-value>3306</param-value>
+	</context-param>
+	<context-param>
+		<param-name>dbUserName</param-name>
+		<param-value>root</param-value>
+	</context-param>
+	<context-param>
+		<param-name>dbPassword</param-name>
+		<param-value>root</param-value>
+	</context-param>
+	<welcome-file-list>
+		 <welcome-file>Home</welcome-file>
+	</welcome-file-list>
 	<listener> 
 		<listener-class>
-		   com.example.web.ServletCtxListener
+		   homemedia.web.ServletCtxListener
 		</listener-class>
 	</listener>
 	<servlet>
+	  <servlet-name>MediaView</servlet-name>
+	  <servlet-class>homemedia.controllers.MediaViewController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	  <servlet-name>MediaView</servlet-name>
+	  <url-pattern>/View.do</url-pattern>
+	</servlet-mapping>
+	<servlet>
+	  <servlet-name>HomeController</servlet-name>
+	  <servlet-class>homemedia.controllers.HomeController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	  <servlet-name>HomeController</servlet-name>
+	  <url-pattern>/Home</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>Search</servlet-name>
+		<servlet-class>homemedia.controllers.SearchController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Search</servlet-name>
+		<url-pattern>/Search.do</url-pattern>
+	</servlet-mapping>
+	<servlet>
 	  <servlet-name>Upload</servlet-name>
-	  <servlet-class>com.example.web.Upload</servlet-class>
+	  <servlet-class>homemedia.controllers.UploadController</servlet-class>
 	</servlet>
 	<servlet-mapping>
 	  <servlet-name>Upload</servlet-name>
 	  <url-pattern>/Upload.do</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<servlet-class>com.example.web.AddTag</servlet-class>
+		<servlet-class>homemedia.controllers.AddTagController</servlet-class>
 		<servlet-name>AddTag</servlet-name></servlet>
 	<servlet-mapping>
 		<servlet-name>AddTag</servlet-name>
 		<url-pattern>/AddTag.do</url-pattern></servlet-mapping>
 	<servlet>
 		<servlet-name>RemoveTag</servlet-name>
-		<servlet-class>com.example.web.RemoveTag</servlet-class></servlet>
+		<servlet-class>homemedia.controllers.RemoveTagController</servlet-class></servlet>
 	<servlet-mapping>
 		<servlet-name>RemoveTag</servlet-name>
 		<url-pattern>/RemoveTag.do</url-pattern></servlet-mapping>
 	<servlet>
-		<servlet-class>com.example.web.SearchAddTag</servlet-class>
 		<servlet-name>SearchAddTag</servlet-name></servlet>
+		<servlet-class>homemedia.controllers.SearchAddTagController</servlet-class>
 	<servlet-mapping>
 		<servlet-name>SearchAddTag</servlet-name>
 		<url-pattern>/SearchAddTag.do</url-pattern></servlet-mapping>
 	<servlet>
-		<servlet-class>com.example.web.SearchRemoveTag</servlet-class>
+		<servlet-class>homemedia.controllers.SearchRemoveTagController</servlet-class>
 		<servlet-name>SearchRemoveTag</servlet-name></servlet>
 	<servlet-mapping>
 		<servlet-name>SearchRemoveTag</servlet-name>
 		<url-pattern>/SearchRemoveTag.do</url-pattern></servlet-mapping>
 	<servlet>
 		<servlet-name>Delete</servlet-name>
-		<servlet-class>com.example.web.Delete</servlet-class></servlet>
+		<servlet-class>homemedia.controllers.DeleteController</servlet-class></servlet>
 	<servlet-mapping>
 		<servlet-name>Delete</servlet-name>
 		<url-pattern>/Delete.do</url-pattern></servlet-mapping>
 	<servlet>
 		<servlet-name>Update</servlet-name>
-		<servlet-class>com.example.web.Update</servlet-class></servlet>
+		<servlet-class>homemedia.controllers.UpdateController</servlet-class></servlet>
 	<servlet-mapping>
 		<servlet-name>Update</servlet-name>
 		<url-pattern>/Update.do</url-pattern>
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>AdvSearch</servlet-name>
-		<servlet-class>com.example.web.AdvSearch</servlet-class>
+		<servlet-class>homemedia.controllers.AdvSearchController</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>AdvSearch</servlet-name>
 		<url-pattern>/AdvSearch.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>AdvSearchPage</servlet-name>
+		<servlet-class>homemedia.controllers.AdvSearchPageController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AdvSearchPage</servlet-name>
+		<url-pattern>/AdvSearchPage.do</url-pattern>
 	</servlet-mapping>	
 </web-app>

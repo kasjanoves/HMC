@@ -4,8 +4,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>File was uploaded</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<title>File was uploaded</title>
 </head>
 <body>
 	<c:set var = "mType" scope = "session" value = "${mediaType}"/>
@@ -23,6 +23,6 @@
     </c:otherwise>
 	</c:choose>	
 	${description}<br>
-	<a href ="Home.jsp">Back</a><br>
+	<a href ="/">Back</a><br>
 </body>
 </html>

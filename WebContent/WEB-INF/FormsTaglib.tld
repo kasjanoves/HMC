@@ -12,62 +12,62 @@
 	</description>
 	<tag>
 		<name>MediaGallery</name>
-		<tag-class>com.example.web.MediaGalleryTagHandler</tag-class>
+		<tag-class>homemedia.view.MediaGalleryTagHandler</tag-class>
 		<body-content>empty</body-content>
-		<description>This tag constructs an HTML tag that represents a set of IMG/VIDEO tags.</description>
+		<description>This tag constructs an HTML tag that represents a set of media.</description>
 		<attribute>
-			<name>search</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>tags</name>
-			<required>false</required>
+			<name>mediaSet</name>
+			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
 	<tag>
 		<name>MediaView</name>
-		<tag-class>com.example.web.MediaViewTagHandler</tag-class>
+		<tag-class>homemedia.view.MediaViewTagHandler</tag-class>
 		<body-content>empty</body-content>
 		<description>This tag constructs an HTML tags than represents media item with additional info and metadata</description>
 		<attribute>
-			<name>id</name>
+			<name>mediaInfo</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
 	<tag>
 		<name>MediaTags</name>
-		<tag-class>com.example.web.MediaTagsTagHandler</tag-class>
+		<tag-class>homemedia.view.MediaTagsTagHandler</tag-class>
 		<body-content>empty</body-content>
 		<description>This tag constructs an HTML tags than represents media tags</description>
 		<attribute>
-			<name>id</name>
-			<required>false</required>
+			<name>mediaTags</name>
+			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<name>tags</name>
+			<name>mode</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
 	<tag>
 		<name>TagSelector</name>
-		<tag-class>com.example.web.TagSelectTagHandler</tag-class>
+		<tag-class>homemedia.view.TagSelectTagHandler</tag-class>
 		<body-content>empty</body-content>
 		<description>This tag constructs an HTML tag than represents Select form for tags</description>
 		<attribute>
-			<name>id</name>
-			<required>false</required>
+			<name>mediaTags</name>
+			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
 	<tag>
 		<name>MetadataFilters</name>
-		<tag-class>com.example.web.MetadataFiltersTagHandler</tag-class>
+		<tag-class>homemedia.view.MetadataFiltersTagHandler</tag-class>
 		<body-content>empty</body-content>
 		<description>This tag constructs an HTML tag than represents filters for advanced search by metadata</description>
+		<attribute>
+			<name>metadataTypes</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 	</tag>
 </taglib>
