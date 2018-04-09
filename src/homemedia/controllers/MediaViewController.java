@@ -14,9 +14,6 @@ import homemedia.data.DBTables;
 
 public class MediaViewController extends HttpServlet{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4253654296132262981L;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -32,7 +29,7 @@ public class MediaViewController extends HttpServlet{
 			mediaInfo = DBTables.getMediaInfo(mediaID);
 			mediaTags = DBTables.getMediaTags(mediaID);
 			unselectedTags = DBTables.getUnselectedTags(mediaID);
-		} catch (NumberFormatException | SQLException e) {
+		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 		

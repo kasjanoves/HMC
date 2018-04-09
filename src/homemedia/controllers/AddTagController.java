@@ -33,7 +33,7 @@ public class AddTagController extends HttpServlet {
 			conn = util.getConnection();
 			int TagRowID;
 			if(SelectedTagID == -1)
-				TagRowID = DBTables.insertTagsRow(conn, tagName);
+				TagRowID = DBTables.insertTagRow(conn, tagName);
 			else
 				TagRowID = SelectedTagID;
 			DBTables.insertMediaTagRow(conn, MediaID, TagRowID);

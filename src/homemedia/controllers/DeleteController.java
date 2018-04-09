@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.RowSet;
 
 import homemedia.data.DBTables;
 import homemedia.data.JDBCUtilities;
@@ -29,7 +30,7 @@ public class DeleteController extends HttpServlet{
 		
 		try {
 			conn = util.getConnection();
-			ResultSet rs = DBTables.getMediaById(conn, MediaID);
+			RowSet rs = DBTables.getMediaById(MediaID);
 			if(rs.next()) {
 				String relPath = rs.getString("PATH");
 				String tmbPath = rs.getString("THUMB_PATH");

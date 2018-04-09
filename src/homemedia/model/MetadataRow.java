@@ -9,6 +9,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MetadataRow {
+	
+	public static String TABLE_NAME = "METADATA";
 
 	private MetadataTag tag;
 	private String StringValue;

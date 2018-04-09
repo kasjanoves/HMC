@@ -13,6 +13,7 @@ import homemedia.data.JDBCUtilities;
 import java.util.Set;
 
 public class MetadataRows {
+	
 	private int MediaRowID;
 	private JDBCUtilities util;
 	private Set<MetadataRow> items = new HashSet<MetadataRow>();
