@@ -9,7 +9,7 @@ public class GetMetadataTypesProvider extends CachedRowSetProvider {
 			" order by DESTINATION";
 
 	@Override
-	String getQuery() {
+	public	String getQuery() {
 		return query;
 	}
 

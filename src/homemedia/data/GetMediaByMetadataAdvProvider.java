@@ -33,7 +33,7 @@ public class GetMediaByMetadataAdvProvider extends FilteredRowSetProvider {
 	}
 
 	@Override
-	String getQuery() {
+	public	String getQuery() {
 		return query;
 	}
 

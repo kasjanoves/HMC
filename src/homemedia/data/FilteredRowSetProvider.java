@@ -23,7 +23,7 @@ public abstract class FilteredRowSetProvider extends RowSetProvider {
 	}
 
 	@Override
-	RowSet execute() throws SQLException {
+	public	RowSet execute() throws SQLException {
 		prepareRowSet();
 		rowSet.execute();
 		rowSet.setFilter(getFilter());

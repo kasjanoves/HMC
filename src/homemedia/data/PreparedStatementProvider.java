@@ -8,6 +8,10 @@ public abstract class PreparedStatementProvider extends StatementProvider {
 	
 	protected PreparedStatement statement;
 	protected Connection conn;
+	
+	public PreparedStatementProvider(Connection conn) {
+		this.conn=conn;
+	}
 
 	@Override
 	void prepareStatement() throws SQLException {
@@ -15,12 +19,8 @@ public abstract class PreparedStatementProvider extends StatementProvider {
 	}
 
 	@Override
-	int execute() throws SQLException {
-		try {
-			return statement.executeUpdate();
-		} finally {
-	        if (statement != null) { statement.close(); }
-	    }	
+	public	int execute() throws SQLException {
+		return statement.executeUpdate();
 	}
 
 }

@@ -2,14 +2,12 @@ package homemedia.model;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import homemedia.data.DBTables;
+import homemedia.data.InsertMetadataTagRowProvider;
 import homemedia.data.JDBCUtilities;
-
 import java.util.Set;
 
 public class MetadataRows {
@@ -37,9 +35,12 @@ public class MetadataRows {
 	
 	public void fillItems(Map<MetadataTag, String> metadata) throws SQLException {
 		Connection conn = util.getConnection();
+		InsertMetadataTagRowProvider insertMetadataTagRow = 
+				new InsertMetadataTagRowProvider(conn, null);
 		for(Entry<MetadataTag, String> tagEntry : metadata.entrySet()) {
 			int TagRowID;
-			TagRowID = DBTables.insertMetadataTagRow(conn, tagEntry.getKey());
+			insertMetadataTagRow.setmDataTag(tagEntry.getKey());
+			TagRowID = insertMetadataTagRow.execute();
 			if(TagRowID != -1) {
 				MetadataRow newRow = new MetadataRow(tagEntry.getKey(), TagRowID);
 				newRow.setValue(tagEntry.getValue());

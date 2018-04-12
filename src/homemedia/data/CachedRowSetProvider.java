@@ -21,7 +21,7 @@ public abstract class CachedRowSetProvider extends RowSetProvider {
 	}
 
 	@Override
-	RowSet execute() throws SQLException {
+	public	RowSet execute() throws SQLException {
 		prepareRowSet();
 		rowSet.execute();
 		return rowSet;

@@ -17,7 +17,10 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import com.drew.imaging.ImageProcessingException;
 
 import homemedia.data.DBTables;
+import homemedia.data.InsertMediaRowProvider;
+import homemedia.data.InsertMetadataRows;
 import homemedia.data.JDBCUtilities;
+import homemedia.data.StatementProvider;
 import homemedia.model.MediaMetadataReader;
 import homemedia.model.Media;
 import homemedia.model.MediaFactoriesSupplier;
@@ -85,7 +88,8 @@ public class UploadController extends HttpServlet {
 	    	int MediaRowID = -1;
 			try {
 				conn = util.getConnection();
-				MediaRowID = DBTables.insertMediaRow(conn, media);
+				StatementProvider insertMediaRow = new InsertMediaRowProvider(conn, media);
+				MediaRowID = insertMediaRow.execute();
 			} catch (SQLException e1) {
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			} finally {
@@ -98,7 +102,8 @@ public class UploadController extends HttpServlet {
 	    	try {
 	    		Map<MetadataTag, String> metadata = mreader.extractMetadata(UploadedFile);
 				mdataRows.fillItems(metadata);
-				DBTables.insertMetadataRows(conn, mdataRows);
+				StatementProvider insertMetadataRows = new InsertMetadataRows(conn, mdataRows);
+				insertMetadataRows.execute();
 			} catch (SQLException | ImageProcessingException e) {
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			} finally {

@@ -1,7 +1,6 @@
 package homemedia.controllers;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Map;
@@ -12,8 +11,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.RowSet;
 
-import homemedia.data.DBTables;
+import homemedia.data.GetMediaByMetadataAdvProvider;
+import homemedia.data.RowSetProvider;
 
 public class AdvSearchController extends HttpServlet {
 	
@@ -31,9 +32,10 @@ public class AdvSearchController extends HttpServlet {
 			System.out.println(Arrays.deepToString(entry.getValue()));
 		}
 				
-		ResultSet rs = null;
+		RowSet rs = null;
 		try {
-			rs = DBTables.getMediaByMetadataAdv(pmap);
+			RowSetProvider getMediaByMetadataAdv = new GetMediaByMetadataAdvProvider(pmap);
+			rs = getMediaByMetadataAdv.execute();
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}

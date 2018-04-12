@@ -25,7 +25,7 @@ public class GetTagsByIDsProvider extends ParamRowSetProvider {
 	}
 
 	@Override
-	String getQuery() {
+	public	String getQuery() {
 		return query;
 	}
 

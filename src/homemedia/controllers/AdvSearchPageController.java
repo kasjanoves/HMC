@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.RowSet;
 
 import homemedia.data.DBTables;
+import homemedia.data.GetMetadataTypesProvider;
+import homemedia.data.RowSetProvider;
 
 public class AdvSearchPageController extends HttpServlet{
 
@@ -25,7 +27,8 @@ public class AdvSearchPageController extends HttpServlet{
 		
 		RowSet metadataTypes = null;
 		try {
-			metadataTypes = DBTables.getMetadataTypes();
+			RowSetProvider getMetadataTypes = new GetMetadataTypesProvider();
+			metadataTypes = getMetadataTypes.execute();
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}

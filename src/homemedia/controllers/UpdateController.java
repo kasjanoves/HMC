@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import homemedia.data.DBTables;
 import homemedia.data.JDBCUtilities;
+import homemedia.data.StatementProvider;
+import homemedia.data.UpdateMediaDescription;
 
 public class UpdateController extends HttpServlet{
 	
@@ -28,7 +30,9 @@ public class UpdateController extends HttpServlet{
 		
 		try {
 			conn = util.getConnection();
-			DBTables.updateMediaDescription(conn, MediaID, descr);
+			StatementProvider updateMediaDescription = 
+					new UpdateMediaDescription(conn, MediaID, descr);
+			updateMediaDescription.execute();
 		} catch (Exception e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}finally {

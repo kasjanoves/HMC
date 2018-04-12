@@ -7,7 +7,7 @@ import javax.sql.RowSet;
 public abstract class ParamRowSetProvider extends CachedRowSetProvider {
 
 	@Override
-	protected RowSet execute() throws SQLException {
+	public RowSet execute() throws SQLException {
 		prepareRowSet();
 		setParams();
 		rowSet.execute();

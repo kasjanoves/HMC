@@ -13,7 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.RowSet;
 
 import homemedia.data.DBTables;
+import homemedia.data.DeleteMediaRow;
+import homemedia.data.DeleteUnusedTags;
+import homemedia.data.GetMediaByIdProvider;
 import homemedia.data.JDBCUtilities;
+import homemedia.data.RowSetProvider;
+import homemedia.data.StatementProvider;
 
 public class DeleteController extends HttpServlet{
 	
@@ -30,7 +35,8 @@ public class DeleteController extends HttpServlet{
 		
 		try {
 			conn = util.getConnection();
-			RowSet rs = DBTables.getMediaById(MediaID);
+			RowSetProvider getMediaById = new GetMediaByIdProvider(MediaID);
+			RowSet rs = getMediaById.execute();
 			if(rs.next()) {
 				String relPath = rs.getString("PATH");
 				String tmbPath = rs.getString("THUMB_PATH");
@@ -46,8 +52,10 @@ public class DeleteController extends HttpServlet{
 						file.delete();
 					}
 				}
-				DBTables.deleteMediaRow(conn, MediaID);
-				DBTables.deleteUnusedTags(conn);
+				StatementProvider deleteMediaRow = new DeleteMediaRow(conn, MediaID);
+				deleteMediaRow.execute();
+				StatementProvider deleteUnusedTags = new DeleteUnusedTags(conn);
+				deleteUnusedTags.execute();
 			}
 			
 		} catch (Exception e) {

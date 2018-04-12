@@ -8,7 +8,7 @@ public class GetMediaProvider extends CachedRowSetProvider {
 			"from " + DBTables.DBNAME + "." + Media.TABLE_NAME;
 
 	@Override
-	String getQuery() {
+	public	String getQuery() {
 		return query;
 	}
 	

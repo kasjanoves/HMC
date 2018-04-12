@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import homemedia.data.DBTables;
+import homemedia.data.InsertMediaTagRow;
+import homemedia.data.InsertTagRow;
 import homemedia.data.JDBCUtilities;
+import homemedia.data.StatementProvider;
 
 public class AddTagController extends HttpServlet {
 	
@@ -32,11 +35,14 @@ public class AddTagController extends HttpServlet {
 		try {
 			conn = util.getConnection();
 			int TagRowID;
-			if(SelectedTagID == -1)
-				TagRowID = DBTables.insertTagRow(conn, tagName);
+			if(SelectedTagID == -1) {
+				StatementProvider insertTagRow = new InsertTagRow(conn, tagName);
+				TagRowID = insertTagRow.execute();
+			}
 			else
 				TagRowID = SelectedTagID;
-			DBTables.insertMediaTagRow(conn, MediaID, TagRowID);
+			StatementProvider insertMediaTagRow = new InsertMediaTagRow(conn, MediaID, TagRowID);
+			insertMediaTagRow.execute();
 		} catch (Exception e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}finally {
@@ -44,8 +50,7 @@ public class AddTagController extends HttpServlet {
 				util.closeConnection(conn);
 		}
 		
-		RequestDispatcher view = request.getRequestDispatcher("View.jsp");
-		view.forward(request, response);
+		response.sendRedirect("/Home");
     	
 	}
 	

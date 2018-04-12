@@ -27,7 +27,7 @@ public class GetMediaInfoProvider extends ParamRowSetProvider {
 	}
 
 	@Override
-	String getQuery() {
+	public	String getQuery() {
 		return query;
 	}
 

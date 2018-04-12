@@ -14,7 +14,7 @@ public class InsertMediaRowProvider extends ParamPreparedStatementKeyGenProvider
 	private Media media;
 
 	public InsertMediaRowProvider(Connection conn, Media media) {
-		this.conn=conn;
+		super(conn);
 		this.media=media;
 	}
 	
@@ -29,7 +29,7 @@ public class InsertMediaRowProvider extends ParamPreparedStatementKeyGenProvider
 	}
 
 	@Override
-	String getQuery() {
+	public	String getQuery() {
 		return query;
 	}
 

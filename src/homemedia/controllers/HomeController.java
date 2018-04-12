@@ -13,7 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.RowSet;
 
-import homemedia.data.DBTables;
+import homemedia.data.GetAllTagsProvider;
+import homemedia.data.GetMediaProvider;
+import homemedia.data.GetTagsByIDsProvider;
+import homemedia.data.RowSetProvider;
 
 public class HomeController extends HttpServlet{
 
@@ -27,14 +30,15 @@ public class HomeController extends HttpServlet{
 			sessionTags = new HashSet<Integer>();
 			session.setAttribute("SelectedTags", sessionTags);
 		}	
-		RowSet media = null;
-		RowSet allTags = null;
-		RowSet selectedTags = null;
+		RowSet media = null, allTags = null, selectedTags = null;
 				
 		try {
-			media = DBTables.getMedia();
-			allTags = DBTables.getAllTags();
-			selectedTags = DBTables.getTagsByIDs(sessionTags);
+			RowSetProvider getMedia = new GetMediaProvider(),
+					getAllTags = new GetAllTagsProvider(),
+					getTagsByIDs = new GetTagsByIDsProvider(sessionTags);
+			media = getMedia.execute();
+			allTags = getAllTags.execute();
+			selectedTags = getTagsByIDs.execute();
 									
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

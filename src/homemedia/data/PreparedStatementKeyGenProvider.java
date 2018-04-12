@@ -10,7 +10,11 @@ public abstract class PreparedStatementKeyGenProvider extends StatementProvider 
 
 	protected PreparedStatement statement;
 	protected Connection conn;
-	private int autoIncKey = -1;
+	protected int autoIncKey = -1;
+	
+	public PreparedStatementKeyGenProvider(Connection conn) {
+		this.conn=conn;
+	}
 	
 	@Override
 	void prepareStatement() throws SQLException {
@@ -18,7 +22,7 @@ public abstract class PreparedStatementKeyGenProvider extends StatementProvider 
 	}
 
 	@Override
-	int execute() throws SQLException {
+	public	int execute() throws SQLException {
 		ResultSet rs = null;
 		try {
 			statement.executeUpdate();
@@ -29,7 +33,6 @@ public abstract class PreparedStatementKeyGenProvider extends StatementProvider 
 	            throw new SQLException("key generation exception");
 		} finally {
 	    	if (rs != null) { rs.close(); }
-	        if (statement != null) { statement.close(); }
 	    }
 		return autoIncKey;
 	}

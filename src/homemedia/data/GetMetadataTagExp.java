@@ -26,7 +26,7 @@ public class GetMetadataTagExp extends ParamRowSetProvider {
 	}
 
 	@Override
-	String getQuery() {
+	public	String getQuery() {
 		return query;
 	}
 

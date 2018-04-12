@@ -10,7 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import homemedia.data.DBTables;
+import homemedia.data.DeleteMediaTagRow;
+import homemedia.data.DeleteUnusedTags;
 import homemedia.data.JDBCUtilities;
+import homemedia.data.StatementProvider;
 
 public class RemoveTagController extends HttpServlet{
 	private static final long serialVersionUID = 4865237263889847211L;
@@ -24,8 +27,10 @@ public class RemoveTagController extends HttpServlet{
 		
 		try {
 			conn = util.getConnection();
-			DBTables.deleteMediaTagRow(conn, MediaID, TagID);
-			DBTables.deleteUnusedTags(conn);
+			StatementProvider deleteMediaTagRow = new DeleteMediaTagRow(conn, MediaID, TagID),
+					deleteUnusedTags = new DeleteUnusedTags(conn);
+			deleteMediaTagRow.execute();
+			deleteUnusedTags.execute();
 		} catch (Exception e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}finally {

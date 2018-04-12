@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.RowSet;
 
 import homemedia.data.DBTables;
+import homemedia.data.GetMediaInfoProvider;
+import homemedia.data.GetMediaTagsProvider;
+import homemedia.data.GetUnselectedTagsProvider;
+import homemedia.data.RowSetProvider;
 
 public class MediaViewController extends HttpServlet{
 
@@ -20,15 +24,16 @@ public class MediaViewController extends HttpServlet{
 		
 		String id = request.getParameter("id");
 		
-		RowSet mediaInfo = null;
-		RowSet mediaTags = null;
-		RowSet unselectedTags = null;
+		RowSet mediaInfo = null, mediaTags = null, unselectedTags = null;
 		
 		try {
 			int mediaID = Integer.parseInt(id);
-			mediaInfo = DBTables.getMediaInfo(mediaID);
-			mediaTags = DBTables.getMediaTags(mediaID);
-			unselectedTags = DBTables.getUnselectedTags(mediaID);
+			RowSetProvider getMediaInfo = new GetMediaInfoProvider(mediaID),
+					getMediaTags = new GetMediaTagsProvider(mediaID),
+					getUnselectedTags = new GetUnselectedTagsProvider(mediaID);
+			mediaInfo = getMediaInfo.execute();
+			mediaTags = getMediaTags.execute();
+			unselectedTags = getUnselectedTags.execute();
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}

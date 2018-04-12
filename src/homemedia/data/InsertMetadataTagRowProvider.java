@@ -16,7 +16,7 @@ public class InsertMetadataTagRowProvider extends ParamPreparedStatementKeyGenPr
 	private MetadataTag mDataTag;
 	
 	public InsertMetadataTagRowProvider(Connection conn, MetadataTag mDataTag) {
-		this.conn=conn;
+		super(conn);
 		this.mDataTag=mDataTag;
 	}
 
@@ -29,18 +29,20 @@ public class InsertMetadataTagRowProvider extends ParamPreparedStatementKeyGenPr
 	}
 
 	@Override
-	String getQuery() {
+	public String getQuery() {
 		return query;
 	}
 
 	@Override
-	int execute() throws SQLException {
+	public	int execute() throws SQLException {
 		RowSetProvider rsProv = new GetMetadataTagExp(mDataTag);
 		RowSet rs = rsProv.execute();
 		if(rs.next()) return rs.getInt("ID");	//row already exists, returns ID
         return super.execute();
 	}
-	
-	
 
+	public void setmDataTag(MetadataTag mDataTag) {
+		this.mDataTag = mDataTag;
+	}
+	
 }

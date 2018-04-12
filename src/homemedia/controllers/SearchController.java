@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.RowSet;
 
-import homemedia.data.DBTables;
+import homemedia.data.GetMediaByCriteriaProvider;
+import homemedia.data.GetMediaProvider;
+import homemedia.data.RowSetProvider;
 
 public class SearchController extends HttpServlet {
 	
@@ -27,14 +29,18 @@ public class SearchController extends HttpServlet {
 		HttpSession session = request.getSession();
 		String searchString = request.getParameter("search");
 		Set<Integer> tags = (HashSet<Integer>) session.getAttribute("SelectedTags");
-		//System.out.println(searchString);
+		
 		RowSet rs = null;
 		
     	try {
-			if(searchString.isEmpty() && (tags == null || tags.isEmpty())) 
-				rs = DBTables.getMedia();
-			else
-				rs = DBTables.getMediaByCriteria(searchString, tags);
+			if(searchString.isEmpty() && (tags == null || tags.isEmpty())) { 
+				RowSetProvider getMedia = new GetMediaProvider();
+				rs = getMedia.execute();
+			}	
+			else {
+				RowSetProvider getMediaByCriteria = new GetMediaByCriteriaProvider(searchString, tags);
+				rs = getMediaByCriteria.execute();
+			}	
 					
 		} catch (SQLException e) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

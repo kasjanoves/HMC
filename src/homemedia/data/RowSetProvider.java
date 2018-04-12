@@ -6,10 +6,10 @@ import javax.sql.RowSet;
 
 public abstract class RowSetProvider {
 	
-	abstract String getQuery();
+	public abstract String getQuery();
 	
 	abstract void prepareRowSet() throws SQLException;
 	
-	abstract RowSet execute() throws SQLException;
+	public abstract RowSet execute() throws SQLException;
 
 }

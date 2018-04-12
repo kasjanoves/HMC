@@ -21,7 +21,7 @@ public class GetMediaByCriteriaProvider extends RowSetProvider {
 	}
 
 	@Override
-	String getQuery() {
+	public	String getQuery() {
 		return null;
 	}
 
@@ -34,7 +34,7 @@ public class GetMediaByCriteriaProvider extends RowSetProvider {
 	}
 
 	@Override
-	RowSet execute() throws SQLException {
+	public	RowSet execute() throws SQLException {
 		JoinRowSet jrs = new JoinRowSetImpl();
 		jrs.addRowSet(mediaCrs, "ID");
 		jrs.addRowSet(mtagsCrs, "MEDIA_ID");

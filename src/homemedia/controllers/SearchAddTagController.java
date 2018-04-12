@@ -14,6 +14,8 @@ import javax.servlet.http.HttpSession;
 import javax.sql.RowSet;
 
 import homemedia.data.DBTables;
+import homemedia.data.GetMediaByCriteriaProvider;
+import homemedia.data.RowSetProvider;
 
 public class SearchAddTagController extends HttpServlet{
 	
@@ -32,7 +34,8 @@ public class SearchAddTagController extends HttpServlet{
 			RowSet rs = null;
 			
 	    	try {
-				rs = DBTables.getMediaByCriteria(null, tags);
+	    		RowSetProvider getMediaByCriteria = new GetMediaByCriteriaProvider(null, tags);
+				rs = getMediaByCriteria.execute();
 						
 			} catch (SQLException e) {
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
