@@ -1,23 +1,9 @@
 package homemedia.data;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Map;
-import javax.sql.RowSet;
-import javax.sql.rowset.CachedRowSet;
-import javax.sql.rowset.FilteredRowSet;
-import javax.sql.rowset.JoinRowSet;
-import com.sun.rowset.CachedRowSetImpl;
-import com.sun.rowset.FilteredRowSetImpl;
-import com.sun.rowset.JoinRowSetImpl;
-import homemedia.model.Media;
-import homemedia.model.MetadataRow;
-import homemedia.model.MetadataRows;
 import homemedia.model.MetadataTag;
-import java.util.Set;
-import java.util.StringJoiner;
 
 public class DBTables {
 	

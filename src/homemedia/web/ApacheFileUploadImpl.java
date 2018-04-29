@@ -1,7 +1,6 @@
 package homemedia.web;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -10,7 +9,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
@@ -51,23 +49,23 @@ public class ApacheFileUploadImpl implements FileUploader {
 	public File upload() throws Exception {
 		
 		File UploadedFile = null;
-		// Создаём класс фабрику 
+		// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ 
 		DiskFileItemFactory factory = new DiskFileItemFactory();
  
-		// Максимальный буфера данных в байтах,
-		// при его привышении данные начнут записываться на диск во временную директорию
-		// устанавливаем один мегабайт
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ,
+		// пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		factory.setSizeThreshold(1024*1024);
 		
-		// устанавливаем временную директорию
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		File tempDir = (File)ctx.getAttribute("javax.servlet.context.tempdir");
 		factory.setRepository(tempDir);
  
-		//Создаём сам загрузчик
+		//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		
-		//максимальный размер данных который разрешено загружать в байтах
-		//по умолчанию -1, без ограничений. Устанавливаем 10 мегабайт. 
+		//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+		//пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ -1, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 10 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. 
 		//upload.setSizeMax(1024 * 1024 * 10);
  
 		List<FileItem> items = upload.parseRequest(request);
@@ -77,10 +75,10 @@ public class ApacheFileUploadImpl implements FileUploader {
 			FileItem item = (FileItem) iter.next();
  
 			if (item.isFormField()) {
-		    	//если принимаемая часть данных является полем формы			    	
+		    	//пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ			    	
 		    	processFormField(item);
 		    } else {
-		    	//в противном случае рассматриваем как файл
+		    	//пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 		    	UploadedFile = processUploadedFile(item);
 		    	this.contentType = item.getContentType();
 		    	//System.out.println(contentType);
@@ -91,15 +89,15 @@ public class ApacheFileUploadImpl implements FileUploader {
 	}
 	
 	/**
-	 * Сохраняет файл на сервере, в папке upload.
-	 * Сама папка должна быть уже создана. 
+	 * пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅ upload.
+	 * пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. 
 	 * 
 	 * @param item
 	 * @throws Exception
 	 */
 	private File processUploadedFile(FileItem item) throws Exception{
 		File uploadedFile = null;
-		//выбираем файлу имя пока не найдём свободное
+		//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		do{
 			String fileName = FileUtils.ExctractFileName(item.getName());
 			relPath = "/upload/"+random.nextInt() + fileName;
@@ -108,15 +106,15 @@ public class ApacheFileUploadImpl implements FileUploader {
 			uploadedFile = new File(filePath);		
 		}while(uploadedFile.exists());
 		
-		//создаём файл
+		//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 		uploadedFile.createNewFile();
-		//записываем в него данные
+		//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 		item.write(uploadedFile);
 		return uploadedFile;
 	}
  
 	/**
-	 * Выводит на консоль имя параметра и значение
+	 * пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	 * @param item
 	 */
 	private void processFormField(FileItem item) {

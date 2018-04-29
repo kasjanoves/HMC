@@ -1,7 +1,6 @@
 package homemedia.controllers;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.RowSet;
 
-import homemedia.data.DBTables;
 import homemedia.data.GetMetadataTypesProvider;
 import homemedia.data.RowSetProvider;
 

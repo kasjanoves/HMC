@@ -3,7 +3,6 @@ package homemedia.data;
 import java.sql.SQLException;
 
 import javax.sql.RowSet;
-import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.FilteredRowSet;
 import javax.sql.rowset.Predicate;
 

@@ -16,7 +16,6 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.drew.imaging.ImageProcessingException;
 
-import homemedia.data.DBTables;
 import homemedia.data.InsertMediaRowProvider;
 import homemedia.data.InsertMetadataRows;
 import homemedia.data.JDBCUtilities;
@@ -24,7 +23,6 @@ import homemedia.data.StatementProvider;
 import homemedia.model.MediaMetadataReader;
 import homemedia.model.Media;
 import homemedia.model.MediaFactoriesSupplier;
-import homemedia.model.MediaFactory;
 import homemedia.model.MediaThumbnailCreator;
 import homemedia.model.MetadataReadersFactoriesSupplier;
 import homemedia.model.MetadataRows;
@@ -45,7 +43,7 @@ public class UploadController extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		//проверяем является ли полученный запрос multipart/form-data
+		//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ multipart/form-data
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 		if (!isMultipart) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);

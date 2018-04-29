@@ -9,7 +9,6 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import javax.sql.RowSet;
 
-import homemedia.data.JDBCUtilities;
 import homemedia.model.Media;
 import homemedia.model.MediaFactoriesSupplier;
 

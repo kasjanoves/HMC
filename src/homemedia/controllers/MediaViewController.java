@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.RowSet;
 
-import homemedia.data.DBTables;
 import homemedia.data.GetMediaInfoProvider;
 import homemedia.data.GetMediaTagsProvider;
 import homemedia.data.GetUnselectedTagsProvider;

@@ -2,8 +2,6 @@ package homemedia.data;
 
 import java.sql.SQLException;
 
-import javax.sql.RowSet;
-
 public class GetMediaInfoProvider extends ParamRowSetProvider {
 	
 	protected final static String query="select MEDIA.*," + 

@@ -3,8 +3,6 @@ package homemedia.controllers;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.ResultSet;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.RowSet;
 
-import homemedia.data.DBTables;
 import homemedia.data.DeleteMediaRow;
 import homemedia.data.DeleteUnusedTags;
 import homemedia.data.GetMediaByIdProvider;

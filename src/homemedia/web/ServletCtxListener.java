@@ -3,8 +3,6 @@ package homemedia.web;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
@@ -16,13 +14,10 @@ import org.xml.sax.SAXException;
 
 import homemedia.data.DBTables;
 import homemedia.data.JDBCUtilities;
-import homemedia.model.ImageMetadataReaderImpl;
 import homemedia.model.MediaFactoriesSupplier;
-import homemedia.model.MediaMetadataReader;
 import homemedia.model.MetadataReadersFactoriesSupplier;
 import homemedia.model.MetadataTag;
 import homemedia.model.ReqMetadataParser;
-import homemedia.model.VideoMetadataReaderImpl;
 
 public class ServletCtxListener implements ServletContextListener {
 
