@@ -3,6 +3,7 @@ package homemedia.controllers;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,6 +30,7 @@ public class DeleteController extends HttpServlet{
 		int MediaID = Integer.parseInt(request.getParameter("id"));
 		JDBCUtilities util = (JDBCUtilities) getServletContext().getAttribute("DBUtils");
 		Connection conn = null;
+		String mediaDescr = null;
 		
 		try {
 			conn = util.getConnection();
@@ -37,6 +39,7 @@ public class DeleteController extends HttpServlet{
 			if(rs.next()) {
 				String relPath = rs.getString("PATH");
 				String tmbPath = rs.getString("THUMB_PATH");
+				mediaDescr = rs.getString("DESCRIPTION");
 				String filePath = getServletContext().getRealPath("/"+relPath);
 				File file = new File(filePath);
 				if(file.exists()) {
@@ -50,8 +53,8 @@ public class DeleteController extends HttpServlet{
 					}
 				}
 				StatementProvider deleteMediaRow = new DeleteMediaRow(conn, MediaID);
-				deleteMediaRow.execute();
 				StatementProvider deleteUnusedTags = new DeleteUnusedTags(conn);
+				deleteMediaRow.execute();
 				deleteUnusedTags.execute();
 			}
 			
@@ -62,8 +65,9 @@ public class DeleteController extends HttpServlet{
 				util.closeConnection(conn);
 		}
 		
-		RequestDispatcher view = request.getRequestDispatcher("Home.jsp");
-		view.forward(request, response);
+		request.setAttribute("mediaDescr", mediaDescr);
+        RequestDispatcher view = request.getRequestDispatcher("Deleted.jsp");
+        view.forward(request, response);
 	}
 	
 }

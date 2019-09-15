@@ -1,5 +1,9 @@
 package homemedia.model;
 
+import java.sql.SQLException;
+
+import javax.sql.RowSet;
+
 public class ImageMedia extends Media {
 	
 	private static final String PREVIEW_TEMPLATE = "<a href='View.do?id=%3$d' >"
@@ -8,6 +12,10 @@ public class ImageMedia extends Media {
 		
 	public ImageMedia() {
 		super();
+	}
+	
+	public ImageMedia(RowSet rs) throws SQLException {
+	    super(rs);
 	}
 
 	@Override

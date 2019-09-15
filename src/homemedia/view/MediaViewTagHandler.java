@@ -11,6 +11,7 @@ import javax.sql.RowSet;
 
 import homemedia.model.Media;
 import homemedia.model.MediaFactoriesSupplier;
+import homemedia.model.MediaFactory;
 
 public class MediaViewTagHandler extends SimpleTagSupport {
 	
@@ -37,9 +38,12 @@ public class MediaViewTagHandler extends SimpleTagSupport {
 				String value = mediaInfo.getString("VALUE");
 				table = table + String.format(ROW_TEMPLATE, directory, tag, value);
 			}
-			Media media = mfactories.getFactory(mediaInfo).getInstance();
 			table = table + "</table>";
-			out.print(media.getViewTemplate(pageContext.getServletContext().getContextPath()));
+			MediaFactory factory = mfactories.getFactory(mediaInfo);
+			if(factory != null) {
+			    Media media = factory.getInstance();
+	            out.print(media.getViewTemplate(pageContext.getServletContext().getContextPath()));
+			}
 			out.print("<form action='Update.do' method='post'>");
 			out.print(String.format("<input name='descr' type='text' value='%1$s'>", descr));
 			out.print(String.format("<input name='id' type='hidden' value='%1$d'>", id));

@@ -36,7 +36,7 @@ public class MediaGalleryTagHandler extends SimpleTagSupport{
     	try {
 			while(MediaSet.next()){
 				
-				Media media = mfactories.getFactory(MediaSet).getInstance();
+				Media media = mfactories.getFactory(MediaSet).getInstance(MediaSet);
 								
 				out.print("<td align='center'>");
 				out.print(media.getPreviewTemplate(pageContext.getServletContext().getContextPath()));

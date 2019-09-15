@@ -30,7 +30,9 @@ public class HomeController extends HttpServlet{
 			sessionTags = new HashSet<Integer>();
 			session.setAttribute("SelectedTags", sessionTags);
 		}	
-		RowSet media = null, allTags = null, selectedTags = null;
+		RowSet media = null,
+		       allTags = null,
+		       selectedTags = null;
 				
 		try {
 			RowSetProvider getMedia = new GetMediaProvider(),

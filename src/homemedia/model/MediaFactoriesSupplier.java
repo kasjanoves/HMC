@@ -20,7 +20,10 @@ public class MediaFactoriesSupplier {
 	}
 	
 	public MediaFactory getFactory(RowSet rs) throws SQLException {
-		String mediaType = rs.getString("TYPE");
-		return factories.get(mediaType);
+	    if(rs.first()) {
+	        String mediaType = rs.getString("TYPE");
+	        return factories.get(mediaType);
+	    }
+	    return null;
 	}
 }

@@ -8,7 +8,7 @@
 	<title>Media details</title>
 </head>
 <body>
-	<a href ="Home.do">Back</a><br>
+	<a href ="Home">Back</a><br>
 	<formTags:MediaView mediaInfo='${mediaInfo}' />
 	<br>
 	<formTags:MediaTags mediaTags='${mediaTags}' mode='byMedia'/>
