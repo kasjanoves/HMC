@@ -15,7 +15,8 @@ Crucial features:
 - gallery and detailed view
 
  Used technologies: Java8, Servlets, JSP, JDBC, JSTL, MySQL, Tomcat
- Third-sed libraries: drewnoakes, mp4parser, jcodec
+ 
+ Third-side libraries: drewnoakes, mp4parser, jcodec
 
  Unfortunately, I wasn't able to complete the project due to time constraints from my first position as a Java junior developer.
 
