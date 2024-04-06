@@ -2,10 +2,20 @@
 
 <h2> Home Media Catalog </h2>
 
-Проект учебного WEB приложения на Java.
+Study project of Java web-application (actually my first java project) 
 
-Возможности: Загрузка файлов изображений и видео в базу данных, добавление описания, добавление/удаление тегов, поиск по описанию и тегам, поиск по значению метаданных, просмотр в виде галереи и детальный вид, удаление файлов, редактирование описания. 
+This project served as a way for me to gain hands-on experience with Java and fundamental technologies like Servlets, JDBC etc.
 
-Использованные технологии: Java8, Servlets, JSP, JDBC, JSTL, MySQL, Tomcat
+Crucial features:
+- downloading media/image files into database or file system
+- adding, editing description
+- supporting tags
+- flexible search by tags/description
+- search by metadata
+- gallery and detailed view
 
-Сторонние библиотеки: drewnoakes, mp4parser, jcodec
+ Used technologies: Java8, Servlets, JSP, JDBC, JSTL, MySQL, Tomcat
+ Third-sed libraries: drewnoakes, mp4parser, jcodec
+
+ Unfortunately, I wasn't able to complete the project due to time constraints from my first position as a Java junior developer.
+
